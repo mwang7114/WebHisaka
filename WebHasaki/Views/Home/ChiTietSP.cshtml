@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "ChiTietSP";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+    <link href="~/Content/CSS/User/cssctsp.css" rel="stylesheet" />
+}
+
+<div class="tong" style="flex-wrap: wrap">
+    <div style="display:flex">
+        <div style="width: 90%">
+            <div class="container-ctsp">
+                <div class="product">
+                    <div style="display:block">
+                        @foreach (var product in ViewBag.listCTSP)
+                        {
+                            <div style="display:flex">
+                                <div style="text-align: center;">
+                                    <img alt="Product Image" height="400" src="@product[5]" width="300" />
+                                </div>
+
+                                <div class="product-details">
+                                    <h1>@product[1]</h1>
+                                    <p class="product-description">@product[2]</p>
+
+                                    <div class="rating" style="color: #ffcc00;">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span> @product[7] / 5 | @product[8]% giảm giá | Mã sản phẩm: @product[0]</span>
+                                    </div>
+
+                                    <div class="price" style="font-size: 24px; font-weight: bold; margin-top: 10px;">@Convert.ToDecimal(product[4]).ToString("N0")đ</div>
+
+                                    <div style="font-size: 14px; font-style: italic; margin-top: 5px;">
+                                        (Đã bao gồm VAT)
+                                    </div>
+
+                                    <div class="old-price" style="font-size: 18px; color: gray; margin-top: 10px;">
+                                        Giá thị trường: <del>@Convert.ToDecimal(product[3]).ToString("N0")đ</del>
+                                    </div>
+                                    <div class="earn-price" style="color: green; font-weight: bold; margin-top: 5px;">
+                                        - Tiết kiệm: @product[8]% 
+                                    </div>
+
+
+
+                                    <div class="actions" style="margin-top: 20px;">
+                                        <form method="post" action="@Url.Action("AddToCart", "Cart")">
+                                            <div class="quantity" style="margin-top: 15px;">
+                                                <label for="quantity">Số lượng:</label>
+                                                <input id="quantity-input-@product[0]" name="quantity" type="number" value="1" min="1" style="width: 60px; margin-left: 10px;" />
+                                            </div>
+                                            <input type="hidden" name="productId" value="@product[0]" />
+                                            <button type="submit" class="cart-button">Thêm vào giỏ hàng</button>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="container-huongdan">
+                <div class="section">
+                    <h2>Hướng dẫn sử dụng</h2>
+                    <ul>
+                        <li>Thấm nước tẩy trang lên bông tẩy trang.</li>
+                        <li>Nhẹ nhàng làm sạch vùng mặt và mắt.</li>
+                        <li>Không cần rửa lại với nước.</li>
+                        <li>Sử dụng vào hàng ngày để làm sạch da.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="container-danhgia">
+                <div class="header-danhgia">Đánh giá</div>
+                <h4>Đánh giá trung bình</h4>
+                <div class="danhgia">
+                    <div style="display:flex">
+                        <div style="display: block; align-content: center; justify-items: center">
+                            <div class="average-rating">@ViewBag.Rating</div>
+                            <div class="rating-stars">
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    <i class="fas fa-star" style="color: #ff6600;"></i>
+                                }
+                            </div>
+                            <div class="rating-count">@ViewBag.CommentCount nhận xét</div>
+                        </div>
+                        <div class="rating-breakdown">
+                            <div class="rating-bar">
+                                <span>5 sao</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: @ViewBag.FiveStarPercentage%;"></div>
+                                </div>
+                                <span class="count">@ViewBag.FiveStarCount Rất hài lòng</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>4 sao</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: @ViewBag.FourStarPercentage%;"></div>
+                                </div>
+                                <span class="count">@ViewBag.FourStarCount Hài lòng</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>3 sao</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: @ViewBag.ThreeStarPercentage%;"></div>
+                                </div>
+                                <span class="count">@ViewBag.ThreeStarCount Bình thường</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>2 sao</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: @ViewBag.TwoStarPercentage%;"></div>
+                                </div>
+                                <span class="count">@ViewBag.TwoStarCount Không hài lòng</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>1 sao</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: @ViewBag.OneStarPercentage%;"></div>
+                                </div>
+                                <span class="count">@ViewBag.OneStarCount Rất tệ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feeback" style="display: block; align-content: center; justify-items: center" width: 100%;>
+                        <h5>Chia sẻ nhận xét của bạn về sản phẩm</h5>
+                        <button class="review-button">Viết Bình Luận</button>
+                    </div>
+                </div>
+                <div class="review">
+                    @foreach (var product in ViewBag.listCTSP)
+                    {
+                        <div class="review-text">
+                            <i class="fas fa-star" style="color: #ff6600;"></i>
+                            <i class="fas fa-star" style="color: #ff6600;"></i>
+                            <i class="fas fa-star" style="color: #ff6600;"></i>
+                            <i class="fas fa-star" style="color: #ff6600;"></i>
+                            <i class="fas fa-star" style="color: #ff6600;"></i>
+                            <div>@product[10] </div> <div>@product[9]</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="container-freeship">
+            <div class="header-freeship">
+                MIỄN PHÍ VẬN CHUYỂN
+            </div>
+            <div class="item-freeship">
+                <img alt="2H Delivery Icon" height="50" src="https://hasaki.vn/images/graphics/delivery-120-minutes.png" width="50" />
+                <p>
+                    Giao Nhanh Miễn Phí 2H tại 228 Chi Nhánh.
+                    <span>
+                        Trễ tặng 100K
+                    </span>
+                </p>
+            </div>
+            <div class="item-freeship">
+                <img alt="100% Authentic Icon" height="50" src="https://hasaki.vn/images/graphics/img_quality_3.png" width="50" />
+                <p>
+                    Hasaki đền bù
+                    <span>
+                        100%
+                    </span>
+                    + hàng đền bù
+                    <span>
+                        100%
+                    </span>
+                    nếu phát hiện hàng giả
+                </p>
+            </div>
+            <div class="item-freeship">
+                <img alt="Free Shipping Icon" height="50" src="https://hasaki.vn/images/graphics/img_quality_2.png" width="50" />
+                <p>
+                    Giao Hàng Miễn Phí (từ 90K tại 58 Tỉnh Thành trừ huyện, toàn Quốc từ 249K)
+                </p>
+            </div>
+            <div class="item-freeship">
+                <img alt="30 Days Return Icon" height="50" src="https://media.hcdn.vn/hsk/icons/img_quality_44.png" width="50" />
+                <p>
+                    Đổi trả trong
+                    <span>
+                        30 ngày
+                    </span>
+                    .
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

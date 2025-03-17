@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Reviews";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Reviews</a>
+</div>
+<div class="title">Reviews</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>REVIEW ID</th>
+                <th>PRODUCT</th>
+                <th>USER</th>
+                <th>RATING</th>
+                <th>COMMENT</th>
+                <th>REVIEW DATE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var review in Model)
+                {
+                    <tr>
+                        <td>@review.ReviewID</td>
+                        <td>@review.ProductName</td>
+                        <td>@review.UserName</td>
+                        <td>@review.Rating</td>
+                        <td>@review.Comment</td>
+                        <td>
+                            @if (review.ReviewDate is DateTime reviewDate)
+                            {
+                                @reviewDate.ToString("dd-MM-yyyy")
+                            }
+                            else
+                            {
+                                <span>N/A</span>
+                            }
+                        </td>
+                        <td class="action-icons">
+                            <a href="@Url.Action("ReviewDetail", "Review", new { reviewId = review.ReviewID })" class="view">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+
+                            <a href="javascript:void(0);" class="delete" data-reviewId="@review.ReviewID" onclick="confirmDelete(@review.ReviewID)">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No Reviews Found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Reviews", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Reviews", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Reviews", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+</div>
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa đánh giá này?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(reviewId) {
+        var modal = document.getElementById("confirmDeleteModal");
+        modal.style.display = "flex";
+
+        document.getElementById("confirmDeleteBtn").onclick = function () {
+            window.location.href = '@Url.Action("DeleteReview", "Review", new { reviewId = "__reviewId__" })'.replace('__reviewId__', reviewId);
+        };
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("confirmDeleteModal");
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById("confirmDeleteModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    };
+</script>

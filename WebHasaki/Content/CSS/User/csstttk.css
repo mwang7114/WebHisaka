@@ -1,0 +1,125 @@
+﻿.container-tttk {
+    display: flex;
+    padding: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.profile-container-tttk {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.left-section, .right-section {
+    width: 48%;
+}
+
+.left-section {
+    border-right: 1px solid #e0e0e0;
+}
+
+.right-section {
+    padding-left: 20px;
+}
+
+.profile-picture-tttk {
+    display: block;
+    margin-bottom: 20px;
+}
+
+    .profile-picture-tttk img {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    .profile-picture-tttk a {
+        color: #4CAF50;
+        text-decoration: none;
+    }
+
+.form-group-tttk {
+    margin-bottom: 15px;
+}
+
+    .form-group-tttk label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-group-tttk input, .form-group-tttk select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+    }
+
+        .form-group-tttk input[type="checkbox"] {
+            width: auto;
+        }
+
+    .form-group-tttk .gender-options-tttk {
+        display: flex;
+        gap: 15px; /* Khoảng cách giữa các nhóm nút radio */
+        align-items: center;
+    }
+
+        .form-group-tttk .gender-options-tttk input {
+            margin: 0; /* Xóa khoảng cách mặc định của radio button */
+            width: 10px;
+        }
+
+.form-group .gender-options label {
+    margin-left: 5px; /* Đặt khoảng cách giữa radio button và chữ */
+}
+
+.update-button-tttk {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    width: 100%;
+}
+
+    .update-button-tttk:hover {
+        background-color: #45a049;
+    }
+
+.right-section .section-title-tttk {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.right-section .section-item-tttk {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+    .right-section .section-item-tttk i {
+        margin-right: 10px;
+    }
+
+.right-section .update-button-tttk {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+    .right-section .update-button-tttk:hover {
+        background-color: #d5d5d5;
+    }
+
+.right-section .linked-button-tttk {
+    background-color: #4CAF50;
+    color: white;
+}

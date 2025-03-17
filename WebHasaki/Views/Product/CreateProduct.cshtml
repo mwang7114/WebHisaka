@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Create Product";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Create Product</h2>
+
+@using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input type="text" class="form-control" id="productName" name="productName" placeholder="Nhập tên sản phẩm" required />
+    </div>
+
+    <div class="form-group">
+        <label for="categoryId">Category</label>
+        @Html.DropDownList("categoryId", (IEnumerable<SelectListItem>)ViewBag.Categories, "-- Select Category --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="brandId">Brand</label>
+        @Html.DropDownList("brandId", (IEnumerable<SelectListItem>)ViewBag.Brands, "-- Select Brand --", new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control" id="price" name="price" step="1000" placeholder="Nhập price" required />
+    </div>
+
+    <div class="form-group">
+        <label for="priceSale">Price Sale (Optional)</label>
+        <input type="number" class="form-control" id="priceSale" name="priceSale" step="0.01" placeholder="Nhập sale price" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Nhập mô tả sản phẩm" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="stock">Stock</label>
+        <input type="number" class="form-control" id="stock" name="stock" placeholder="Nhập số lượng" required />
+    </div>
+
+    <div class="form-group">
+        <label for="image">Product Image</label>
+        <input type="file" class="form-control-file" id="image" name="image" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Product</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Products", "Admin")" class="btn btn-secondary">Back to Products</a>
+</div>

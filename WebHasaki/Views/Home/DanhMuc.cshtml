@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "Trang Chu";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+    <link href="~/Content/CSS/User/csstimkiem.css" rel="stylesheet" />
+    <link href="~/Content/CSS/User/cssdanhmuc.css" rel="stylesheet" />
+
+
+}
+<div class="header">
+    <div class="nav-links">
+        <div class="menu-container" style="display: flex">
+            <div class="menu-icon" style="margin-right: 5px"><i class="fas fa-bars"></i></div>
+            <a>DANH MỤC</a>
+            <span class="long-pipe" style="font-size: 18px; margin-left: 5px">&#124;</span>
+            <div class="dropdown">
+                <h3><a href="@Url.Action("DanhMuc","Home")">Sức khỏe - Làm Đẹp</a></h3>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Mỹ Phẩm High-End"})">Mỹ Phẩm High-End <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm sóc da mặt"})">Chăm Sóc Da Mặt <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Trang Điểm"})">Trang Điểm <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Tóc "})">Chăm Sóc Tóc <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cơ Thể"})">Chăm Sóc Cơ Thể <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cá Nhân"})">Chăm Sóc Cá Nhân <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Nước Hoa"})">Nước Hoa <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Thực Phẩm Chức Năng"})">Thực Phẩm Chức Năng <i class="fas fa-chevron-right"></i></a>
+                <a href="#"><h3>Hasaki Clinic & Spa</h3></a>
+                <a href="#"><h3>Dịch Vụ Trải Nghiệm</h3></a>
+            </div>
+        </div>
+        <a class="menu" href="#">HASAKI DEALS</a>
+        <a class="menu" href="#">HOT DEALS</a>
+        <a class="menu" href="#">THƯƠNG HIỆU</a>
+        <a class="menu" href="/Home/HangMoiVe">HÀNG MỚI VỀ</a>
+        <a class="menu" href="#">BÁN CHẠY</a>
+        <a class="menu" href="#">CLINIC & SPA</a>
+    </div>
+    <div class="right-links">
+        <a href="#">Tra cứu đơn hàng</a>&#124;
+        <a href="#">Tải ứng dụng</a>&#124;
+        <a href="#"><i class="fas fa-map-marker-alt"></i> Chọn khu vực của bạn</a>
+    </div>
+</div>
+<div class="container-hangmoive">
+    <aside class="sidebar">
+        <section>
+            <section>
+                <h2>DANH MỤC</h2>
+                <ul>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Mỹ Phẩm High-End"})">Mỹ Phẩm High-End</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm sóc da mặt"})">Chăm Sóc Da Mặt</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Trang Điểm"})">Trang Điểm</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Tóc "})">Chăm Sóc Tóc</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cơ Thể"})">Chăm Sóc Cơ Thể</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cá Nhân"})">Chăm Sóc Cá Nhân</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Nước Hoa"})">Nước Hoa</a></li>
+                    <li><a href="@Url.Action("DanhMuc","Home", new {nameCate = "Thực Phẩm Chức Năng"})">Thực Phẩm Chức Năng</a></li>
+                </ul>
+            </section>
+            <h2>KHOẢNG GIÁ</h2>
+            <ul>
+                <li><a href="#">Dưới 100.000đ</a></li>
+                <li><a href="#">100.000đ - 200.000đ</a></li>
+                <li><a href="#">200.000đ - 300.000đ</a></li>
+                <li><a href="#">300.000đ - 500.000đ</a></li>
+                <li><a href="#">Trên 500.000đ</a></li>
+            </ul>
+        </section>
+        <section>
+            <h2>THƯƠNG HIỆU</h2>
+            <ul>
+                <li><a href="#">Silkygirl (17)</a></li>
+                <li><a href="#">Into You (26)</a></li>
+                <li><a href="#">Vacosi (23)</a></li>
+                <li><a href="#">Mik@vonk (17)</a></li>
+                <li><a href="#">Mlen Diary (15)</a></li>
+            </ul>
+        </section>
+
+    </aside>
+    <div class="container-suckhoelamdep">
+        <div class="header-suckhoelamdep">
+            @if (ViewBag.nameCate == null)
+            {
+                <h1>
+                    Sức Khỏe - Làm Đẹp
+                </h1>
+            }
+            else
+            {
+
+                <h1>@ViewBag.nameCate</h1>
+            }
+            <span>
+                (6795 sản phẩm)
+            </span>
+        </div>
+        <div class="filters-suckhoelamdep">
+            <div>
+                <a>
+                    Sắp xếp
+                </a>
+                <button class="active">
+                    Mới nhất
+                </button>
+                <button>
+                    Bán chạy
+                </button>
+                <button>
+                    Giá thấp đến cao
+                </button>
+                <button>
+                    Giá cao đến thấp
+                </button>
+            </div>
+        </div>
+
+        @if (ViewBag.nameCate == null)
+        {
+            <div class="sanpham-dm">
+                <div class="sp-row-dm">
+                    @foreach (var item in ViewBag.listSPDM)
+                    {
+                        <a href="@Url.Action("ChiTietSP","Home", new {id = item[0] })">
+                            <div class="product-card">
+                                <img src="@item[5]" height="220" width="220" />
+                                <div class="product-info">
+                                    <h3>@item[1]</h3>
+                                    <p>@item[2]</p>
+                                    <p class="price">@Convert.ToDecimal(item[4]).ToString("N0")đ<span class="old-price">@Convert.ToDecimal(item[3]).ToString("N0")đ</span> <span class="discount">@item[6]%</span></p>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                        <span class="reviews">(874)</span>
+                                    </div>
+                                    <p class="stock">Còn 9 ngày 10:44:41</p>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="sanpham-dm">
+                <div class="sp-row-dm">
+                    @foreach (var item in ViewBag.listSPCate)
+                    {
+                        <a href="@Url.Action("ChiTietSP","Home", new {id = item[0] })">
+                            <div class="product-card">
+                                <img src="@item[6]" height="220" width="220" />
+                                <div class="product-info">
+                                    <h3>@item[1]</h3>
+                                    <p>@item[4]</p>
+                                    <p class="price">@Convert.ToDecimal(item[3]).ToString("N0")đ<span class="old-price">@Convert.ToDecimal(item[2]).ToString("N0")đ</span> <span class="discount">@item[9]%</span></p>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                        <span class="reviews">(874)</span>
+                                    </div>
+                                    <p class="stock">Còn 9 ngày 10:44:41</p>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

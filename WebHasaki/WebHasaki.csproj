@@ -1,0 +1,545 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C24C101C-D4A5-4CD9-A377-3631F294507E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebHasaki</RootNamespace>
+    <AssemblyName>WebHasaki</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44379</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BrandController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductPromotionsController.cs" />
+    <Compile Include="Controllers\PromotionController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DataModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\CSS\Admin\cssadmin.css" />
+    <Content Include="Content\CSS\Admin\cssCRUD.css" />
+    <Content Include="Content\CSS\Admin\cssviewadmin.css" />
+    <Content Include="Content\CSS\User\cssctsp.css" />
+    <Content Include="Content\CSS\User\cssgiohang.css" />
+    <Content Include="Content\CSS\User\cssdangky.css" />
+    <Content Include="Content\CSS\User\cssdangnhap.css" />
+    <Content Include="Content\CSS\Admin\cssdashboardadmin.css" />
+    <Content Include="Content\CSS\User\cssthanhtoan.css" />
+    <Content Include="Content\CSS\User\csstimkiem.css" />
+    <Content Include="Content\CSS\User\csshethongcuahang.css" />
+    <Content Include="Content\CSS\User\cssqltkhoan.css" />
+    <Content Include="Content\CSS\User\cssdanhmuc.css" />
+    <Content Include="Content\CSS\User\csssupport.css" />
+    <Content Include="Content\CSS\User\csstaikhoan.css" />
+    <Content Include="Content\CSS\User\csstddhang.css" />
+    <Content Include="Content\CSS\User\csstichdiem.css" />
+    <Content Include="Content\CSS\User\csstrangchu.css" />
+    <Content Include="Content\CSS\User\csstttk.css" />
+    <Content Include="Content\Images\ban-chai-danh-rang-PS-Detox.jpg" />
+    <Content Include="Content\Images\ban-chai-dien-PS.jpg" />
+    <Content Include="Content\Images\bang-ve-sinh-Diana.jpg" />
+    <Content Include="Content\Images\banner_cskh.jpg" />
+    <Content Include="Content\Images\bcs-Durex-invisible.jpg" />
+    <Content Include="Content\Images\bo-goi-xa-TRESeme.jpg" />
+    <Content Include="Content\Images\bong-tam-JOMI.png" />
+    <Content Include="Content\Images\bot-trang-rang-Eucryl.jpg" />
+    <Content Include="Content\Images\bot-uong-Collagen-Gilaa.png" />
+    <Content Include="Content\Images\but-ke-mat-Maybelline.jpg" />
+    <Content Include="Content\Images\bvs-Laurier.jpg" />
+    <Content Include="Content\Images\chi-ke-chan-may-innisfree.jpg" />
+    <Content Include="Content\Images\chi-nha-khoa-Oral-B-50m.jpg" />
+    <Content Include="Content\Images\combo-ken-c-DHC.jpg" />
+    <Content Include="Content\Images\dao-cao-rau-Gillette-Super-Thin.jpg" />
+    <Content Include="Content\Images\dau-dua-Milaganics.jpg" />
+    <Content Include="Content\Images\dau-duong-toc-L%27Oreal.png" />
+    <Content Include="Content\Images\dau-duong-toc-L%27Oréal-Professionnel.jpg" />
+    <Content Include="Content\Images\dau-duong-toc-LOréal-Professionnel.jpg" />
+    <Content Include="Content\Images\dau-goi-bac-ha-Head&amp;Shoulders.jpg" />
+    <Content Include="Content\Images\dau-goi-cap-am-LOréal-Professionnel.jpg" />
+    <Content Include="Content\Images\dau-goi-Clear-9-thao-duoc.jpg" />
+    <Content Include="Content\Images\dau-goi-duoc-lieu.jpg" />
+    <Content Include="Content\Images\dau-goi-kho-Girlz-Only.png" />
+    <Content Include="Content\Images\dau-goi-Kumano-Salon-Link.jpg" />
+    <Content Include="Content\Images\dau-goi-Olaplex.jpg" />
+    <Content Include="Content\Images\dau-goi-Pantene.jpg" />
+    <Content Include="Content\Images\dau-goi-phuc-hoi-tresemme.jpg" />
+    <Content Include="Content\Images\dau-goi-selsun.jpg" />
+    <Content Include="Content\Images\dau-goi-Serie-Expert-Absolut-Repair-Gold.jpg" />
+    <Content Include="Content\Images\dau-goi-Serie-Expert-Vitamino-Resveratrol.jpg" />
+    <Content Include="Content\Images\dau-goi-Sunsilk.jpg" />
+    <Content Include="Content\Images\dau-goi-Tsubaki.jpg" />
+    <Content Include="Content\Images\dau-xa-Olaplex.png" />
+    <Content Include="Content\Images\dau-xa-phuc-hoi-sunsilk.png" />
+    <Content Include="Content\Images\dau-xa-Tsubaki.jpg" />
+    <Content Include="Content\Images\Daugoi.jpg" />
+    <Content Include="Content\Images\DHC.jpg" />
+    <Content Include="Content\Images\dl_apple.png" />
+    <Content Include="Content\Images\dl_google.png" />
+    <Content Include="Content\Images\Dove.jpg" />
+    <Content Include="Content\Images\duong-the-Dove.jpg" />
+    <Content Include="Content\Images\este.jpg" />
+    <Content Include="Content\Images\gel-boi-tron-Durex-Play-Classic.jpg" />
+    <Content Include="Content\Images\icon_footer_1.png" />
+    <Content Include="Content\Images\icon_footer_2.jpg" />
+    <Content Include="Content\Images\icon_footer_2.png" />
+    <Content Include="Content\Images\icon_footer_3.png" />
+    <Content Include="Content\Images\icon_footer_4.png" />
+    <Content Include="Content\Images\icon_timchinhanh.png" />
+    <Content Include="Content\Images\kem-chong-nang-Centella.jpg" />
+    <Content Include="Content\Images\kem-chong-nang-La-Roche-Posay.jpg" />
+    <Content Include="Content\Images\kem-chong-nang-LOreal-Paris-X20.jpg" />
+    <Content Include="Content\Images\kem-chong-nang-MartiDerm.jpg" />
+    <Content Include="Content\Images\kem-chong-nang-Vichy.jpg" />
+    <Content Include="Content\Images\kem-danh-rang-Crest.jpg" />
+    <Content Include="Content\Images\kem-danh-rang-Marvis.jpg" />
+    <Content Include="Content\Images\kem-danh-rang-Median-IQ-93%25.jpg" />
+    <Content Include="Content\Images\kem-danh-rang-Sensodyne.jpg" />
+    <Content Include="Content\Images\kem-duong-La-Roche-Posay.jpg" />
+    <Content Include="Content\Images\kem-duong-Obagi-Retinol-1.0%25.jpg" />
+    <Content Include="Content\Images\kem-duong-the-Paula’s-Choice-10%25-AHA.jpg" />
+    <Content Include="Content\Images\kem-duong-trang-da-innisfree.png" />
+    <Content Include="Content\Images\kem-lot-Maybelline.jpg" />
+    <Content Include="Content\Images\kem-nen-Catrice-HD-24H.jpg" />
+    <Content Include="Content\Images\kem-nen-Estee-Lauder.jpg" />
+    <Content Include="Content\Images\kem-nen-Maybelline.jpg" />
+    <Content Include="Content\Images\kem-tam-Secret-Key.jpg" />
+    <Content Include="Content\Images\kem-tay-long-da-nhay-cam-Cléo.png" />
+    <Content Include="Content\Images\kem-tay-te-bao-chet-vichy.jpg" />
+    <Content Include="Content\Images\kem-u-toc-fino.jpg" />
+    <Content Include="Content\Images\KemDuongAm.jpg" />
+    <Content Include="Content\Images\keo-ngam-bo-mat-Rohto-Clear-Vision-Junior.jpg" />
+    <Content Include="Content\Images\khan-lau-mat-kho.jpg" />
+    <Content Include="Content\Images\khau-trang-Unicharm.jpg" />
+    <Content Include="Content\Images\Klairs.jpg" />
+    <Content Include="Content\Images\lan-khu-mui-EtiaXil.jpg" />
+    <Content Include="Content\Images\lan-nach-Angels-Liquid.png" />
+    <Content Include="Content\Images\laporay.jpg" />
+    <Content Include="Content\Images\Larocheposay.jpg" />
+    <Content Include="Content\Images\LOréal.jpg" />
+    <Content Include="Content\Images\mascara-Maybelline.jpg" />
+    <Content Include="Content\Images\mat-na-giay-hada-labo.png" />
+    <Content Include="Content\Images\mat-na-Kiehls.jpg" />
+    <Content Include="Content\Images\mat-na-ngu-laneige.png" />
+    <Content Include="Content\Images\mat-na-u-toc-Fanola.png" />
+    <Content Include="Content\Images\mat-na-xong-hoi-mat-MegRhythm.jpg" />
+    <Content Include="Content\Images\matna.jpg" />
+    <Content Include="Content\Images\muoi-tay-te-bao-chet-da-dau-Aromatica.png" />
+    <Content Include="Content\Images\na-ngu-duong-moi-laneige.png" />
+    <Content Include="Content\Images\nuoc-can-bang-Elixir.jpg" />
+    <Content Include="Content\Images\nuoc-duong-toc-cocoon.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-chanel-no5.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-hong-Klairs.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-hong-thayers.png" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Armaf-Club-De-Nuit-EDT-Intense.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Armaf-Club-De-Nuit-Urban-Elixir-EDP.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Giorgio-Armani-Code-Parfum.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Gota-Bouncy-Eau-de-Parfum.png" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Moschino-Toy-Boy-EDP.png" />
+    <Content Include="Content\Images\nuoc-hoa-nam-TOMMY-Cologne-EDT.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Tommy-Impact-Intense-EDP.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Versace-Eros-EDT.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nam-Versace-Man-Eau-Fraiche-EDT.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Burberry-Her-Blossom-EDT.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Carolina-Herrera-Very-Good-Girl-Glam-EDP.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Diamond-Femme-Pink.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Lancôme-Idôle-EDP.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Narciso-Rodriguez-For-Her.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Versace-Bright-Crystal-Absolu.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-Versace-Yellow-Diamond-EDT.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-nu-YSL-Libre-EDP.jpg" />
+    <Content Include="Content\Images\nuoc-hoa-vung-kin-Foellie.png" />
+    <Content Include="Content\Images\nuoc-suc-mieng-Listerine.jpg" />
+    <Content Include="Content\Images\nuoc-suc-mieng-Propolinse.jpg" />
+    <Content Include="Content\Images\nuoc-tay-trang-da-dau-mun-Garnier.png" />
+    <Content Include="Content\Images\nuoc-tay-trang-da-hon-hop-Bioderma.jpg" />
+    <Content Include="Content\Images\nuoc-tay-trang-da-nhay-cam-Bioderma.jpg" />
+    <Content Include="Content\Images\nuoc-tay-trang-da-nhay-cam-La-Roche-Posay.jpg" />
+    <Content Include="Content\Images\nuoc-tay-trang-LOreal.png" />
+    <Content Include="Content\Images\nuoc-tay-trang-mat-moi-Maybelline.jpg" />
+    <Content Include="Content\Images\nuoc-uong-Astalift.jpg" />
+    <Content Include="Content\Images\nuoc-uong-Collagen-Alfe-Deep-Essence.jpg" />
+    <Content Include="Content\Images\nuoc-uong-Collagen-Elasten.jpg" />
+    <Content Include="Content\Images\nuoc-uong-Collagen-Gilaa.jpg" />
+    <Content Include="Content\Images\nuoc-uong-giam-tao-Naris-Itoh.png" />
+    <Content Include="Content\Images\nuochoa.jpg" />
+    <Content Include="Content\Images\phan-nen-maybelline.jpg" />
+    <Content Include="Content\Images\phan-nuoc-Aperire.jpg" />
+    <Content Include="Content\Images\phan-nuoc-laneige.jpg" />
+    <Content Include="Content\Images\phan-phu-innisfree.jpg" />
+    <Content Include="Content\Images\phan-phu-Perfect-Diary.jpg" />
+    <Content Include="Content\Images\phan-phu-vo-den-Carslan.jpg" />
+    <Content Include="Content\Images\phan-phu-vo-xam-Carslan.jpg" />
+    <Content Include="Content\Images\sap-duong-am-Vaseline-Pure-Petroleum-Jelly.jpg" />
+    <Content Include="Content\Images\sap-khu-mui-Timber.jpg" />
+    <Content Include="Content\Images\sap-tay-trang-Banila-Co-Original.jpg" />
+    <Content Include="Content\Images\serum-duong-the-Vaseline.jpg" />
+    <Content Include="Content\Images\serum-duong-toc-TRESemmé.jpg" />
+    <Content Include="Content\Images\serum-Elixer.jpg" />
+    <Content Include="Content\Images\serum-giam-tham-sang-da-La-Roche-Posay.jpg" />
+    <Content Include="Content\Images\serum-Laneige.png" />
+    <Content Include="Content\Images\serum-LOreal-Hyaluronic-Acid.png" />
+    <Content Include="Content\Images\serum-Olaplex-No.9.jpg" />
+    <Content Include="Content\Images\serum-Timeless.jpg" />
+    <Content Include="Content\Images\Serum.jpg" />
+    <Content Include="Content\Images\serumshiseido.jpg" />
+    <Content Include="Content\Images\so-bong-Maybelline.jpg" />
+    <Content Include="Content\Images\son-blackrouge-a12.jpg" />
+    <Content Include="Content\Images\son-duong-moi-DHC.jpg" />
+    <Content Include="Content\Images\son-kem-Maybelline.jpg" />
+    <Content Include="Content\Images\son-thoi-3CE-Unstained-Red.jpg" />
+    <Content Include="Content\Images\sua-chong-nang-da-dau-Anessa.jpg" />
+    <Content Include="Content\Images\sua-chong-nang-da-nhay-cam-Anessa.jpg" />
+    <Content Include="Content\Images\sua-chong-nang-Elixir-35g.jpg" />
+    <Content Include="Content\Images\sua-chong-nang-Elixir.jpg" />
+    <Content Include="Content\Images\sua-chong-nang-Sunplay.jpg" />
+    <Content Include="Content\Images\sua-duong-the-ban-dem-Nivea.jpg" />
+    <Content Include="Content\Images\sua-duong-the-ban-dem-Vaseline.jpg" />
+    <Content Include="Content\Images\sua-rua-mat-Cerave.png" />
+    <Content Include="Content\Images\sua-rua-mat-Cetaphil.jpg" />
+    <Content Include="Content\Images\sua-rua-mat-Elixir.jpg" />
+    <Content Include="Content\Images\sua-rua-mat-kiehls.png" />
+    <Content Include="Content\Images\sua-tam-Hazeline.jpg" />
+    <Content Include="Content\Images\sua-tam-lifbuoy-kho-qua.jpg" />
+    <Content Include="Content\Images\sua-tam-life-buoy-than.jpg" />
+    <Content Include="Content\Images\sua-tam-Lifebuoy-Detox.jpg" />
+    <Content Include="Content\Images\sua-tam-nuoc-hoa-Tesori-dOriente.png" />
+    <Content Include="Content\Images\sua-tam-Some-By-Mi.jpg" />
+    <Content Include="Content\Images\suaruamat.jpg" />
+    <Content Include="Content\Images\Suatam.jpg" />
+    <Content Include="Content\Images\tay-da-chet-toan-than-Cocoon.png" />
+    <Content Include="Content\Images\Taytrang.jpg" />
+    <Content Include="Content\Images\thuc-pham-bao-ve-sk-Blossomy.jpg" />
+    <Content Include="Content\Images\thuc-pham-bao-ve-sk-InnerB-Snow-White.jpg" />
+    <Content Include="Content\Images\thuc-pham-chuc-nang-collagen.jpg" />
+    <Content Include="Content\Images\tinh-chat- Kiehls.jpg" />
+    <Content Include="Content\Images\tinh-chat-Skinceuticals.jpg" />
+    <Content Include="Content\Images\tinh-chat-tri-mun-some-by-mi.jpg" />
+    <Content Include="Content\Images\trangdiemmat.jpg" />
+    <Content Include="Content\Images\trangdiemmats.jpg" />
+    <Content Include="Content\Images\trangdiemmoi.jpg" />
+    <Content Include="Content\Images\Vaseline.jpg" />
+    <Content Include="Content\Images\vien-kem.jpg" />
+    <Content Include="Content\Images\vien-uong-Blackmores.jpg" />
+    <Content Include="Content\Images\vien-uong-Blue-Shark-Cartilage.png" />
+    <Content Include="Content\Images\vien-uong-chong-nang-Heliocare.jpg" />
+    <Content Include="Content\Images\vien-uong-Costar-Glucosamine.jpg" />
+    <Content Include="Content\Images\vien-uong-Costar.png" />
+    <Content Include="Content\Images\vien-uong-ngua-lao-hoa-Nucos.jpg" />
+    <Content Include="Content\Images\vien-uong-Nucos.jpg" />
+    <Content Include="Content\Images\vien-uong-Pharmekal.jpg" />
+    <Content Include="Content\Images\vien-uong-rau-cu-DHC.jpg" />
+    <Content Include="Content\Images\visa.png" />
+    <Content Include="Content\Images\xit-duong-chan-toc-Aromatica.png" />
+    <Content Include="Content\Images\xit-duong-toc-Double-Rich.jpg" />
+    <Content Include="Content\Images\xit-giam-mun-lung-Angels-Liquid.png" />
+    <Content Include="Content\Images\xit-khoa-Makeup-3CE.jpg" />
+    <Content Include="Content\Images\xit-khoa-Makeup-Colorkey.jpg" />
+    <Content Include="Content\Images\xit-thom-mieng-Loli-And-The-Wolf.png" />
+    <Content Include="Content\Images\xit-toan-than-Kiss-My-Body-Passion.jpg" />
+    <Content Include="Content\Images\xit-toan-than-Malissa-Kiss.png" />
+    <Content Include="Content\JS\JSAdmin.js" />
+    <Content Include="Content\JS\jsTrangchu.js" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Images\logo.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.7.0.js" />
+    <Content Include="Scripts\jquery-3.7.0.min.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Home\DangNhap.cshtml" />
+    <Content Include="Views\Home\TrangChu.cshtml" />
+    <Content Include="Views\Shared\_LayoutTrangChu.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\Categories.cshtml" />
+    <Content Include="Views\Home\DangKy.cshtml" />
+    <Content Include="Views\Home\ChiTietSP.cshtml" />
+    <Content Include="Views\Cart\ShowCart.cshtml" />
+    <Content Include="Views\Admin\Products.cshtml" />
+    <Content Include="Views\Admin\Brands.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Order\OrderDetails.cshtml" />
+    <Content Include="Views\Home\Support.cshtml" />
+    <Content Include="Views\Home\QLTaiKhoan.cshtml" />
+    <Content Include="Views\Shared\_LayoutSupport.cshtml" />
+    <Content Include="Views\Shared\_LayoutTaiKhoan.cshtml" />
+    <Content Include="Views\Admin\Promotions.cshtml" />
+    <Content Include="Views\Admin\ProductPromotions.cshtml" />
+    <Content Include="Views\Admin\Reviews.cshtml" />
+    <Content Include="Views\Admin\Users.cshtml" />
+    <Content Include="Views\Home\HeThongCuaHang.cshtml" />
+    <Content Include="Views\Home\HasakiDeal.cshtml" />
+    <Content Include="Views\Home\TimSPTheoTen.cshtml" />
+    <Content Include="Views\Categories\CreateCategory.cshtml" />
+    <Content Include="Views\Categories\EditCategory.cshtml" />
+    <Content Include="Views\Product\CreateProduct.cshtml" />
+    <Content Include="Views\Product\EditProduct.cshtml" />
+    <Content Include="Views\Brand\CreateBrand.cshtml" />
+    <Content Include="Views\Brand\EditBrand.cshtml" />
+    <Content Include="Views\Order\EditOrder.cshtml" />
+    <Content Include="Views\Promotion\CreatePromotion.cshtml" />
+    <Content Include="Views\Promotion\EditPromotion.cshtml" />
+    <Content Include="Views\ProductPromotions\CreateProductPromotion.cshtml" />
+    <Content Include="Views\ProductPromotions\EditProductPromotion.cshtml" />
+    <Content Include="Views\Review\ReviewDetail.cshtml" />
+    <Content Include="Views\Home\HasakiTichDiem.cshtml" />
+    <Content Include="Views\Home\DanhMuc.cshtml" />
+    <Content Include="Views\Home\ThongTinTaiKhoan.cshtml" />
+    <Content Include="Views\User\CreateUser.cshtml" />
+    <Content Include="Views\User\EditUser.cshtml" />
+    <Content Include="Views\Shared\_LayoutThanhToan.cshtml" />
+    <Content Include="Views\Cart\CheckOut.cshtml" />
+    <Content Include="Views\Cart\OrderTracking.cshtml" />
+    <Content Include="Views\Cart\OrderList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64285</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44379/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

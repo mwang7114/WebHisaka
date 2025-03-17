@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "ThongTinTaiKhoan";
+    Layout = "~/Views/Shared/_LayoutTaiKhoan.cshtml";
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+<link href="~/Content/CSS/User/csstttk.css" rel="stylesheet" />
+
+<div class="container-tttk">
+    <div class="profile-container-tttk">
+        <div class="left-section">
+            <h2>
+                Thông tin tài khoản
+            </h2>
+            <div style="display: flex">
+                <div class="profile-picture-tttk">
+                    <img alt="Profile picture placeholder" height="60" src="https://storage.googleapis.com/a1aa/image/tgvhiAyJaprXONs4fnom24dBP5RTTdvHZYEphbteKznGn7yTA.jpg" width="60" />
+                    <div style="margin-top:10px">
+                        <a href="#">
+                            Tải ảnh của bạn
+                        </a>
+                    </div>
+                </div>
+                <div style="margin-left: 20px; width: 70%">
+                    <div class="form-group-tttk">
+                        <label for="email">
+                            Email
+                        </label>
+                        <input id="email" type="email" value="@Session["Email"]" />
+                    </div>
+                    <div class="form-group-tttk">
+                        <label for="name">
+                            Tên
+                        </label>
+                        <input id="name" type="text" value="@Session["Name"]" />
+                    </div>
+                    <div class="form-group-tttk">
+                        <label>
+                            Giới tính
+                        </label>
+                        <div class="gender-options-tttk">
+                            <input id="male" name="gender" type="radio" value="male" checked/>
+                            <label for="male">
+                                Nam
+                            </label>
+                            <input id="female" name="gender" type="radio" value="female" />
+                            <label for="female">
+                                Nữ
+                            </label>
+                            <input  id="other" name="gender" type="radio" value="other" />
+                            <label for="other">
+                                Không xác định
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group-tttk">
+                        <label>
+                            Ngày sinh (Không bắt buộc)
+                        </label>
+                        <div style="display: flex; justify-content: space-between;">
+                            <select>
+                                <option>
+                                    Ngày
+                                </option>
+                            </select>
+                            <select>
+                                <option>
+                                    Tháng
+                                </option>
+                            </select>
+                            <select>
+                                <option>
+                                    Năm
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-tttk" style="display:flex">
+                        <div>
+                            <input id="promo" type="checkbox" />
+                        </div>
+                        <div>
+                            <label for="promo" style="margin-left: 10px">
+                                Nhận thông tin khuyến mãi qua e-mail
+                            </label>
+                        </div>
+                    </div>
+                    <button class="update-button-tttk">
+                        Cập nhật
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="section">
+                <h2>
+                    Số điện thoại và Email
+                </h2>
+                <div class="section-item-tttk">
+                    <div>
+                        <i class="fas fa-phone">
+                        </i>
+                        Số điện thoại
+                    </div>
+                    <button class="update-button">
+                        Cập nhật
+                    </button>
+                </div>
+                <div class="section-item-tttk">
+                    <div>
+                        <i class="fas fa-envelope">
+                        </i>
+                        Email
+                    </div>
+                    <div>
+                        @Session["Email"]
+                    </div>
+                </div>
+            </div>
+            <div class="section-tttk">
+                <div class="section-title-tttk">
+                    Bảo mật
+                </div>
+                <div class="section-item-tttk">
+                    <div>
+                        <i class="fas fa-lock">
+                        </i>
+                        Đổi mật khẩu
+                    </div>
+                    <button class="update-button-tttk-mk">
+                        Cập nhật
+                    </button>
+                </div>
+            </div>
+            <div class="section-tttk">
+                <div class="section-title-tttk">
+                    Liên kết mạng xã hội
+                </div>
+                <div class="section-item-tttk">
+                    <div>
+                        <i class="fab fa-facebook">
+                        </i>
+                        Facebook
+                    </div>
+                    <button class="update-button">
+                        Cập nhật
+                    </button>
+                </div>
+                <div class="section-item-tttk">
+                    <div>
+                        <i class="fab fa-google">
+                        </i>
+                        Google
+                    </div>
+                    <button class="linked-button-tttk">
+                        Đã liên kết
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

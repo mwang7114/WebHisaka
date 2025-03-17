@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Edit Product Promotion";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Edit Product Promotion</h2>
+
+@using (Html.BeginForm("EditProductPromotion", "ProductPromotions", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="productId">Product</label>
+        @Html.DropDownList("productId", (IEnumerable<SelectListItem>)ViewBag.Products, "-- Select Product --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="promotionId">Promotion</label>
+        @Html.DropDownList("promotionId", (IEnumerable<SelectListItem>)ViewBag.Promotions, "-- Select Promotion --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" name="startDate" class="form-control"
+               value="@Model.StartDate.ToString("yyyy-MM-dd")" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" name="endDate" class="form-control"
+               value="@Model.EndDate.ToString("yyyy-MM-dd")" readonly />
+    </div>
+
+    <input type="hidden" name="productPromotionId" value="@Model.ProductPromotionID" />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("ProductPromotions", "Admin")" class="btn btn-secondary">Back to Product Promotions</a>
+</div>

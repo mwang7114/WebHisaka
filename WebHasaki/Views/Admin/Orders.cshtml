@@ -1,0 +1,120 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Orders</a>
+</div>
+<div class="title">Orders</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ORDER ID</th>
+                <th>CUSTOMER</th>
+                <th>TOTAL AMOUNT</th>
+                <th>STATUS</th>
+                <th>ADDRESS</th>
+                <th>ORDER DATE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.UserName</td>
+                    <td>
+                        @string.Format("{0:0,0}", Convert.ToDecimal(order.TotalAmount))
+                    </td>
+                    <td>
+                        <span class="status-order
+        @(order.Status == "Processing" ? "processing" :
+            (order.Status == "Shipped" ? "shipped" :
+                (order.Status == "Delivered" ? "delivered" :
+                    (order.Status == "Failed" ? "failed" : ""))))">
+                            @order.Status
+                        </span>
+                    </td>
+
+                    <td>@order.AddressDetail</td>
+                    <td>
+                        @if (order.OrderDate is DateTime orderDate)
+                        {
+                            @orderDate.ToString("dd-MM-yyyy")
+                        }
+                        else
+                        {
+                            <span>N/A</span>}
+                    </td>
+                    <td class="action-icons">
+                        <a href="@Url.Action("OrderDetails", "Order", new { orderId = order.OrderID })" class="view">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                        <a href="@Url.Action("EditOrder", "Order", new { orderId = order.OrderID })" class="edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="javascript:void(0);" class="delete" data-orderId="@order.OrderID" onclick="confirmDelete(@order.OrderID)">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Orders", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Orders", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Orders", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+</div>
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa đơn hàng này?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(orderId) {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "flex";
+
+    document.getElementById("confirmDeleteBtn").onclick = function () {
+        window.location.href = '@Url.Action("DeleteOrder", "Order", new { orderId = "__orderId__" })'.replace('__orderId__', orderId);
+    };
+}
+
+function closeModal() {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    var modal = document.getElementById("confirmDeleteModal");
+    if (event.target == modal) {
+        closeModal();
+    }
+};
+</script>

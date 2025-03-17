@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "ThanhToan";
+    Layout = "~/Views/Shared/_LayoutThanhToan.cshtml";
+    var cartItems = ViewBag.CartItems as List<WebHasaki.Models.CartItemViewModel>;
+    decimal totalAmount = ViewBag.TotalAmount != null ? (decimal)ViewBag.TotalAmount : 0;
+    string userAddress = ViewBag.UserAddress as string; // Lấy địa chỉ từ ViewBag
+}
+
+<link href="~/Content/CSS/User/cssthanhtoan.css" rel="stylesheet" />
+<style>
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        
+    }
+</style>
+<div style="display: flex">
+    <div>
+        <div class="container-thanhtoan">
+            <div class="address-info-thanhtoan">
+                <h2>Địa chỉ nhận hàng</h2>
+                @if (!string.IsNullOrEmpty(userAddress))
+                {
+                    <div>@userAddress</div>
+                }
+                else
+                {
+                    <div>Chưa có địa chỉ nào!</div>
+                }
+            </div>
+            <a href="#" class="change-link-thanhtoan">Thay đổi</a>
+        </div>
+
+        <div class="container-thanhtoan">
+            <div class="address-info-thanhtoan">
+                <h2>Hình thức thanh toán</h2>
+                <div class="payment-method">
+                    <input checked type="radio" name="payment" id="payment_cod" value="COD" />
+                    <label for="payment_cod">
+                        <img alt="Cash icon" height="24" src="https://storage.googleapis.com/a1aa/image/NFwkU0CYJDIqCZkHSWeYLF89l7qfhdWXOfolmwytXufgyKPPB.jpg" width="24" />
+                        Thanh toán khi nhận hàng (COD)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-thanhtoan" style="display:block">
+            <h2>Sản phẩm trong giỏ hàng</h2>
+            @if (cartItems != null && cartItems.Count > 0)
+            {
+                foreach (var item in cartItems)
+                {
+                    <div class="product">
+                        <img alt="@item.ProductName" height="80" src="@item.ImageUrl" width="80" />
+                        <div class="product-info">
+                            <div style="display:flex">
+                                <div>
+                                    <div class="brand">@item.ProductName</div>
+                                    <div class="size">Số lượng: @item.Quantity</div>
+                                    <div class="price">Giá: @item.Price.ToString("N0")đ</div>
+                                </div>
+                                <div style="margin-left:auto;">
+                                    <div class="total-price">
+                                        Thành tiền: @item.Total.ToString("N0")đ
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div>Giỏ hàng trống!</div>
+            }
+        </div>
+
+        <div class="container-thanhtoan" style="display: block">
+            <div class="order-summary-note">
+                <div class="total">
+                    <span>Tổng tiền:</span>
+                    <span class="amount">@totalAmount.ToString("N0")đ</span>
+                </div>
+                <form method="post" action="@Url.Action("CheckOut", "Cart")">
+                    <input type="hidden" name="userAddress" value="@ViewBag.UserAddress" />
+                    <button type="submit" class="order-button-note">Đặt hàng</button>
+                </form>
+            </div>
+        </div>
+        <div class="disclaimer" style="margin-bottom:20px">
+            Nhấn “Đặt hàng” đồng nghĩa việc bạn đồng ý tuân theo
+            <a href="#">Chính sách xử lý dữ liệu cá nhân</a> &
+            <a href="#">Điều khoản Hasaki</a>
+        </div>
+        <div>
+            <a href="@Url.Action("ShowCart", "Cart")" class="btn btn-secondary">Trở về</a>
+        </div>
+    </div>
+    </div>
+
+<div class="order-summary-thanhtoan">
+    <div class="invoice-info-thanhtoan">
+        <span>Thông tin xuất hóa đơn</span>
+        <a href="#">Nhập</a>
+    </div>
+    <div class="order-details-thanhtoan">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <h3>Đơn hàng</h3>
+            <a href="#">Thay đổi</a>
+        </div>
+        <div class="item">
+            <span>Tạm tính</span>
+            <span>@totalAmount.ToString("N0")đ</span>
+        </div>
+        <div class="item">
+            <span>Giảm giá</span>
+            <span>- 0đ</span>
+        </div>
+        <div class="item">
+            <span>Phí vận chuyển</span>
+            <span>0đ</span>
+        </div>
+        <div class="item total" style="margin:10px 0">
+            <span>Thành tiền (Đã VAT)</span>
+            <span class="price">@totalAmount.ToString("N0")đ</span>
+        </div>
+        <div class="note-thanhtoan">
+            Đã bao gồm VAT, phí đóng gói, phí vận chuyển và các chi phí khác vui lòng xem <a href="#">Chính sách vận chuyển</a>
+        </div>
+    </div>
+</div>

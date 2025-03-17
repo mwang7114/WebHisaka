@@ -1,0 +1,591 @@
+﻿
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            width: 220px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+            .product-card img {
+                width: 100%;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .product-card .product-info {
+                padding: 10px;
+            }
+
+                .product-card .product-info h3 {
+                    font-size: 16px;
+                    margin: 10px 0;
+                    color: #333;
+                }
+
+                .product-card .product-info p {
+                    font-size: 14px;
+                    color: #666;
+                    margin: 5px 0;
+                }
+
+                .product-card .product-info .price {
+                    font-size: 18px;
+                    color: #e74c3c;
+                    font-weight: bold;
+                }
+
+                .product-card .product-info .old-price {
+                    font-size: 14px;
+                    color: #999;
+                    text-decoration: line-through;
+                    margin-left: 5px;
+                }
+
+                .product-card .product-info .discount {
+                    font-size: 14px;
+                    color: #e74c3c;
+                    font-weight: bold;
+                    margin-left: 5px;
+                }
+
+                .product-card .product-info .rating {
+                    color: #f39c12;
+                    margin: 5px 0;
+                }
+
+                .product-card .product-info .reviews {
+                    font-size: 12px;
+                    color: #999;
+                }
+
+                .product-card .product-info .stock {
+                    font-size: 12px;
+                    color: #e74c3c;
+                    margin: 5px 0;
+                }
+
+                .product-card .product-info .progress {
+                    background-color: #ddd;
+                    border-radius: 5px;
+                    overflow: hidden;
+                    height: 10px;
+                    margin: 5px 0;
+                }
+
+                    .product-card .product-info .progress .progress-bar {
+                        background-color: #e74c3c;
+                        height: 100%;
+                    }
+
+                .product-card .product-info .add-to-cart {
+                    background-color: #ff3366;
+                    color: #fff;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-top: 10px;
+                }
+
+                    .product-card .product-info .add-to-cart:hover {
+                        background-color: #e62e5c;
+                    }
+
+            .product-card .badge {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #27ae60;
+                color: #fff;
+                padding: 5px;
+                font-size: 12px;
+                border-radius: 3px;
+            }
+    </style>
+    <div class="container">
+        <div class="product-card">
+            <div class="badge">
+                BLACK FRIDAY
+            </div>
+            <img alt="Product image of Carslan Black Magnetic Soft Mist Powder" height="220" src="https://storage.googleapis.com/a1aa/image/4N4YKvq0dx4LLFRFbOCeRVmWC0mPFDwihO5A4VBN3FelRfinA.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Carslan
+                </h3>
+                <p>
+                    Phấn Phủ Carslan Dạng Nén Vỏ Đen Black Magnetic Soft Mist Powder
+                </p>
+                <p class="price">
+                    215.000 đ
+                    <span class="old-price">
+                        540.000 đ
+                    </span>
+                    <span class="discount">
+                        60%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (874)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 15%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <img alt="Product image of Klairs Supple Preparation Unscented Toner" height="220" src="https://storage.googleapis.com/a1aa/image/ZJgZFf1qYHUYFS4eXTYhdMtIIf1mg4Vf9OHsOR42SguOG9FPB.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Klairs
+                </h3>
+                <p>
+                    Nước Hoa Hồng Klairs Không Mùi Supple Preparation Unscented
+                </p>
+                <p class="price">
+                    209.000 đ
+                    <span class="old-price">
+                        435.000 đ
+                    </span>
+                    <span class="discount">
+                        52%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (5,705)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 45%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="badge">
+                BLACK FRIDAY
+            </div>
+            <img alt="Product image of CeraVe Foaming Cleanser" height="220" src="https://storage.googleapis.com/a1aa/image/3CNHtI4uM7bzBBwqG8oZt1U7TUssG7YDXDJx7tnlKt1Z0X8E.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    CeraVe
+                </h3>
+                <p>
+                    Sữa Rửa Mặt CeraVe Sạch Sâu Cho Foaming Cleanser
+                </p>
+                <p class="price">
+                    346.000 đ
+                    <span class="old-price">
+                        455.000 đ
+                    </span>
+                    <span class="discount">
+                        24%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (2,946)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 51%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="badge">
+                BLACK FRIDAY
+            </div>
+            <img alt="Product image of L'Oreal Micellar Water 3-in-1 Refreshing" height="220" src="https://storage.googleapis.com/a1aa/image/y308cSEJkQqxFpF8QcUKsvzy68eErVIqfSjzCbv7gsioRfinA.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    L'Oreal
+                </h3>
+                <p>
+                    Nước Tẩy Trang L'Oreal Tươi Mát Micellar Water 3-in-1 Refreshing
+                </p>
+                <p class="price">
+                    143.000 đ
+                    <span class="old-price">
+                        229.000 đ
+                    </span>
+                    <span class="discount">
+                        38%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (4,735)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 41%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <img alt="Product image of Skin1004 Madagascar Centella Air-Fit" height="220" src="https://storage.googleapis.com/a1aa/image/5qRuQXZj80JhPVNpibIOXnZQ2Dpe0fsjSfDayxKnQ8rUjeFPB.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Skin1004
+                </h3>
+                <p>
+                    Kem Chống Nắng Skin1004 Cho Da Madagascar Centella Air-Fit
+                </p>
+                <p class="price">
+                    209.000 đ
+                    <span class="old-price">
+                        445.000 đ
+                    </span>
+                    <span class="discount">
+                        53%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (3,128)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 51%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="badge">
+                BLACK FRIDAY
+            </div>
+            <img alt="Product image of Anessa Perfect UV Sunscreen Skincare Milk" height="220" src="https://storage.googleapis.com/a1aa/image/wQkjAqfdvvXBPSzfE0fnBwOoh1RFLOKEZEJmTU6UhSxeF9FPB.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Anessa
+                </h3>
+                <p>
+                    Sữa Chống Nắng Anessa Dưỡng Da Perfect UV Sunscreen Skincare Milk
+                </p>
+                <p class="price">
+                    523.000 đ
+                    <span class="old-price">
+                        715.000 đ
+                    </span>
+                    <span class="discount">
+                        27%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (1,185)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 45%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <img alt="Product image of Bioderma Sensibio H2O" height="220" src="https://storage.googleapis.com/a1aa/image/4LF4Cfh40BV4dS3BeON9uNTTDnKVXEN8MhDEb590h7AiRfinA.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Bioderma
+                </h3>
+                <p>
+                    Nước Tẩy Trang Bioderma Dành Cho Da Sensibio H2O
+                </p>
+                <p class="price">
+                    334.000 đ
+                    <span class="old-price">
+                        525.000 đ
+                    </span>
+                    <span class="discount">
+                        36%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (1,942)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 51%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="badge">
+                BLACK FRIDAY
+            </div>
+            <img alt="Product image of Anessa Mild Milk" height="220" src="https://storage.googleapis.com/a1aa/image/kqk8shSptC7bDF7nZpIxSuv1goN4U0YAlQBLwFfPFqXyov4JA.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Anessa
+                </h3>
+                <p>
+                    Sữa Chống Nắng Anessa Cho Da Perfect UV Sunscreen Mild Milk
+                </p>
+                <p class="price">
+                    527.000 đ
+                    <span class="old-price">
+                        715.000 đ
+                    </span>
+                    <span class="discount">
+                        56%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (1,185)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 45%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <img alt="Product image of Bioderma Sebium H2O" height="220" src="https://storage.googleapis.com/a1aa/image/fITisbEyj6zgMi7Kk13M5dfAKnaRm9OvsYvnXMOb7fAAjeFPB.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    Bioderma
+                </h3>
+                <p>
+                    Nước Tẩy Trang Bioderma Dành Cho Da Dầu Sebium H2O
+                </p>
+                <p class="price">
+                    348.000 đ
+                    <span class="old-price">
+                        525.000 đ
+                    </span>
+                    <span class="discount">
+                        34%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (1,942)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 51%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+        <div class="product-card">
+            <img alt="Product image of La Roche-Posay Anthelios UVmune 400 Oil Control" height="220" src="https://storage.googleapis.com/a1aa/image/AhQyKtVxPU71I9MDTfeSh6PJsxL70xWa670w6vSLmSGrRfinA.jpg" width="220" />
+            <div class="product-info">
+                <h3>
+                    La Roche-Posay
+                </h3>
+                <p>
+                    Kem Chống Nắng La Roche-Posay Anthelios UVmune 400 Oil Control
+                </p>
+                <p class="price">
+                    377.000 đ
+                    <span class="old-price">
+                        565.000 đ
+                    </span>
+                    <span class="discount">
+                        33%
+                    </span>
+                </p>
+                <div class="rating">
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star">
+                    </i>
+                    <i class="fas fa-star-half-alt">
+                    </i>
+                    <span class="reviews">
+                        (1,132)
+                    </span>
+                </div>
+                <p class="stock">
+                    Còn 9 ngày 10:44:41
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 45%;">
+                    </div>
+                </div>
+                <button class="add-to-cart">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </div>
+        </div>
+    </div>

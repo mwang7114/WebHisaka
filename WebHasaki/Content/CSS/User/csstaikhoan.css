@@ -1,0 +1,65 @@
+﻿.user-tong {
+    display: flex;
+    width: 90%;
+    margin: 50px auto;
+}
+
+.container-sidebar-user {
+    width: 300px;
+    background-color: white;
+    margin-top: 50px;
+    margin-right: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height:325px
+}
+
+.profile-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .profile-user img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+
+    .profile-user .name {
+        font-weight: bold;
+        color: #008000;
+    }
+
+    .profile-user .edit {
+        color: #888;
+    }
+
+.menu-sidebar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .menu-sidebar li {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .menu-sidebar li:last-child {
+            border-bottom: none;
+        }
+
+        .menu-sidebar li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+    .menu-sidebar .section-title {
+        color: #ff6600;
+        font-weight: bold;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }

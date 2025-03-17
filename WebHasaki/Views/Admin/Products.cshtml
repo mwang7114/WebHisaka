@@ -1,0 +1,131 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Products</a>
+</div>
+<div class="title">Products</div>
+<div class="header-btn">
+    <button onclick="window.location='@Url.Action("CreateProduct", "Product")'" class="add-button">ADD PRODUCT</button>
+</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>PRODUCT NAME</th>
+                <th>IMAGE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
+                <th>PRICE</th>
+                <th>PRICESALES</th>
+                <th>STOCK</th>
+                <th>CREATED</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(product.Image))
+                        {
+                            <img src="@product.Image" alt="Product Image" class="product-image" style="width: 50px; height: 50px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+
+                    <td>@product.CategoryName</td>
+                    <td>@product.BrandName</td>
+                    <td>
+                        @string.Format("{0:0,0}", Convert.ToDecimal(product.Price))
+                    </td>
+                    <td>
+                        @(string.IsNullOrEmpty(product.PriceSale) ? "" : string.Format("{0:0,0}", Convert.ToDecimal(product.PriceSale)))
+                    </td>
+                    <td>@product.Stock</td>
+                    <td>
+                        @if (product.CreatedAt is DateTime createdAt)
+                        {
+                            @createdAt.ToString("dd-MM-yyyy")
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+
+                    <td class="action-icons">
+                        <a href="@Url.Action("EditProduct", "Product", new { productId = product.ProductID })" class="edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="javascript:void(0);" class="delete" data-productId="@product.ProductID" onclick="confirmDelete(@product.ProductID)">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Products", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Products", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Products", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+
+</div>
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa sản phẩm này?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(productId) {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "flex";
+
+    document.getElementById("confirmDeleteBtn").onclick = function () {
+        window.location.href = '@Url.Action("DeleteProduct", "Product", new { productId = "__productId__" })'.replace('__productId__', productId);
+    };
+}
+
+function closeModal() {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    var modal = document.getElementById("confirmDeleteModal");
+    if (event.target == modal) {
+        closeModal();
+    }
+};
+</script>

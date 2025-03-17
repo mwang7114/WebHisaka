@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Create Category";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Create Category</a>
+</div>
+
+<div class="title">Create Category</div>
+
+@using (Html.BeginForm("CreateCategory", "Categories", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="CategoryName">Category Name</label>
+        <input type="text" name="CategoryName" id="CategoryName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="Status">Status</label>
+        <select name="Status" id="Status" class="form-control">
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Categories", "Admin")" class="btn btn-secondary">Back to Categories</a>
+</div>

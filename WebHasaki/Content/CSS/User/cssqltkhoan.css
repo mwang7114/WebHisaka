@@ -1,0 +1,50 @@
+﻿.container-qltk {
+    width: 100%;
+    margin-top: 50px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+
+.header-qltk {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.section-qltk {
+    flex: 1; /* Mỗi phần tử chiếm đều không gian */
+    display: flex;
+    flex-direction: row; /* Sắp xếp nội dung bên trong theo chiều dọc */
+    justify-content: space-between; /* Tạo khoảng cách hợp lý giữa các phần bên trong */
+    padding: 10px; /* Thêm khoảng cách nội dung bên trong */
+    border: 1px solid #ddd; /* Tạo viền (tuỳ chọn) */
+    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+}
+
+    .section-qltk div:last-child input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    .section-qltk div:last-child button {
+        background-color: #2d6a4f;
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        border-radius: 50px;
+        cursor: pointer;
+    }
+
+        .section-qltk div:last-child button:hover {
+            background-color: #1b4332;
+        }
+
+.link-qltk {
+    color: #2d6a4f;
+    text-decoration: none;
+}
+
+    .link-qltk:hover {
+        text-decoration: underline;
+    }

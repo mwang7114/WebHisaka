@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssdashboardadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#" style="display: inline;">Pages</a>
+    <span style="display: inline;">/</span>
+    <a href="#" style="display: inline;">Dashboard</a>
+</div>
+
+<div class="dashboard-title" style="display: inline-block; margin-right: 15px;">
+    Dashboard
+</div>
+
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-number">@ViewBag.DailyViews</div>
+            <div class="stat-label">Daily Views</div>
+        </div>
+        <div class="stat-icon">
+            <i class="fas fa-eye"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-number">@ViewBag.Sales</div>
+            <div class="stat-label">Sales</div>
+        </div>
+        <div class="stat-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-number">@ViewBag.Reviews</div>
+            <div class="stat-label">Reviews</div>
+        </div>
+        <div class="stat-icon">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-content">
+            <div class="stat-number">@string.Format("{0:N0}", ViewBag.Earnings)</div>
+            <div class="stat-label">Earnings</div>
+        </div>
+        <div class="stat-icon">
+            <i class="fas fa-money-bill-wave"></i>
+        </div>
+    </div>
+</div>
+
+<div class="charts">
+    <div style="width: 50%; display: inline-block;">
+        <canvas id="radarChart"></canvas>
+    </div>
+    <div style="width: 50%; display: inline-block;">
+        <canvas id="barChart"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const chartData = JSON.parse('@Html.Raw(ViewBag.ChartData)');
+
+// Radar Chart
+const radarChartCtx = document.getElementById('radarChart').getContext('2d');
+const dataValues = [chartData.Views, chartData.Sales, chartData.Reviews];
+
+new Chart(radarChartCtx, {
+    type: 'radar',
+    data: {
+        labels: ['Daily Views', 'Sales', 'Reviews'],
+        datasets: [{
+            label: 'Monthly Stats',
+            data: dataValues,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            r: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: calculateStepSize(dataValues),
+                    max: calculateMax(dataValues),
+                    callback: function (value) {
+                        return value;
+                    }
+                }
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return Math.round(context.raw);
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Bar Chart
+const barChartCtx = document.getElementById('barChart').getContext('2d');
+new Chart(barChartCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Earnings'],
+        datasets: [{
+            label: 'Monthly Earnings',
+            data: [chartData.Earnings],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function (value) {
+                        return Math.round(value);
+                    }
+                }
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return Math.round(context.raw);
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Hàm tính bước nhảy (stepSize)
+function calculateStepSize(data) {
+    const maxData = Math.max(...data);
+    if (maxData > 100) return 50;
+    if (maxData > 10) return 10;
+    return 1;
+}
+
+// Hàm tính giá trị lớn nhất (max)
+function calculateMax(data) {
+    const maxData = Math.max(...data);
+    const roundedMax = Math.ceil(maxData / 10) * 10;
+    return roundedMax;
+}
+
+</script>

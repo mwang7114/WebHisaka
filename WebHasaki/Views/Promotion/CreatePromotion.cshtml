@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Create Promotion";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Create Promotion</h2>
+
+@using (Html.BeginForm("CreatePromotion", "Promotion", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="promotionName">Promotion Name</label>
+        <input type="text" class="form-control" id="promotionName" name="promotionName" placeholder="Nhập tên khuyến mãi" required />
+    </div>
+
+    <div class="form-group">
+        <label for="discountPercentage">Discount Percentage</label>
+        <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" step="1" placeholder="Nhập phần trăm giảm" required />
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" required />
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" required />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Nhập mô tả khuyến mãi"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Promotion</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Promotions", "Admin")" class="btn btn-secondary">Back to Promotions</a>
+</div>

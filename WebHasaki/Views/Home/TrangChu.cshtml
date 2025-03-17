@@ -1,0 +1,285 @@
+﻿@{
+    ViewBag.Title = "Trang Chu";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<div class="header">
+    <div class="nav-links">
+        <div class="menu-container" style="display: flex">
+            <div class="menu-icon" style="margin-right: 5px"><i class="fas fa-bars"></i></div>
+            <a>DANH MỤC</a>
+            <span class="long-pipe" style="font-size: 18px; margin-left: 5px">&#124;</span>
+            <div class="dropdown">
+                <h3><a href="@Url.Action("DanhMuc","Home")">Sức khỏe - Làm Đẹp</a></h3>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Mỹ Phẩm High-End"})">Mỹ Phẩm High-End <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm sóc da mặt"})">Chăm Sóc Da Mặt <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Trang Điểm"})">Trang Điểm <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Tóc "})">Chăm Sóc Tóc <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cơ Thể"})">Chăm Sóc Cơ Thể <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Chăm Sóc Cá Nhân"})">Chăm Sóc Cá Nhân <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Nước Hoa"})">Nước Hoa <i class="fas fa-chevron-right"></i></a>
+                <a href="@Url.Action("DanhMuc","Home", new {nameCate = "Thực Phẩm Chức Năng"})">Thực Phẩm Chức Năng <i class="fas fa-chevron-right"></i></a>
+                <a href="#"><h3>Hasaki Clinic & Spa</h3></a>
+                <a href="#"><h3>Dịch Vụ Trải Nghiệm</h3></a>
+            </div>
+        </div>
+        <a class="menu" href="#">HASAKI DEALS</a>
+        <a class="menu" href="#">HOT DEALS</a>
+        <a class="menu" href="#">THƯƠNG HIỆU</a>
+        <a class="menu" href="/Home/HangMoiVe">HÀNG MỚI VỀ</a>
+        <a class="menu" href="#">BÁN CHẠY</a>
+        <a class="menu" href="#">CLINIC & SPA</a>
+    </div>
+    <div class="right-links">
+        <a href="#">Tra cứu đơn hàng</a>&#124;
+        <a href="#">Tải ứng dụng</a>&#124;
+        <a href="#"><i class="fas fa-map-marker-alt"></i> Chọn khu vực của bạn</a>
+    </div>
+</div>
+
+<div style="background: #fff">
+    <div class="banner">
+        <div class="w3-content w3-display-container" id="w3-banner" style="max-width:800px">
+            <img class="mySlides" src="https://media.hcdn.vn/hsk/1729314507home-7-ngay-221222.jpg">
+            <img class="mySlides" src="https://media.hcdn.vn/hsk/1729593724homebodycare2210.jpg">
+            <div class="w3-center w3-container" style="position: absolute; bottom: 10px; width: 100%;">
+                <span class="w3-badge demo w3-border w3-gray w3-hover-white" onclick="currentDiv(1)"></span>
+                <span class="w3-badge demo w3-border w3-gray w3-hover-white" onclick="currentDiv(2)"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="categories">
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hsk-icon-15-11-2024.png" alt="Siêu Deal Tặng Nàng" height="50" width="50" /><p>Siêu Deal Tặng Nàng</p></div>
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hsk-icon-nowfree-v2.png" alt="Giao 2H" height="50" width="50" /><p>Giao 2H</p></div>
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hsk-icon-perfume-v2.png" alt="Nước Hoa Chính Hãng" height="50" width="50" /><p>Nước Hoa Chính Hãng</p></div>
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hasaki-clinic.png" alt="Clinic &amp; S.P.A" height="50" width="50" /><p>Clinic &amp; S.P.A</p></div>
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hsk-icon-mua-la-co-qua.png" alt="Mua Là Có Quà" height="50" width="50" /><p>Mua Là Có Quà</p></div>
+        <div class="category"><img src="https://media.hcdn.vn/hsk/icon/hasaki-cam-nang.png" alt="Cẩm nang" height="50" width="50" /><p>Cẩm nang</p></div>
+    </div>
+</div>
+
+<div style="background-color: transparent">
+    <div class="box-flashsale">
+        <div class="container">
+            <div class="header-flashsale">
+                <h1>Flash Deals</h1>
+                <div class="timer">01 : 17 : 12</div>
+                <a class="view-all" href="#">Xem tất cả</a>
+            </div>
+            <div class="fs-content">
+                <div class="deals">
+
+                    @foreach (var item in ViewBag.listSPSale)
+                    {
+                        <div class="deal-item">
+                            <div class="discount">@item[6]%</div>
+                            <img src="@item[3]" height="150" width="180" />
+                            <div class="price">@Convert.ToDecimal(item[2]).ToString("N0")đ</div>
+                            <div class="original-price">@Convert.ToDecimal(item[1]).ToString("N0")đ</div>
+                            <div class="description">@item[0]</div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var myIndex = 0;
+    function carousel() {
+        var x = document.getElementsByClassName("mySlides");
+        for (var i = 0; i < x.length; i++) x[i].style.display = "none";
+        myIndex++;
+        if (myIndex > x.length) myIndex = 1;
+        x[myIndex - 1].style.display = "block";
+    }
+
+    function startCarousel() { setInterval(carousel, 2000); }
+    function plusDivs(n) { clearInterval(slideInterval); myIndex += n; if (myIndex > document.getElementsByClassName("mySlides").length) myIndex = 1; if (myIndex < 1) myIndex = document.getElementsByClassName("mySlides").length; showDivs(myIndex); startCarousel(); }
+    function currentDiv(n) { clearInterval(slideInterval); showDivs(myIndex = n); startCarousel(); }
+    function showDivs(n) {
+        var x = document.getElementsByClassName("mySlides");
+        for (var i = 0; i < x.length; i++) x[i].style.display = "none";
+        x[n - 1].style.display = "block";
+    }
+    startCarousel();
+</script>
+<div class="box-dm">
+    <div class="danhmuc">
+        <div class="title-dm">Danh mục</div>
+        <div class="dm">
+            <div class="dm-danhmuc">
+                <img alt="Lip makeup products" src="https://storage.googleapis.com/a1aa/image/PCZddnGQ5ZpxORQXrmQcUre2PDnfeyBI81AFMeAPbfETqVPdC.jpg" height="100" width="100" />
+                <p>Trang Điểm Môi</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Face mask products" src="https://storage.googleapis.com/a1aa/image/GeFKPNlteHhGjkMULWd7WPhtELY4Gm17LcRrg9s3dHfVa1TnA.jpg" height="100" width="100" />
+                <p>Mặt Nạ</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Face makeup products" src="https://storage.googleapis.com/a1aa/image/3Yb5c7ucG942INEuenREiQcCk3ItMwioSsEorHEHaUjlW90JA.jpg" height="100" width="100" />
+                <p>Trang Điểm Mặt</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Face wash products" src="https://storage.googleapis.com/a1aa/image/HTrF7DxogPp7HBIzRzAyk8RZz5nHJGI3fzRmGEUAoyLqW90JA.jpg" height="100" width="100" />
+                <p>Sữa Rửa Mặt</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Eye makeup products" src="https://storage.googleapis.com/a1aa/image/K4ZCHShHeL1YTa80ggn8j7SwQaowtRL79OikUiLXWdonW90JA.jpg" height="100" width="100" />
+                <p>Trang Điểm Mắt</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Shampoo and conditioner products" src="https://storage.googleapis.com/a1aa/image/RpORiVorGVYRNlzyN9krrXd0Qf7rOceipGu72WPM4QPRt6pTA.jpg" height="100" width="100" />
+                <p>Dầu Gội Và Dầu Xả</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Face sunscreen products" src="https://storage.googleapis.com/a1aa/image/EIoVHzz8BOYqLFe8GvEEpd6tuLR6iNtb5L1HM1IOIMGkW90JA.jpg" height="100" width="100" />
+                <p>Chống Nắng Da Mặt</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Body wash products" src="https://storage.googleapis.com/a1aa/image/IsNUTLXvGgYXBlxUExf7ZrVyPKE2SWlxwXPLOBZN8seHt6pTA.jpg" height="100" width="100" />
+                <p>Sữa Tắm</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Face makeup remover products" src="https://storage.googleapis.com/a1aa/image/U86poBNztJLFBFpMEQt0WvHnefIY3gUIQUVbW32rEmVNt6pTA.jpg" height="100" width="100" />
+                <p>Tẩy Trang Mặt</p>
+            </div>
+            <div class="dm-danhmuc">
+                <img alt="Body lotion products" src="https://storage.googleapis.com/a1aa/image/dl84uOKpl3YqBpn2PHY3xhAvw98XHsQiWtYeSyrfPP1Ot6pTA.jpg" height="100" width="100" />
+                <p>Dưỡng Thể</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box-th">
+    <div class="thuonghieu">
+        <div class="tittle-th">Thương hiệu</div>
+        <div class="th">
+            @foreach (var item in ViewBag.listHinhBrandID)
+            {
+                <div class="th-left">
+                    <img src="@item[0]" />
+                </div>
+            }
+            <div class="th-right">
+                @foreach (var item in ViewBag.listHinhBrand)
+                {
+                    <div class="th-col">
+                        <ul>
+                            <li>
+                                <div class="th-danhmuc">
+                                    <img src="@item[0]" />
+                                </div>
+                                <div class="th-danhmuc">
+                                    <img src="@item[0]" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sanpham">
+    <div class="sp-row">
+        @foreach (var item in ViewBag.listSP)
+        {
+            <a href="@Url.Action("ChiTietSP","Home", new {id = item[0] })">
+                <div class="product-card">
+                    <img src="@item[5]" height="220" width="220" />
+                    <div class="product-info">
+                        <h3>@item[1]</h3>
+                        <p>@item[2]</p>
+                        <p class="price">@Convert.ToDecimal(item[4]).ToString("N0")đ<span class="old-price">@Convert.ToDecimal(item[3]).ToString("N0")đ</span> <span class="discount">@item[6]%</span></p>       
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="reviews">(874)</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        }
+    </div>
+
+    @if (ViewBag.totalSPCount > 15)
+    {
+        <button id="loadMore" class="load-more-btn">Xem thêm</button>
+    }
+</div>
+
+<script>
+    let currentIndex = 15;
+
+    let allProducts = document.querySelectorAll('.product-card');
+    let loadMoreButton = document.getElementById('loadMore');
+
+    allProducts.forEach((product, index) => {
+        if (index >= 15) {
+            product.classList.add('hidden');
+        }
+    });
+
+    loadMoreButton.addEventListener('click', function () {
+        let nextProducts = Array.from(allProducts).slice(currentIndex, currentIndex + 5);
+
+        nextProducts.forEach(product => {
+            product.classList.remove('hidden');
+        });
+
+        currentIndex += 5;
+
+        if (currentIndex >= allProducts.length) {
+            loadMoreButton.style.display = 'none';
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sliderRight = document.querySelector(".th-right");
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        // Khi nhấn chuột xuống
+        sliderRight.addEventListener("mousedown", (e) => {
+            isDown = true;
+            sliderRight.classList.add("active");
+            startX = e.pageX - sliderRight.offsetLeft;
+            scrollLeft = sliderRight.scrollLeft;
+        });
+
+        // Khi chuột rời khỏi khu vực
+        sliderRight.addEventListener("mouseleave", () => {
+            isDown = false;
+            sliderRight.classList.remove("active");
+        });
+
+        // Khi nhả chuột ra
+        sliderRight.addEventListener("mouseup", () => {
+            isDown = false;
+            sliderRight.classList.remove("active");
+        });
+
+        // Khi di chuyển chuột trong khu vực
+        sliderRight.addEventListener("mousemove", (e) => {
+            if (!isDown) return; // Nếu không nhấn chuột, thoát
+            e.preventDefault();
+            const x = e.pageX - sliderRight.offsetLeft;
+            const walk = (x - startX) * 2; // Tăng tốc độ cuộn
+            sliderRight.scrollLeft = scrollLeft - walk;
+        });
+    });
+</script>

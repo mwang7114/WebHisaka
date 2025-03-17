@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/CSS/User/cssthanhtoan.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar-thanhtoan">
+        <div class="links-thanhtoan">
+            <a href="/Home/TrangChu"><img alt="Hasaki.vn Logo" height="50" src="~/Content/Images/logo.png" width="150" /></a>
+            <div style="color: white; font-size: 40px">
+                &nbsp; &#124;
+            </div>
+            <a>Thanh toán</a>
+        </div>
+    </div>
+    <div class="container-tong-thanhtoan">
+        @RenderBody()
+    </div>
+</body>
+</html>

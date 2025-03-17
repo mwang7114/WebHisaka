@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/CSS/User/csssupport.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <style>
+        .div-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .footer-container {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            width: 90%;
+        }
+
+        .features, .footer {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+            .features div, .footer div {
+                text-align: center;
+                margin: 10px;
+                margin-left: auto;
+            }
+
+            .features .div-4-img .img {
+                width: 50px;
+                height: 50px;
+            }
+
+        .contact-buttons {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            text-align: center;
+        }
+
+            .contact-buttons div img {
+                width: 25px;
+                height: 25px;
+            }
+
+            .contact-buttons button {
+                margin-top: 5px
+            }
+
+        .features div p {
+            margin: 10px 0 0;
+            font-size: 14px;
+        }
+
+        .footer {
+            background-color: #306e51;
+            color: white;
+            padding: 20px 0;
+        }
+
+            .footer div {
+                flex: 1;
+                margin: 0;
+            }
+
+            .footer h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .footer p, .footer a {
+                font-size: 14px;
+                color: white;
+                text-decoration: none;
+            }
+
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+
+            .footer .social-icons a {
+                margin: 0 5px;
+                font-size: 20px;
+            }
+
+        .right-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .update {
+            display: block;
+            align-items: center;
+        }
+
+        .subscribe {
+            display: flex;
+            justify-content: center;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 400px
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 50px 0 0 50px;
+        }
+
+            .input-container input {
+                border: none;
+                outline: none;
+                font-size: 16px;
+                color: #666;
+            }
+
+        .button-container {
+            background-color: #ff6600;
+            padding: 10px 20px;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+        }
+
+            .button-container button {
+                border: none;
+                background: none;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+        .footer .payment img {
+            width: 50px;
+            height: auto;
+            margin: 0 5px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+            .contact-buttons div {
+                margin: 0 10px;
+            }
+
+                .contact-buttons div button {
+                    padding: 10px 20px;
+                    background-color: #2e7d32;
+                    border: none;
+                    border-radius: 5px;
+                    color: white;
+                    cursor: pointer;
+                }
+
+                    .contact-buttons div button:hover {
+                        background-color: #1b5e20;
+                    }
+
+        .app-img {
+            display: block;
+            margin: 10px;
+            width: 120px;
+        }
+
+        .app-qr {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+            .app-qr img {
+                margin-right: 10px;
+            }
+
+        .store {
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-support">
+        <a href="@Url.Action("TrangChu", "Home")" class="logo">
+        <img alt="Hasaki.vn Logo" height="50" src="https://hasaki.vn/v3/images/graphics/logo_site.svg" width="150" />
+            </a>
+        <div class="links-support">
+            <a href="#">
+                Gửi yêu cầu
+            </a>
+            <div style="color: white;">
+                &nbsp; &#124;
+            </div>
+            @if (Session["TaiKhoan"] != null)
+            {
+                <div class="item">
+                    <div>
+                        <a class="nav-link collapsed"> @Session["Name"]</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="item">
+                    <div style="display:flex">
+                        <a class="nav-link collapsed" href="@Url.Action("DangNhap", "Home")" style="text-decoration:none;width:75px">Đăng nhập</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="search-section-support">
+        <h1>
+            Xin chào! Chúng tôi có thể giúp gì cho bạn?
+        </h1>
+        <div class="search-bar-support">
+            <input placeholder="Nhập từ khóa để tìm sản phẩm, thương hiệu bạn mong muốn. Ví dụ: Hasaki" type="text" />
+            <button>
+                <i class="fas fa-search">
+                </i>
+            </button>
+        </div>
+        <div class="contact-info">
+            <div>
+                <i class="fas fa-phone-alt">
+                </i>
+                <span>
+                    1800 6310 (Khiếu nại, góp ý)
+                </span>
+            </div>
+            <div>
+                <i class="fas fa-phone-alt">
+                </i>
+                <span>
+                    1800 6324 (Tư vấn)
+                </span>
+            </div>
+            <div>
+                <i class="fas fa-comments">
+                </i>
+                <span>
+                    Chat
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <div class="footer">
+        <div style="display: flex">
+            <div>
+                <h3>
+                    HỖ TRỢ KHÁCH HÀNG
+                </h3>
+                <p>
+                    Hotline:
+                    <span style="color: #ff5722;">
+                        1800 6324
+                    </span>
+                </p>
+                <p>
+                    (miễn phí, 08-22h kể cả T7, CN)
+                </p>
+                <p>
+                    Các câu hỏi thường gặp
+                </p>
+                <p>
+                    Gửi yêu cầu hỗ trợ
+                </p>
+                <p>
+                    Hướng dẫn đặt hàng
+                </p>
+                <p>
+                    Phương thức vận chuyển
+                </p>
+                <p>
+                    Chính sách đổi trả
+                </p>
+            </div>
+            <div>
+                <h3>
+                    VỀ HASAKI.VN
+                </h3>
+                <p>
+                    Giới thiệu Hasaki.vn
+                </p>
+                <p>
+                    Tuyển Dụng
+                </p>
+                <p>
+                    Chính sách bảo mật
+                </p>
+                <p>
+                    Điều khoản sử dụng
+                </p>
+                <p>
+                    Liên hệ
+                </p>
+            </div>
+            <div>
+                <h3>
+                    HỢP TÁC &amp; LIÊN KẾT
+                </h3>
+                <p>
+                    <a href="https://hasaki.vn/clinic">
+                        https://hasaki.vn/clinic
+                    </a>
+                </p>
+                <p>
+                    Hasaki cẩm nang
+                </p>
+                <div class="social-icons">
+                    <a href="#">
+                        <i class="fab fa-facebook">
+                        </i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-tiktok">
+                        </i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-instagram">
+                        </i>
+                    </a>
+                </div>
+                <h3>
+                    THANH TOÁN
+                </h3>
+                <div class="payment">
+                    <img alt="Visa logo" height="30" src="https://hasaki.vn/v3/images/icons/mastercard.svg" width="50" />
+                    <img alt="Mastercard logo" height="30" src="https://hasaki.vn/v3/images/icons/visa.svg" width="50" />
+                    <img alt="ATM logo" height="30" src="https://hasaki.vn/v3/images/icons/atm.svg" width="50" />
+                </div>
+            </div>
+        </div>
+        <div class="right-footer">
+            <div class="update">
+                <h3>
+                    CẬP NHẬT THÔNG TIN KHUYẾN MÃI
+                </h3>
+                <div class="subscribe">
+                    <div class="input-container">
+                        <input type="email" placeholder="email của bạn">
+                    </div>
+                    <div class="button-container">
+                        <button>Đăng ký</button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-qr" style="display: flex; margin-top: 20px">
+                <img alt="QR code" height="100" src="https://hasaki.vn/v3/images/graphics/qr_download_app.svg" width="100" />
+                <div class="store">
+                    <img class="app-img" alt="App Store logo" src="https://hasaki.vn/v3/images/icons/dl_apple.svg" width="250" />
+                    <img class="app-img" alt="Google Play logo" src="https://hasaki.vn/v3/images/icons/dl_google.svg" width="250" />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

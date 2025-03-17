@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/Content/CSS/Admin/cssadmin.css" rel="stylesheet" />
+    <script src="~/Content/JS/JSAdmin.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <h2>
+                <img height="30" src="~/Content/images/logo.png" width="30" alt="Hasaki Logo" />
+                Hasaki
+            </h2>
+            <ul class="sidebar-links">
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Dashboard", "Admin")" aria-label="Dashboard">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Categories", "Admin")" aria-label="Danh mục">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Brands", "Admin")" aria-label="Thương hiệu">
+                        <i class="fas fa-store"></i> Brands
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Products", "Admin")" aria-label="Sản phẩm">
+                        <i class="fas fa-box"></i> Products
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Orders", "Admin")" aria-label="Đơn hàng">
+                        <i class="fas fa-receipt"></i> Orders
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Promotions", "Admin")" aria-label="Khuyến mãi">
+                        <i class="fas fa-tags"></i> Promotions
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("ProductPromotions", "Admin")" aria-label="Sản phẩm khuyến mãi">
+                        <i class="fas fa-tag"></i> Product Promotions
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Reviews", "Admin")" aria-label="Đánh giá">
+                        <i class="fas fa-star"></i> Reviews
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("Users", "Admin")" aria-label="Người dùng">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="@Url.Action("SignOut", "Admin")" aria-label="Đăng xuất">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </a>
+                </li>
+            </ul>
+
+
+        </div>
+
+
+        <div class="header">
+            <div class="menu-icon" style="display: inline-flex; align-items: center; margin-right: 15px;" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <div class="profile-pic" onclick="toggleDropdown()">
+                <img alt="Profile Picture" height="40" src="https://storage.googleapis.com/a1aa/image/gVl9rfc85qyEMqWABButSZWijLkYPnAyLJJYz9afXIIFFQxTA.jpg" width="40" />
+                <div class="dropdown-menu hidden">
+                    @if (Session["TaiKhoan"] != null)
+                    {
+                        <div class="dropdown-item">Welcome: <b>@Session["Name"]</b></div>
+                        <div class="dropdown-item">Role: <b>@Session["Role"]</b></div>
+                    }
+                    else
+                    {
+                        <div class="dropdown-item">Welcome: <b></b></div>
+                        <div class="dropdown-item">Role: <b></b></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        @RenderBody()
+    </div>
+    <script>
+        function toggleDropdown() {
+            const dropdownMenu = document.querySelector('.profile-pic .dropdown-menu');
+            dropdownMenu.classList.toggle('hidden'); // Chỉ thay đổi dropdown-menu
+        }
+
+        // Đóng dropdown menu khi click ra ngoài
+        document.addEventListener('click', function (event) {
+            const profilePic = document.querySelector('.profile-pic');
+            const dropdownMenu = document.querySelector('.profile-pic .dropdown-menu');
+
+            if (!profilePic.contains(event.target)) {
+                dropdownMenu.classList.add('hidden'); // Đảm bảo chỉ dropdown bị ẩn
+            }
+        });
+
+    </script>
+</body>
+</html>

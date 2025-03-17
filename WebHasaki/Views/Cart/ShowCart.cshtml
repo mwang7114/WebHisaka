@@ -1,0 +1,119 @@
+﻿@model List<CartItemViewModel>
+@using WebHasaki.Models
+
+@{
+    ViewBag.Title = "Giỏ Hàng";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+    <link href="~/Content/CSS/User/cssgiohang.css" rel="stylesheet" />
+}
+
+<div class="container-giohang">
+    <div class="cart-header">
+        Giỏ hàng
+        <span>
+            (@Model.Count sản phẩm)
+        </span>
+    </div>
+    <div style="display: flex">
+        <div class="giohang-left">
+            @if (Model != null && Model.Any())
+            {
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá tiền</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div style="display: flex">
+                                        <img class="img-sp" alt="Product image" height="80" src="@item.ImageUrl" width="80" />
+                                        <div class="product-info">
+                                            <div class="product-details">
+                                                <div class="product-name">@item.ProductName</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="product-price">@item.Price.ToString("N0")đ</div>
+                                </td>
+                                <td>
+                                    <div class="product-quantity">
+                                        <form method="post" action="@Url.Action("UpdateCartItem", "Cart")">
+                                            <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                            <input type="number" name="quantity" min="1" value="@item.Quantity" />
+                                            <button type="submit" class="update-button">Cập nhật</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="product-total">@item.Total.ToString("N0")đ</div>
+                                </td>
+                                <td>
+                                    <form method="post" action="@Url.Action("RemoveFromCart", "Cart")">
+                                        <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                        <button type="submit" class="delete-button">✖ Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="cart-footer">
+                    <div class="subtotal">
+                        <a>Tạm tính:</a>
+                        <span>@Model.Sum(item => item.Total).ToString("N0")đ</span>
+                    </div>
+                    <div class="vat">(Đã bao gồm VAT)</div>
+                    <a href="@Url.Action("Checkout", "Cart")" class="checkout-button">Tiến hành đặt hàng</a>
+                </div>
+            }
+            else
+            {
+                <p>Giỏ hàng của bạn đang trống!</p>
+            }
+            <div class="continue-shopping">
+                <a href="@Url.Action("TrangChu", "Home")">Tiếp tục mua hàng</a>
+            </div>
+        </div>
+        <div class="invoice-container">
+            @if (Model != null && Model.Any())
+            {
+                <div class="invoice-header">Hóa đơn của bạn</div>
+                <div class="invoice-item">
+                    <span>Tạm tính:</span>
+                    <span class="value">@Model.Sum(item => item.Total).ToString("N0")đ</span>
+                </div>
+                <div class="invoice-item">
+                    <span>Giảm giá:</span>
+                    <span class="value">- 0đ</span>
+                </div>
+                <div class="promotion">
+                    Khuyến mãi đã nhận được:<br />
+                    TẶNG: Gel Rửa Mặt Bioderma Tạo Bọt Cho Da Nhạy Cảm 8ml (SL có hạn)<br />
+                    Số lượng quà tặng có hạn, kiểm tra giỏ hàng trước khi thanh toán
+                </div>
+                <div class="total">
+                    <a>Tổng cộng:</a>
+                    <span>@Model.Sum(item => item.Total).ToString("N0")đ</span>
+                </div>
+                <div class="vat">(Đã bao gồm VAT)</div>
+                <div style="display: flex; justify-content: center;">
+                    <a href="@Url.Action("Checkout", "Cart")" class="checkout-button">Tiến hành đặt hàng</a>
+                </div>
+            }
+            else
+            {
+                <p>Chưa có hóa đơn nào!</p>
+            }
+        </div>
+    </div>
+</div>

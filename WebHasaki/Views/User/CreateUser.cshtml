@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Create User";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Create User</h2>
+
+@using (Html.BeginForm("CreateUser", "User", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" class="form-control">
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" name="role" class="form-control">
+            <option value="admin">admin</option>
+            <option value="manager">manager</option>
+            <option value="user">user</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create User</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Users", "Admin")" class="btn btn-secondary">Back to Users</a>
+</div>

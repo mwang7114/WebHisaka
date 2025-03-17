@@ -1,0 +1,125 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Categories</a>
+</div>
+<div class="title">Categories</div>
+<div class="header-btn">
+    <button onclick="window.location='@Url.Action("CreateCategory", "Categories")'" class="add-button">ADD CATEGORIES</button>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>CATEGORIES NAME</th>
+                <th>STATUS</th>
+                <th>CREATED</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.CategoryName</td>
+                    <td>
+                        <span class="status-cate @(category.Status == "Online" ? "online" : (category.Status == "Offline" ? "offline" : ""))">
+                            @category.Status
+                        </span>
+                    </td>
+                    <td>
+                        @if (category.CreatedAt is DateTime createdAt)
+                        {
+                            @createdAt.ToString("dd-MM-yyyy")
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td class="action-icons">
+                        <a href="@Url.Action("EditCategory", "Categories", new { categoryId = category.CategoryID })" class="edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="javascript:void(0);" class="delete" data-categoryId="@category.CategoryID" onclick="confirmDelete(@category.CategoryID)">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Categories", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Categories", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Categories", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+
+</div>
+
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa danh mục này?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete(categoryId) {
+    $.ajax({
+        url: '@Url.Action("CanDeleteCategory", "Categories")',
+        data: { categoryId: categoryId },
+        success: function (response) {
+            if (response.canDelete) {
+                var modal = document.getElementById("confirmDeleteModal");
+                modal.style.display = "flex";
+
+                document.getElementById("confirmDeleteBtn").onclick = function () {
+                    window.location.href = '@Url.Action("DeleteCategory", "Categories", new { categoryId = "__categoryId__" })'.replace('__categoryId__', categoryId);
+                };
+            } else {
+                alert('Không thể xóa danh mục này vì có sản phẩm đang thuộc danh mục.');
+            }
+        },
+        error: function (error) {
+            console.error('Lỗi khi kiểm tra có thể xóa danh mục:', error);
+            alert('Lỗi khi kiểm tra danh mục, vui lòng thử lại sau.');
+        }
+    });
+}
+
+
+    function closeModal() {
+        var modal = document.getElementById("confirmDeleteModal");
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById("confirmDeleteModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    };
+</script>

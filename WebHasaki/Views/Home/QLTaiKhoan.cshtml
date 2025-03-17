@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "QLTaiKhoan";
+    Layout = "~/Views/Shared/_LayoutTaiKhoan.cshtml";
+    string userAddress = ViewBag.UserAddress as string;
+}
+<link href="~/Content/CSS/User/cssqltkhoan.css" rel="stylesheet" />
+<div class="container-qltk">
+    <div class="header-qltk">Thông tin tài khoản</div>
+    <div style="display:flex; margin-bottom: 20px">
+        <div class="section-qltk">
+            <div style="display:block">
+                <div>@Session["Name"]</div>
+                <div>@Session["Email"]</div>
+            </div>
+            <div>
+                <a href="#" class="link-qltk">Chỉnh sửa</a>
+            </div>
+        </div>
+        <div class="section-qltk" style="margin-left:10px">
+            <div>
+                <div>Tùy chọn đăng ký, cập nhật thông tin khuyến mãi</div>
+                <div>
+                    <input type="checkbox" id="subscribe" name="subscribe">
+                    <label for="subscribe">Đăng ký</label>
+                </div>
+            </div>
+            <div>
+                <button type="button">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+    <div style="display:flex">
+        <div class="header-qltk">Sổ địa chỉ</div>
+        <div style="margin-left:auto; align-content: center">
+            <a href="#" class="link-qltk">Quản lý sổ địa chỉ</a>
+        </div>
+
+    </div>
+    <div style="font-size:20px;font-weight:bold">
+        @if (!string.IsNullOrEmpty(userAddress))
+        {
+            <div>@userAddress</div>
+        }
+        else
+        {
+            <div>Chưa có địa chỉ nào!</div>
+        }
+    </div>
+</div>

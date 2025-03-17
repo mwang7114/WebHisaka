@@ -1,0 +1,46 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Edit Promotion";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Edit Promotion</h2>
+
+@using (Html.BeginForm("EditPromotion", "Promotion", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="promotionName">Promotion Name</label>
+        <input type="text" id="promotionName" name="promotionName" class="form-control" value="@Model.PromotionName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="discountPercentage">Discount Percentage</label>
+        <input type="number" step="0.01" id="discountPercentage" name="discountPercentage" class="form-control" value="@Model.DiscountPercentage" required />
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" value="@Model.StartDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" value="@Model.EndDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control">@Model.Description</textarea>
+    </div>
+
+    <input type="hidden" name="promotionId" value="@Model.PromotionID" />
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Promotions", "Admin")" class="btn btn-secondary">Back to Promotions</a>
+</div>

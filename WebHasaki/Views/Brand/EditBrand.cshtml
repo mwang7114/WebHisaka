@@ -1,0 +1,47 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Edit Brand";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Edit Brand</h2>
+
+@using (Html.BeginForm("EditBrand", "Brand", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="brandName">Brand Name</label>
+        <input type="text" id="brandName" name="brandName" class="form-control" value="@Model.BrandName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control" rows="4">@Model.Description</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="image">Brand Image</label>
+        <input type="file" id="image" name="image" class="form-control" />
+        <input type="hidden" id="oldImage" name="oldImage" value="@Model.Image" />
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" name="status" class="form-control">
+            <option value="Online" @(Model.Status == "Online" ? "selected" : "")>Online</option>
+            <option value="Offline" @(Model.Status == "Offline" ? "selected" : "")>Offline</option>
+        </select>
+    </div>
+
+
+    <input type="hidden" name="brandId" value="@Model.BrandID" />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Brands", "Admin")" class="btn btn-secondary">Back to Brands</a>
+</div>

@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "OrderList";
+    Layout = "~/Views/Shared/_LayoutTaiKhoan.cshtml";
+}
+
+@model List<WebHasaki.Models.OrderListGroupViewModel>
+
+<div style="margin-left:40px">
+    <h2>Danh sách đơn hàng</h2>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var dateGroup in Model)
+        {
+            <h3>Ngày đặt hàng: @dateGroup.Date.ToString("dd/MM/yyyy")</h3>
+            foreach (var orderGroup in dateGroup.OrderGroups)
+            {
+                <h4>Mã đơn hàng: @orderGroup.Key</h4>
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var rowCount = 0; }
+                        @foreach (var order in orderGroup)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@order.ImageUrl" alt="@order.ProductName" style="width: 50px; height: 50px; margin-right: 10px;" />
+                                    @order.ProductName
+                                </td>
+                                <td>@order.Quantity</td>
+                                <td>@order.Price.ToString("N0")đ</td>
+                                <td>@order.Total.ToString("N0")đ</td>
+                                @if (rowCount == 0)
+                                {
+                                    <td rowspan="@orderGroup.Count()">
+                                        <span class="status @(order.Status == "Processing" ? "processing" : order.Status == "Shipped" ? "shipped" : order.Status == "Delivered" ? "delivered" : "")">
+                                            @if (order.Status == "Processing")
+                                            {
+                                                <span>Đang xử lý</span>
+                                            }
+                                            else if (order.Status == "Shipped")
+                                            {
+                                                <span>Đang vận chuyển</span>
+                                            }
+                                            else if (order.Status == "Delivered")
+                                            {
+                                                <span>Thành công</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Đã hủy</span>
+                                            }
+                                        </span>
+                                    </td>
+                                    <td rowspan="@orderGroup.Count()">
+                                        <a href="@Url.Action("OrderTracking", "Cart", new { orderId = order.OrderID })" class="view-details">Xem chi tiết</a>
+                                        @if (order.Status == "Shipped")
+                                        {
+                                            <a href="@Url.Action("ReceivedOrder", "Cart", new { orderId = orderGroup.Key })" class="received-order">Đã nhận được hàng</a>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                            rowCount++;
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    }
+    else
+    {
+        <p class="no-orders">Bạn chưa có đơn hàng nào.</p>
+    }
+</div>
+
+<style>
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .order-table th, .order-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .order-table th {
+            background-color: #f2f2f2;
+        }
+
+    .status {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        margin-right: 10px;
+    }
+
+        .status.processing {
+            background-color: #ffc107; /* Màu vàng */
+        }
+
+        .status.shipped {
+            background-color: #007bff; /* Màu xanh dương */
+        }
+
+        .status.delivered {
+            background-color: #28a745; /* Màu xanh lá cây */
+        }
+
+    .view-details {
+        background-color: #007bff;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .view-details:hover {
+            background-color: #0056b3;
+        }
+
+    .no-orders {
+        font-style: italic;
+        color: #888;
+    }
+
+    .order-actions {
+        margin-bottom: 20px;
+    }
+
+    .received-order {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+        .received-order:hover {
+            background-color: #218838;
+        }
+</style>

@@ -1,0 +1,35 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Edit Order Status";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssCRUD.css" rel="stylesheet" />
+}
+
+<h2>Edit Order Status</h2>
+
+@using (Html.BeginForm("EditOrder", "Order", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="orderId">Order ID</label>
+        <input type="text" id="orderId" name="orderId" class="form-control" value="@Model.OrderID" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="status">Order Status</label>
+        <select id="status" name="status" class="form-control" required>
+            <option value="Processing" @(Model.Status == "Processing" ? "selected" : "")>Processing</option>
+            <option value="Shipped" @(Model.Status == "Shipped" ? "selected" : "")>Shipped</option>
+            <option value="Delivered" @(Model.Status == "Delivered" ? "selected" : "")>Delivered</option>
+            <option value="Failed" @(Model.Status == "Failed" ? "selected" : "")>Failed</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}
+
+<div class="back-button">
+    <a href="@Url.Action("Orders", "Admin")" class="btn btn-secondary">Back to Orders</a>
+</div>

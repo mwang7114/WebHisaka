@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/Content/CSS/User/csstrangchu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo_site">
+            <a href="@Url.Action("TrangChu","Home")" class="logo">
+                <img src="https://hasaki.vn/v3/images/graphics/logo_site.svg" alt="">
+            </a>
+        </div>
+        <div class="search-site">
+            <div class="navbar-links">
+                <a href="#">Kem Chống Nắng</a>
+                <a href="#">Tẩy Trang</a>
+                <a href="#">Toner</a>
+                <a href="#">Sữa Rửa Mặt</a>
+                <a href="#">Tẩy tế bào chết</a>
+                <a href="#">Retinol</a>
+            </div>
+            <form method="get" action="@Url.Action("TimSPTheoTen", "Home")">
+                <div class="search-bar">
+                    <input placeholder="Tìm sản phẩm, thương hiệu bạn mong muốn..." type="text" name="tenSanPham" id="tenSanPham" />
+                    <i class="fas fa-search"></i>
+                </div>
+            </form>
+
+        </div>
+        <div class="navbar-item">
+            <div class="nav-item">
+                <i class="fas fa-user"></i>
+                @if (Session["TaiKhoan"] != null)
+                {
+                    <div class="item" style="width:100px">
+                        <div>
+                            <a class="nav-link collapsed"> @Session["Name"]</a>
+                        </div>
+                        <div style="display:flex">
+                            <a style="width:67px">Tài khoản</a>
+                            <i class="fas fa-caret-down" style="margin-left: 5px;margin-top:3px"></i>
+                        </div>
+                        <div class="tk-dropdown">
+                            <a href="/Home/QLTaiKhoan"><i class="fa-solid fa-user"></i> Tài khoản của bạn</a>
+                            <a href="@Url.Action("OrderList","Cart")"><i class="fa-solid fa-clipboard"></i> Quản lý đơn hàng</a>                            <a href="#"><i class="fa-solid fa-heart"></i> Sản phẩm yêu thích</a>
+                            <a href="#"><i class="fa-solid fa-location-dot"></i> Địa chỉ giao hàng</a>
+                            <a href="@Url.Action("DangXuat", "Home")"><i class="fa-solid fa-right-from-bracket"></i> Thoát</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="item">
+                        <div style="display:flex">
+                            <a class="nav-link collapsed" href="@Url.Action("DangNhap", "Home")" style="text-decoration:none;width:75px">Đăng nhập</a>
+                            /
+                            <a class="nav-link collapsed" href="@Url.Action("DangKy", "Home")" style="text-decoration: none; width: 56px;margin-left:3px">Đăng ký</a>
+                        </div>
+                        <div style="display:flex">
+                            <a style="width:67px">Tài khoản</a>
+                            <i class="fas fa-caret-down" style="margin-left: 5px;margin-top:3px"></i>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-store"></i>
+                <a class="item1" style="text-decoration:none" href="/Home/HeThongCuaHang">
+                    Hệ thống cửa hàng
+                </a>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-phone"></i>
+                <a class="item1" style="text-decoration:none" href="/Home/Support">Hỗ trợ khách hàng</a>
+            </div>
+            <div class="nav-item">
+                <a style="text-decoration:none" href="/Cart/ShowCart" class="fas fa-shopping-cart">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <div class="div-footer">
+        <div class="footer-container">
+            <div class="features">
+                <div class="div-4-img" style="display: flex">
+                    <div>
+                        <img class="img" alt="Payment on delivery icon" height="50" src="~/Content/Images/icon_footer_1.png" width="50" />
+                        <p>Thanh toán khi nhận hàng</p>
+                    </div>
+                    <div>
+                        <img class="img" alt="Fast delivery icon" height="50" src="~/Content/Images/icon_footer_1.png" width="50" />
+                        <p>Giao nhanh miễn phí 2H</p>
+                    </div>
+                    <div>
+                        <img class="img" alt="30 days return icon" height="50" src="~/Content/Images/icon_footer_3.png" width="50" />
+                        <p>30 ngày đổi trả miễn phí</p>
+                    </div>
+                    <div>
+                        <img class="img" alt="Global brand icon" height="50" src="~/Content/Images/icon_footer_4.png" width="50" />
+                        <p>Thương hiệu uy tín toàn cầu</p>
+                    </div>
+                </div>
+                <div class="contact-buttons">
+                    <div>
+                        <p><img height="30" src="https://hasaki.vn/v3/images/icons/icons_hotline_kn.svg" width="30" /> KHIẾU NẠI, GÓP Ý</p>
+                        <button>1800 6310</button>
+                    </div>
+                    <div>
+                        <p><img height="30" src="https://hasaki.vn/v3/images/icons/icons_hotline_tv.svg" width="30" /> TƯ VẤN</p>
+                        <button>1800 6324</button>
+                    </div>
+                    <div>
+                        <p><img height="30" src="~/Content/Images/icon_timchinhanh.png" width="30" /> TÌM CHI NHÁNH</p>
+                        <button>Hệ thống hasaki</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div style="display: flex">
+                    <div>
+                        <h3>HỖ TRỢ KHÁCH HÀNG</h3>
+                        <p>Hotline: <span style="color: #ff5722;">1800 6324</span></p>
+                        <p>(miễn phí, 08-22h kể cả T7, CN)</p>
+                        <p>Các câu hỏi thường gặp</p>
+                        <p>Gửi yêu cầu hỗ trợ</p>
+                        <p>Hướng dẫn đặt hàng</p>
+                        <p>Phương thức vận chuyển</p>
+                        <p>Chính sách đổi trả</p>
+                    </div>
+                    <div>
+                        <h3>VỀ HASAKI.VN</h3>
+                        <p>Giới thiệu Hasaki.vn</p>
+                        <p>Tuyển Dụng</p>
+                        <p>Chính sách bảo mật</p>
+                        <p>Điều khoản sử dụng</p>
+                        <p>Liên hệ</p>
+                    </div>
+                    <div>
+                        <h3>HỢP TÁC & LIÊN KẾT</h3>
+                        <p><a href="https://hasaki.vn/clinic">https://hasaki.vn/clinic</a></p>
+                        <p>Hasaki cẩm nang</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-tiktok"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <h3>THANH TOÁN</h3>
+                        <div class="payment">
+                            <img alt="Visa logo" height="30" src="~/Content/Images/visa.png" width="50" />
+                            <img alt="Mastercard logo" height="30" src="https://hasaki.vn/v3/images/icons/visa.svg" width="50" />
+                            <img alt="ATM logo" height="30" src="https://hasaki.vn/v3/images/icons/atm.svg" width="50" />
+                        </div>
+                    </div>
+                </div>
+                <div class="right-footer">
+                    <div class="update">
+                        <h3>CẬP NHẬT THÔNG TIN KHUYẾN MÃI</h3>
+                        <div class="subscribe">
+                            <div class="input-container">
+                                <input type="email" placeholder="email của bạn" />
+                            </div>
+                            <div class="button-container">
+                                <button>Đăng ký</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-qr" style="display: flex; margin-top: 20px">
+                        <img alt="QR code" height="100" src="https://hasaki.vn/v3/images/graphics/qr_download_app.svg" width="100" />
+                        <div class="store">
+                            <img class="app-img" alt="App Store logo" src="~/Content/Images/dl_apple.png" width="250" />
+                            <img class="app-img" alt="Google Play logo" src="~/Content/Images/dl_google.png" width="250" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

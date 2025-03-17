@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Promotions";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Promotions</a>
+</div>
+<div class="title">Promotions</div>
+<div class="header-btn">
+    <button onclick="window.location='@Url.Action("CreatePromotion", "Promotion")'" class="add-button">ADD PROMOTION</button>
+</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>PROMOTION ID</th>
+                <th>PROMOTION NAME</th>
+                <th>DISCOUNT</th>
+                <th>START DATE</th>
+                <th>END DATE</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var promo in Model)
+                {
+                    <tr>
+                        <td>@promo.PromotionID</td>
+                        <td>@promo.PromotionName</td>
+                        <td>@promo.DiscountPercentage%</td>
+                        <td>@DateTime.Parse(promo.StartDate.ToString()).ToString("dd-MM-yyyy")</td>
+                        <td>@DateTime.Parse(promo.EndDate.ToString()).ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @if (DateTime.Now < DateTime.Parse(promo.StartDate.ToString()))
+                            {
+                                <span class="status-promotion upcoming">Upcoming</span>
+                            }
+                            else if (DateTime.Now > DateTime.Parse(promo.EndDate.ToString()))
+                            {
+                                <span class="status-promotion expired">Expired</span>
+                            }
+                            else
+                            {
+                                <span class="status-promotion active">Active</span>
+                            }
+                        </td>
+                        <td class="action-icons">
+                            <a href="@Url.Action("EditPromotion", "Promotion", new { promotionId = promo.PromotionID })" class="edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="javascript:void(0);" class="delete" data-promotionId="@promo.PromotionID" onclick="confirmDelete(@promo.PromotionID)">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No Promotions Found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Promotions", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Promotions", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Promotions", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+</div>
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa đơn hàng này?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(promotionId) {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "flex";
+
+    document.getElementById("confirmDeleteBtn").onclick = function () {
+        window.location.href = '@Url.Action("DeletePromotion", "Promotion", new { promotionId = "__promotionId__" })'.replace('__promotionId__', promotionId);
+    };
+}
+
+function closeModal() {
+    var modal = document.getElementById("confirmDeleteModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    var modal = document.getElementById("confirmDeleteModal");
+    if (event.target == modal) {
+        closeModal();
+    }
+};
+</script>

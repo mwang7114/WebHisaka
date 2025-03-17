@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = null;
+}
+<html>
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="~/Content/CSS/User/cssdangnhap.css" rel="stylesheet" />
+</head>
+<body>
+    <form action="@Url.Action("XuLyDangNhap", "Home")" method="post">
+        <div class="login-container">
+            <h2>Đăng nhập với</h2>
+            <div class="social-login">
+                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="#" class="google"><i class="fab fa-google"></i> Google +</a>
+            </div>
+            <div class="divider"><span>Hoặc đăng nhập với Hasaki.vn</span></div>
+
+            <div class="form-group">
+                <i class="fas fa-envelope"></i>
+                <input id="email" type="text" placeholder="Nhập Email" name="email" value="@Request["email"]" required>
+                @if (ViewData["EmailError"] != null)
+                {
+                    <div class="error-message">@ViewData["EmailError"]</div>
+                }
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Nhập Password" name="password" required autocomplete="off">
+                @if (ViewData["PasswordError"] != null)
+                {
+                    <div class="error-message">@ViewData["PasswordError"]</div>
+                }
+            </div>
+
+            <div class="form-options">
+                <label><input type="checkbox"> Nhớ mật khẩu</label>
+                <a href="#">Quên mật khẩu</a>
+            </div>
+
+            <button class="login-button">Đăng nhập</button>
+
+            <div class="register-link">
+                Bạn chưa có tài khoản? <a href="/Home/DangKy">ĐĂNG KÝ NGAY</a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

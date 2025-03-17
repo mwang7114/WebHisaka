@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Đăng Ký";
+    Layout = null;
+}
+<html>
+<head>
+    <title>Đăng ký tài khoản</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="~/Content/CSS/User/cssdangky.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h2>Đăng ký tài khoản</h2>
+        <form action="@Url.Action("XuLyDangKy", "Home")" method="post">
+            <div class="input-group @(ViewData["EmailError"] != null ? "error" : "")">
+                <input type="email" name="email" placeholder="Nhập email" value="@Request["email"]" required />
+                <i class="fas fa-envelope"></i>
+                @if (ViewData["EmailError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["EmailError"]</span>
+                }
+            </div>
+
+            <div class="input-group @(ViewData["PasswordError"] != null ? "error" : "")">
+                <input type="password" name="password" placeholder="Nhập mật khẩu từ 6 - 32 ký tự" required />
+                <i class="fas fa-lock"></i>
+                @if (ViewData["PasswordError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["PasswordError"]</span>
+                }
+            </div>
+
+            <div class="input-group @(ViewData["SDTError"] != null ? "error" : "")">
+                <input type="text" name="sdt" placeholder="Nhập số điện thoại" value="@Request["sdt"]" required />
+                <i class="fas fa-phone"></i>
+                @if (ViewData["SDTError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["SDTError"]</span>
+                }
+            </div>
+
+            <div class="input-group @(ViewData["HotenError"] != null ? "error" : "")">
+                <input type="text" name="hoten" placeholder="Họ tên" value="@Request["hoten"]" required />
+                <i class="fas fa-user"></i>
+                @if (ViewData["HotenError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["HotenError"]</span>
+                }
+            </div>
+            <div class="input-group @(ViewData["DiaChiError"] != null ? "error" : "")">
+                <input type="text" name="diachi" placeholder="Địa chỉ" value="@Request["diachi"]" required />
+                <i class="fas fa-map-marker-alt"></i>
+                @if (ViewData["DiaChiError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["DiaChiError"]</span>
+                }
+            </div>
+
+            <div class="gender-group">
+                <label><input type="radio" name="gender" value="Khác" @(Request["gender"] == "Khác" ? "checked" : "") required> Khác</label>
+                <label><input type="radio" name="gender" value="Nam" @(Request["gender"] == "Nam" ? "checked" : "") required> Nam</label>
+                <label><input type="radio" name="gender" value="Nữ" @(Request["gender"] == "Nữ" ? "checked" : "") required> Nữ</label>
+                @if (ViewData["GenderError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["GenderError"]</span>
+                }
+            </div>
+
+            <div class="select-group">
+                <select name="dobDay" required>
+                    <option value="">Ngày</option>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+                        <option value="@day" @(Request["dobDay"] == day.ToString() ? "selected" : "")>@day</option>
+                    }
+                </select>
+                <select name="dobMonth" required>
+                    <option value="">Tháng</option>
+                    @for (int month = 1; month <= 12; month++)
+                    {
+                        <option value="@month" @(Request["dobMonth"] == month.ToString() ? "selected" : "")>@month</option>
+                    }
+                </select>
+                <select name="dobYear" required>
+                    <option value="">Năm</option>
+                    @for (int year = DateTime.Now.Year; year >= 1900; year--)
+                    {
+                        <option value="@year" @(Request["dobYear"] == year.ToString() ? "selected" : "")>@year</option>
+                    }
+                </select>
+                @if (ViewData["DOBError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["DOBError"]</span>
+                }
+            </div>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> Tôi đã đọc và đồng ý với Điều kiện giao dịch chung và Chính sách bảo mật thông tin của Hasaki</label>
+            </div>
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> Nhận thông tin khuyến mãi qua e-mail</label>
+            </div>
+
+            <button class="btn-submit">Đăng ký</button>
+
+            <div class="login-options">
+                <p>Bạn đã có tài khoản? <a href="@Url.Action("DangNhap", "Home")">ĐĂNG NHẬP</a></p>
+                <p>Hoặc đăng nhập với:</p>
+            </div>
+            <div class="social-login">
+                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="#" class="google"><i class="fab fa-google"></i> Google+</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,388 @@
+﻿    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container-tong-thanhtoan {
+    display: flex;
+    width: 90%;
+    margin: 50px auto;
+}
+
+.navbar-thanhtoan {
+    background-color: #306e51;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+    .navbar-thanhtoan img {
+        height: 50px;
+    }
+
+    .navbar-thanhtoan .links-thanhtoan {
+        font-size: 14px;
+        display: flex;
+    }
+
+        .navbar-thanhtoan .links-thanhtoan a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            align-content: center
+        }
+
+.container-thanhtoan {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.address-info-thanhtoan {
+    display: flex;
+    flex-direction: column;
+}
+
+    .address-info-thanhtoan h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333333;
+    }
+
+    .address-info-thanhtoan .tag {
+        background-color: #2d6a4f;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 2px 8px;
+        font-size: 14px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .address-info-thanhtoan .name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333333;
+        margin: 5px 0;
+    }
+
+    .address-info-thanhtoan .address-thanhtoan {
+        font-size: 14px;
+        color: #666666;
+        margin-top: 5px
+    }
+
+.change-link-thanhtoan {
+    color: #1a73e8;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+}
+
+    .payment-method img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+    }
+
+    .payment-method input[type="radio"] {
+        margin-right: 10px;
+    }
+
+.payment-method-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.delivery-info {
+    display: flex;
+    align-items: center;
+    background-color: #e6f4ea;
+    border: 1px solid #b2d8c2;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+    .delivery-info i {
+        font-size: 24px;
+        color: #34a853;
+        margin-right: 10px;
+    }
+
+    .delivery-info .date {
+        font-size: 16px;
+        font-weight: bold;
+        color: #34a853;
+        margin-right: 10px;
+    }
+
+    .delivery-info .time {
+        font-size: 14px;
+        color: #666;
+    }
+
+.product {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .product img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        margin-right: 10px;
+    }
+
+.product-info {
+    flex-grow: 1;
+}
+
+    .product-info .brand {
+        font-size: 16px;
+        font-weight: bold;
+        color: #34a853;
+        margin-bottom: 5px;
+    }
+
+    .product-info .name {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .product-info .size {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .product-info .price {
+        font-size: 14px;
+        color: #ff5722;
+        font-weight: bold;
+    }
+
+    .product-info .discounted-price {
+        font-size: 14px;
+        color: #ff5722;
+        font-weight: bold;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: 0
+    }
+
+.product-quantity {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.product-price {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+.gift {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+    .gift img {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        margin-right: 10px;
+    }
+
+.gift-info {
+    flex-grow: 1;
+}
+
+    .gift-info .tag {
+        font-size: 12px;
+        color: #ff5722;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .gift-info .description {
+        font-size: 12px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .gift-info .price {
+        font-size: 12px;
+        color: #333;
+        font-weight: bold;
+    }
+
+.note {
+    flex: 1;
+    margin-right: 20px;
+    width: 85%;
+}
+
+    .note textarea {
+        width: 98%;
+        height: 60px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-size: 14px;
+        background-color: #f0f0f5;
+    }
+
+.order-summary-note {
+    display: block;
+    align-items: center;
+    width: 30%;
+}
+
+.total {
+    text-align: right;
+    display: flex;
+    margin-bottom:10px
+}
+
+    .total span {
+        display: block;
+    }
+
+    .total .amount {
+        color: #ff6600;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+.order-button-note {
+    background-color: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+    .order-button-note:hover {
+        background-color: #245a3c;
+    }
+
+.disclaimer {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+}
+
+    .disclaimer a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .disclaimer a:hover {
+            text-decoration: underline;
+        }
+
+.order-summary-thanhtoan {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    padding: 20px;
+    margin-left: 20px;
+    height: 315px;
+}
+
+    .order-summary-thanhtoan button {
+        width: 100%;
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .order-summary-thanhtoan .invoice-info-thanhtoan {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+        .order-summary-thanhtoan .invoice-info-thanhtoan a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+    .order-summary-thanhtoan .order-details-thanhtoan {
+        margin-top: 20px;
+    }
+
+        .order-summary-thanhtoan .order-details-thanhtoan h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .order-summary-thanhtoan .order-details-thanhtoan a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: auto;
+        }
+
+        .order-summary-thanhtoan .order-details-thanhtoan .item {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+            .order-summary-thanhtoan .order-details-thanhtoan .item.total {
+                font-weight: bold;
+                color: #d32f2f;
+            }
+
+                .order-summary-thanhtoan .order-details-thanhtoan .item.total .price {
+                    font-size: 18px;
+                }
+
+        .order-summary-thanhtoan .order-details-thanhtoan .note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #757575;
+        }
+
+            .order-summary-thanhtoan .order-details-thanhtoan .note a {
+                color: #1a73e8;
+                text-decoration: none;
+            }

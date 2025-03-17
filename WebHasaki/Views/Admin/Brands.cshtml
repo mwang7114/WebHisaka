@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Brands";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    <link href="~/Content/CSS/Admin/cssviewadmin.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb">
+    <a href="#">Pages</a> / <a href="#">Brands</a>
+</div>
+<div class="title">Brands</div>
+
+<div class="header-btn">
+    <button onclick="window.location='@Url.Action("CreateBrand", "Brand")'" class="add-button">ADD BRAND</button>
+</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>BRAND NAME</th>
+                <th>IMAGE</th>
+                <th>DESCRIPTION</th>
+                <th>STATUS</th>
+                <th>CREATED</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var brand in Model)
+            {
+                <tr>
+                    <td>@brand.BrandName</td>
+                    <td>
+                        <img src="@brand.Image" alt="Brand Image" class="brand-image" style="height:100px" />
+                    </td>
+                    <td>@brand.Description</td>
+                    <td>
+                        <span class="status-brand @(brand.Status == "Online" ? "online" : (brand.Status == "Offline" ? "offline" : ""))">
+                            @brand.Status
+                        </span>
+                    </td>
+                    <td>
+                        @if (brand.CreatedAt is DateTime createdAt)
+                        {
+                            @createdAt.ToString("dd-MM-yyyy")
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+
+                    <td class="action-icons">
+                        <a href="@Url.Action("EditBrand", "Brand", new { brandId = brand.BrandID })" class="edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="javascript:void(0);" class="delete" data-brandId="@brand.BrandID" onclick="confirmDelete(@brand.BrandID)">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a href="@Url.Action("Brands", new { page = Model.PageNumber - 1 })" class="previous @(Model.HasPreviousPage ? "" : "disabled")">
+            <span>&lt;</span>
+        </a>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a href="@Url.Action("Brands", new { page = i })" class="@(i == Model.PageNumber ? "active" : "")">
+                @i
+            </a>
+        }
+
+        <a href="@Url.Action("Brands", new { page = Model.PageNumber + 1 })" class="next @(Model.HasNextPage ? "" : "disabled")">
+            <span>&gt;</span>
+        </a>
+    </div>
+</div>
+
+<div id="confirmDeleteModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Bạn có chắc chắn muốn xóa thương hiệu này và các sản phẩm liên quan?</h3>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete(brandId) {
+        var modal = document.getElementById("confirmDeleteModal");
+        modal.style.display = "flex";
+
+        document.getElementById("confirmDeleteBtn").onclick = function () {
+            window.location.href = '@Url.Action("DeleteBrand", "Brand", new { brandId = "__brandId__" })'.replace('__brandId__', brandId);
+        };
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("confirmDeleteModal");
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById("confirmDeleteModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    };
+</script>
