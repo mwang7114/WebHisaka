@@ -69,26 +69,9 @@ namespace WebHasaki.Controllers
 
         public ActionResult Categories(int? page)
         {
-            DataModel db = new DataModel();
-            string sql = "SELECT CategoryID, CategoryName, Status, CreatedAt FROM Categories";
-
-            ArrayList categoriesData = db.get(sql);
-
-            List<dynamic> categoryList = new List<dynamic>();
-
-            foreach (var item in categoriesData)
-            {
-                if (item is ArrayList row)
-                {
-                    dynamic category = new ExpandoObject();
-                    category.CategoryID = row[0];
-                    category.CategoryName = row[1];
-                    category.Status = row[2];
-                    category.CreatedAt = DateTime.TryParse(row[3].ToString(), out DateTime createdAt) ? createdAt : (DateTime?)null;
-
-                    categoryList.Add(category);
-                }
-            }
+            var categorySingleton = CategorySingleton.Instance;
+            categorySingleton.Init();
+            List<Category> categoryList = categorySingleton.ListCategory;
 
             int pageSize = 6;
             int pageNumber = (page ?? 1);

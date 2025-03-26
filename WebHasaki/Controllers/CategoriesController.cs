@@ -12,6 +12,7 @@ namespace WebHasaki.Controllers
 {
     public class CategoriesController : Controller
     {
+        DataModel db = new DataModel();
 
         public ActionResult CreateCategory()
         {
@@ -23,25 +24,26 @@ namespace WebHasaki.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
                 string sql = "INSERT INTO Categories (CategoryName, Status, CreatedAt) VALUES (@CategoryName, @Status, @CreatedAt)";
 
                 SqlParameter[] parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@CategoryName", categoryName),
-                    new SqlParameter("@Status", status),
-                    new SqlParameter("@CreatedAt", DateTime.Now)
+            new SqlParameter("@CategoryName", categoryName),
+            new SqlParameter("@Status", status),
+            new SqlParameter("@CreatedAt", DateTime.Now)
                 };
 
                 db.execute(sql, parameters);
+                CategorySingleton.Instance.Reset();
+
                 return RedirectToAction("Categories", "Admin");
             }
             return View();
         }
 
+
         public ActionResult EditCategory(int categoryId)
         {
-            DataModel db = new DataModel();
             string sql = "SELECT CategoryID, CategoryName, Status FROM Categories WHERE CategoryID = @CategoryID";
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -71,61 +73,96 @@ namespace WebHasaki.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
                 string sql = "UPDATE Categories SET CategoryName = @CategoryName, Status = @Status WHERE CategoryID = @CategoryID";
 
                 SqlParameter[] parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@CategoryID", categoryId),
-                    new SqlParameter("@CategoryName", categoryName),
-                    new SqlParameter("@Status", status)
+            new SqlParameter("@CategoryID", categoryId),
+            new SqlParameter("@CategoryName", categoryName),
+            new SqlParameter("@Status", status)
                 };
 
                 db.execute(sql, parameters);
+                CategorySingleton.Instance.Reset();
+
                 return RedirectToAction("Categories", "Admin");
             }
 
             return View();
         }
 
+
         public JsonResult CanDeleteCategory(int categoryId)
         {
-            string sql = "SELECT COUNT(*) FROM Products WHERE CategoryID = @CategoryID";
-            SqlParameter[] parameters = new SqlParameter[] {
-        new SqlParameter("@CategoryID", categoryId)
-    };
-
-            int productCount = (int)new DataModel().executeScalar(sql, parameters);
-
-            return Json(new { canDelete = productCount == 0 }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                string sql = "SELECT COUNT(*) FROM Products WHERE CategoryID = @CategoryID";
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+            new SqlParameter("@CategoryID", categoryId)
+                };
+                var result = new DataModel().executeScalar(sql, parameters);
+                int productCount = result != null ? Convert.ToInt32(result) : 0;
+                return Json(new { canDelete = (productCount == 0) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                string errorDetails = $"[{DateTime.Now}] Lỗi khi kiểm tra CanDeleteCategory {categoryId}: {ex.Message}\n";
+                System.IO.File.AppendAllText(Server.MapPath("~/Logs/ErrorLog.txt"), errorDetails);
+                return Json(new { canDelete = false, error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
-
 
         public ActionResult DeleteCategory(int categoryId)
         {
             try
             {
+                // Kiểm tra số lượng sản phẩm liên quan
                 string sqlCheckProducts = "SELECT COUNT(*) FROM Products WHERE CategoryID = @CategoryID";
-                SqlParameter[] parametersCheck = new SqlParameter[]
+                var parametersCheckProducts = new SqlParameter[]
                 {
             new SqlParameter("@CategoryID", categoryId)
                 };
 
-                int productCount = (int)new DataModel().executeScalar(sqlCheckProducts, parametersCheck);
+                var productCountResult = new DataModel().executeScalar(sqlCheckProducts, parametersCheckProducts);
+                int productCount = productCountResult != null ? Convert.ToInt32(productCountResult) : 0;
 
                 if (productCount > 0)
                 {
-                    ViewBag.ErrorMessage = "Không thể xóa danh mục này vì có sản phẩm đang thuộc danh mục.";
+                    // Xóa sản phẩm liên quan trước khi xóa danh mục
+                    string sqlDeleteProducts = "DELETE FROM Products WHERE CategoryID = @CategoryID";
+                    var parametersDeleteProducts = new SqlParameter[]
+                    {
+                new SqlParameter("@CategoryID", categoryId)
+                    };
+                    new DataModel().execute(sqlDeleteProducts, parametersDeleteProducts);
+                }
+
+                // Kiểm tra xem danh mục có tồn tại không
+                string sqlCheckCategory = "SELECT COUNT(*) FROM Categories WHERE CategoryID = @CategoryID";
+                var parametersCheckCategory = new SqlParameter[]
+                {
+            new SqlParameter("@CategoryID", categoryId)
+                };
+                var categoryExistsResult = new DataModel().executeScalar(sqlCheckCategory, parametersCheckCategory);
+                int categoryExists = categoryExistsResult != null ? Convert.ToInt32(categoryExistsResult) : 0;
+
+                if (categoryExists == 0)
+                {
+                    ViewBag.ErrorMessage = "Danh mục không tồn tại.";
                     return View("Error");
                 }
 
-                string sqlDeleteProducts = "DELETE FROM Products WHERE CategoryID = @CategoryID";
-                new DataModel().execute(sqlDeleteProducts, parametersCheck);
-
+                // Xóa danh mục
                 string sqlDeleteCategory = "DELETE FROM Categories WHERE CategoryID = @CategoryID";
-                new DataModel().execute(sqlDeleteCategory, parametersCheck);
+                var parametersDeleteCategory = new SqlParameter[]
+                {
+            new SqlParameter("@CategoryID", categoryId)
+                };
+                new DataModel().execute(sqlDeleteCategory, parametersDeleteCategory);
 
-                return RedirectToAction("Categories","Admin");
+                CategorySingleton.Instance.Reset();
+                return RedirectToAction("Categories", "Admin");
             }
             catch (Exception ex)
             {

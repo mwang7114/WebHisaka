@@ -1,13 +1,26 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Lỗi";
+}
+
+<div class="error-container">
+    <h2>Lỗi</h2>
+    <p>@ViewBag.ErrorMessage</p>
+    <a href="@Url.Action("Categories", "Admin")" class="btn btn-primary">Quay lại danh sách danh mục</a>
+</div>
+
+<style>
+    .error-container {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+</style>

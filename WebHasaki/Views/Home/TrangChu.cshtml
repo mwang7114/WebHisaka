@@ -71,15 +71,15 @@
                 <a class="view-all" href="#">Xem tất cả</a>
             </div>
             <div class="fs-content">
-                <div class="deals">
+                <div class="deals"> 
 
                     @foreach (var item in ViewBag.listSPSale)
                     {
                         <div class="deal-item">
                             <div class="discount">@item[6]%</div>
                             <img src="@item[3]" height="150" width="180" />
-                            <div class="price">@Convert.ToDecimal(item[2]).ToString("N0")đ</div>
-                            <div class="original-price">@Convert.ToDecimal(item[1]).ToString("N0")đ</div>
+                            <div class="price">@Convert.ToDecimal(item[1]).ToString("N0")đ</div>
+                            <div class="original-price">@Convert.ToDecimal(item[2]).ToString("N0")đ</div>
                             <div class="description">@item[0]</div>
                         </div>
                     }
@@ -200,7 +200,7 @@
                     <div class="product-info">
                         <h3>@item[1]</h3>
                         <p>@item[2]</p>
-                        <p class="price">@Convert.ToDecimal(item[4]).ToString("N0")đ<span class="old-price">@Convert.ToDecimal(item[3]).ToString("N0")đ</span> <span class="discount">@item[6]%</span></p>       
+                        <p class="price">@Convert.ToDecimal(item[3]).ToString("N0")đ<span class="old-price">@Convert.ToDecimal(item[4]).ToString("N0")đ</span> <span class="discount">@item[6]%</span></p>       
                         <div class="rating">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                             <span class="reviews">(874)</span>

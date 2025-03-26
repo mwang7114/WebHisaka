@@ -23,7 +23,7 @@ namespace WebHasaki.Controllers
             int userId = Convert.ToInt32(Session["UserID"]);
             int cartId = GetOrCreateCart(userId);
 
-            string sql = "SELECT CartItems.CartItemID, Products.ProductName, CartItems.Quantity, CartItems.Price, Products.Image " +
+            string sql = "SELECT CartItems.CartItemID, Products.ProductName, CartItems.Quantity, CartItems.PriceSale, Products.Image " +
                          "FROM CartItems " +
                          "INNER JOIN Products ON CartItems.ProductID = Products.ProductID " +
                          "WHERE CartItems.CartID = @CartID";
@@ -430,7 +430,6 @@ namespace WebHasaki.Controllers
                 Quantity = d[1] != null ? Convert.ToInt32(d[1]) : 0,
                 Price = d[2] != null ? Convert.ToDecimal(d[2]) : 0m,
                 ImageUrl = d[3]?.ToString() ?? "",
-                Total = (d[1] != null && d[2] != null) ? Convert.ToDecimal(d[1]) * Convert.ToDecimal(d[2]) : 0m
             }).ToList();
 
 

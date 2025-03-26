@@ -12,6 +12,7 @@
 
 @using (Html.BeginForm("CreateCategory", "Categories", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label for="CategoryName">Category Name</label>
         <input type="text" name="CategoryName" id="CategoryName" class="form-control" />

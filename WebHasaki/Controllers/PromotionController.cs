@@ -145,7 +145,7 @@ WHERE PromotionID = @PromotionID";
         {
             try
             {
-                string sql = "DELETE FROM ProductPromotions WHERE PromotionID = @PromotionID";
+                string sql = "DELETE FROM Promotion WHERE PromotionID = @PromotionID";
                 SqlParameter[] parameters = new SqlParameter[]
                 {
                     new SqlParameter("@PromotionID", promotionId)

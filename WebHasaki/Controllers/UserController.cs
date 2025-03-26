@@ -11,6 +11,7 @@ namespace WebHasaki.Controllers
 {
     public class UserController : Controller
     {
+        DataModel db = new DataModel();
         public ActionResult CreateUser()
         {
             return View();
@@ -21,7 +22,6 @@ namespace WebHasaki.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
                 string sql = @"
             INSERT INTO Users (FullName, Email, PhoneNumber, Gender, DOB, Role, CreatedAt)
             VALUES (@FullName, @Email, @PhoneNumber, @Gender, @DOB, @Role, @CreatedAt)";
@@ -43,7 +43,6 @@ namespace WebHasaki.Controllers
         }
         public ActionResult EditUser(int userId)
         {
-            DataModel db = new DataModel();
             string sql = "SELECT UserID, FullName, Email, PhoneNumber, Gender, DOB, Role FROM Users WHERE UserID = @UserID";
             SqlParameter[] parameters = { new SqlParameter("@UserID", userId) };
 
@@ -72,7 +71,6 @@ namespace WebHasaki.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
                 string sql = @"
             UPDATE Users 
             SET FullName = @FullName, Email = @Email, PhoneNumber = @PhoneNumber, Gender = @Gender, DOB = @DOB, Role = @Role
@@ -95,9 +93,8 @@ namespace WebHasaki.Controllers
         }
         public ActionResult DeleteUser(int userId)
         {
-            DataModel db = new DataModel();
             string sql = "DELETE FROM Users WHERE UserID = @UserID";
-            SqlParameter[] parameters = { new SqlParameter("@UserID", userId) };
+            SqlParameter[] parameters = new SqlParameter[] { new SqlParameter("@UserID", userId) };
 
             db.execute(sql, parameters);
             return RedirectToAction("Users", "Admin");

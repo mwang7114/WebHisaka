@@ -88,28 +88,29 @@
 </div>
 <script>
     function confirmDelete(categoryId) {
-    $.ajax({
-        url: '@Url.Action("CanDeleteCategory", "Categories")',
-        data: { categoryId: categoryId },
-        success: function (response) {
-            if (response.canDelete) {
-                var modal = document.getElementById("confirmDeleteModal");
-                modal.style.display = "flex";
+        $.ajax({
+            url: '@Url.Action("CanDeleteCategory", "Categories")',
+            type: 'GET',
+            data: { categoryId: categoryId },
+            success: function (response) {
+                console.log("CanDeleteCategory response:", response);
+                if (response.canDelete) {
+                    var modal = document.getElementById("confirmDeleteModal");
+                    modal.style.display = "flex";
 
-                document.getElementById("confirmDeleteBtn").onclick = function () {
-                    window.location.href = '@Url.Action("DeleteCategory", "Categories", new { categoryId = "__categoryId__" })'.replace('__categoryId__', categoryId);
-                };
-            } else {
-                alert('Không thể xóa danh mục này vì có sản phẩm đang thuộc danh mục.');
+                    document.getElementById("confirmDeleteBtn").onclick = function () {
+                        window.location.href = '@Url.Action("DeleteCategory", "Categories", new { categoryId = "__categoryId__" })'.replace('__categoryId__', categoryId);
+                    };
+                } else {
+                    alert('Không thể xóa danh mục này vì có sản phẩm đang thuộc danh mục.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX error:', xhr.status, xhr.statusText, error);
+                alert('Lỗi khi kiểm tra danh mục, vui lòng thử lại sau. Chi tiết lỗi: ' + xhr.statusText);
             }
-        },
-        error: function (error) {
-            console.error('Lỗi khi kiểm tra có thể xóa danh mục:', error);
-            alert('Lỗi khi kiểm tra danh mục, vui lòng thử lại sau.');
-        }
-    });
-}
-
+        });
+    }
 
     function closeModal() {
         var modal = document.getElementById("confirmDeleteModal");
