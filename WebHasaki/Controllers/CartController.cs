@@ -12,7 +12,13 @@ namespace WebHasaki.Controllers
 {
     public class CartController : Controller
     {
-        private readonly DataModel db = new DataModel();
+        CartFacade _cartFacade;
+
+        DataModel db = new DataModel();
+        public CartController()
+        {
+            _cartFacade = new CartFacade(db);
+        }
 
         public ActionResult ShowCart()
         {
@@ -21,38 +27,16 @@ namespace WebHasaki.Controllers
                 return RedirectToAction("DangNhap", "Home");
             }
             int userId = Convert.ToInt32(Session["UserID"]);
-            int cartId = GetOrCreateCart(userId);
-
-            string sql = "SELECT CartItems.CartItemID, Products.ProductName, CartItems.Quantity, CartItems.PriceSale, Products.Image " +
-                         "FROM CartItems " +
-                         "INNER JOIN Products ON CartItems.ProductID = Products.ProductID " +
-                         "WHERE CartItems.CartID = @CartID";
-
-
-            SqlParameter[] parameters = { new SqlParameter("@CartID", cartId) };
-
-            ArrayList cartArrayList = db.get(sql, parameters);
-
-            var cartItems = cartArrayList.Cast<ArrayList>().Select(item => new CartItemViewModel
-            {
-                CartItemId = Convert.ToInt32(item[0]),
-                ProductName = item[1]?.ToString() ?? "N/A",
-                Quantity = Convert.ToInt32(item[2]),
-                Price = Convert.ToDecimal(item[3]),
-                ImageUrl = item[4]?.ToString() ?? string.Empty
-            }).ToList();
-
-
+            var cartItems = _cartFacade.ShowCart(userId);
             return View(cartItems);
         }
 
         [HttpPost]
         public ActionResult AddToCart(int productId, int quantity)
         {
-
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("DangNhap","Home");
+                return RedirectToAction("DangNhap", "Home");
             }
             if (quantity <= 0)
             {
@@ -61,42 +45,8 @@ namespace WebHasaki.Controllers
 
             try
             {
-                
-                string priceSql = "SELECT Price FROM Products WHERE ProductID = @ProductID";
-                SqlParameter[] priceParams = { new SqlParameter("@ProductID", productId) };
-                decimal price = Convert.ToDecimal(db.executeScalar(priceSql, priceParams));
-
                 int userId = Convert.ToInt32(Session["UserID"]);
-                int cartId = GetOrCreateCart(userId);
-
-                string checkExistSql = "SELECT CartItemID FROM CartItems WHERE CartID = @CartID AND ProductID = @ProductID";
-                SqlParameter[] checkParams = {
-                    new SqlParameter("@CartID", cartId),
-                    new SqlParameter("@ProductID", productId)
-                };
-                object existingCartItem = db.executeScalar(checkExistSql, checkParams);
-
-                if (existingCartItem != null)
-                {
-                    string updateQuantitySql = "UPDATE CartItems SET Quantity = Quantity + @Quantity WHERE CartItemID = @CartItemID";
-                    SqlParameter[] updateParams = {
-                        new SqlParameter("@Quantity", quantity),
-                        new SqlParameter("@CartItemID", existingCartItem)
-                    };
-                    db.execute(updateQuantitySql, updateParams);
-                }
-                else
-                {
-                    string insertSql = "INSERT INTO CartItems (CartID, ProductID, Quantity, Price) VALUES (@CartID, @ProductID, @Quantity, @Price)";
-                    SqlParameter[] insertParams = {
-                        new SqlParameter("@CartID", cartId),
-                        new SqlParameter("@ProductID", productId),
-                        new SqlParameter("@Quantity", quantity),
-                        new SqlParameter("@Price", price)
-                    };
-                    db.execute(insertSql, insertParams);
-                }
-
+                _cartFacade.AddToCart(userId, productId, quantity);
                 return RedirectToAction("ShowCart");
             }
             catch (Exception ex)
@@ -109,64 +59,27 @@ namespace WebHasaki.Controllers
         [HttpPost]
         public ActionResult UpdateCartItem(int cartItemId, int quantity)
         {
-            if (quantity <= 0)
-            {
-                return RemoveFromCart(cartItemId);
-            }
-
-            string checkQuantitySql = "SELECT Quantity FROM CartItems WHERE CartItemID = @CartItemID";
-            SqlParameter[] checkParams = { new SqlParameter("@CartItemID", cartItemId) };
-            object currentQuantity = db.executeScalar(checkQuantitySql, checkParams);
-
-            if (currentQuantity != null && Convert.ToInt32(currentQuantity) != quantity)
-            {
-                string sql = "UPDATE CartItems SET Quantity = @Quantity WHERE CartItemID = @CartItemID";
-                SqlParameter[] parameters = {
-                    new SqlParameter("@Quantity", quantity),
-                    new SqlParameter("@CartItemID", cartItemId)
-                };
-                db.execute(sql, parameters);
-            }
-
+            _cartFacade.UpdateCartItem(cartItemId, quantity);
             return RedirectToAction("ShowCart");
         }
 
         [HttpPost]
         public ActionResult RemoveFromCart(int cartItemId)
         {
-            string checkExistSql = "SELECT CartItemID FROM CartItems WHERE CartItemID = @CartItemID";
-            SqlParameter[] checkParams = { new SqlParameter("@CartItemID", cartItemId) };
-            object cartItem = db.executeScalar(checkExistSql, checkParams);
-
-            if (cartItem != null)
-            {
-                string sql = "DELETE FROM CartItems WHERE CartItemID = @CartItemID";
-                SqlParameter[] parameters = { new SqlParameter("@CartItemID", cartItemId) };
-                db.execute(sql, parameters);
-            }
-
+            _cartFacade.RemoveFromCart(cartItemId);
             return RedirectToAction("ShowCart");
         }
 
-        private int GetOrCreateCart(int userId)
-        {
-            string checkCartSql = "SELECT CartID FROM Carts WHERE UserID = @UserID";
-            SqlParameter[] checkParams = { new SqlParameter("@UserID", userId) };
-            object cartIdObj = db.executeScalar(checkCartSql, checkParams);
-
-            if (cartIdObj != null)
-            {
-                return Convert.ToInt32(cartIdObj);
-            }
-
-            string createCartSql = "INSERT INTO Carts (UserID) OUTPUT INSERTED.CartID VALUES (@UserID)";
-            SqlParameter[] createParams = { new SqlParameter("@UserID", userId) };
-            return Convert.ToInt32(db.executeScalar(createCartSql, createParams));
-        }
         [HttpGet]
         public ActionResult CheckOut()
         {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("DangNhap", "Home");
+            }
+
             int userId = Convert.ToInt32(Session["UserID"]);
+            var db = new DataModel(); // Tạm thời dùng để lấy địa chỉ, có thể thêm vào Facade sau
             string addressSql = "SELECT Addresses FROM Users WHERE UserID = @UserID";
             SqlParameter[] addressParams = { new SqlParameter("@UserID", userId) };
             ArrayList addressList = db.get(addressSql, addressParams);
@@ -178,22 +91,7 @@ namespace WebHasaki.Controllers
             }
 
             string userAddress = ((ArrayList)addressList[0])[0]?.ToString();
-            int cartId = GetOrCreateCart(userId);
-            string cartSql = "SELECT Products.ProductName, CartItems.Quantity, CartItems.Price, Products.Image " +
-                             "FROM CartItems " +
-                             "INNER JOIN Products ON CartItems.ProductID = Products.ProductID " +
-                             "WHERE CartItems.CartID = @CartID";
-            SqlParameter[] cartParams = { new SqlParameter("@CartID", cartId) };
-            ArrayList cartArrayList = db.get(cartSql, cartParams);
-
-            var cartItems = cartArrayList.Cast<ArrayList>().Select(item => new CartItemViewModel
-            {
-                ProductName = item[0]?.ToString() ?? "",
-                Quantity = Convert.ToInt32(item[1]),
-                Price = Convert.ToDecimal(item[2]),
-                ImageUrl = item[3]?.ToString() ?? ""
-            }).ToList();
-
+            var cartItems = _cartFacade.ShowCart(userId);
             decimal totalAmount = cartItems.Sum(item => item.Total);
 
             ViewBag.UserAddress = userAddress;
@@ -203,98 +101,26 @@ namespace WebHasaki.Controllers
             return View();
         }
 
-
         [HttpPost]
         public ActionResult CheckOut(string userAddress)
         {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("DangNhap", "Home");
+            }
+
             try
             {
                 int userId = Convert.ToInt32(Session["UserID"]);
-                int cartId = GetOrCreateCart(userId);
+                var result = _cartFacade.Checkout(userId, userAddress);
 
-                string cartSql = "SELECT ProductID, Quantity, Price FROM CartItems WHERE CartID = @CartID";
-                SqlParameter[] cartParams = { new SqlParameter("@CartID", cartId) };
-                ArrayList cartItems = db.get(cartSql, cartParams);
-
-                if (cartItems.Count == 0)
+                if (!result.Success)
                 {
-                    ViewBag.ErrorMessage = "Giỏ hàng trống!";
+                    ViewBag.ErrorMessage = result.Message;
                     return RedirectToAction("ShowCart");
                 }
 
-                decimal totalAmount = cartItems.Cast<ArrayList>().Sum(item => Convert.ToInt32(item[1]) * Convert.ToDecimal(item[2]));
-
-                using (SqlConnection connection = new SqlConnection(DataModel.connectionString))
-                {
-                    connection.Open();
-                    SqlTransaction transaction = connection.BeginTransaction();
-
-                    try
-                    {
-                        string orderSql = "INSERT INTO Orders (UserID, TotalAmount, Status, OrderDate) OUTPUT INSERTED.OrderID VALUES (@UserID, @TotalAmount, @Status, GETDATE())";
-                        SqlCommand orderCommand = new SqlCommand(orderSql, connection, transaction);
-                        orderCommand.Parameters.AddWithValue("@UserID", userId);
-                        orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmount);
-                        orderCommand.Parameters.AddWithValue("@Status", "Processing");
-                        int orderId = (int)orderCommand.ExecuteScalar();
-
-                        // Kiểm tra orderId trước khi sử dụng
-                        if (orderId <= 0)
-                        {
-                            transaction.Rollback();
-                            ViewBag.ErrorMessage = "Lỗi: Không tạo được đơn hàng.";
-                            return RedirectToAction("ShowCart");
-                        }
-
-                        foreach (ArrayList item in cartItems)
-                        {
-                            int productId = Convert.ToInt32(item[0]);
-                            int quantity = Convert.ToInt32(item[1]);
-                            decimal price = Convert.ToDecimal(item[2]);
-
-                            string stockCheckSql = "SELECT Stock FROM Products WHERE ProductID = @ProductID";
-                            SqlCommand stockCheckCommand = new SqlCommand(stockCheckSql, connection, transaction);
-                            stockCheckCommand.Parameters.AddWithValue("@ProductID", productId);
-                            int stock = (int)stockCheckCommand.ExecuteScalar();
-
-                            if (stock < quantity)
-                            {
-                                transaction.Rollback();
-                                ViewBag.ErrorMessage = $"Sản phẩm {productId} không đủ số lượng trong kho.";
-                                return RedirectToAction("ShowCart");
-                            }
-
-                            string orderDetailSql = "INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price) VALUES (@OrderID, @ProductID, @Quantity, @Price)";
-                            SqlCommand orderDetailCommand = new SqlCommand(orderDetailSql, connection, transaction);
-                            orderDetailCommand.Parameters.AddWithValue("@OrderID", orderId);
-                            orderDetailCommand.Parameters.AddWithValue("@ProductID", productId);
-                            orderDetailCommand.Parameters.AddWithValue("@Quantity", quantity);
-                            orderDetailCommand.Parameters.AddWithValue("@Price", price);
-                            orderDetailCommand.ExecuteNonQuery();
-
-                            string updateStockSql = "UPDATE Products SET Stock = Stock - @Quantity WHERE ProductID = @ProductID";
-                            SqlCommand updateStockCommand = new SqlCommand(updateStockSql, connection, transaction);
-                            updateStockCommand.Parameters.AddWithValue("@Quantity", quantity);
-                            updateStockCommand.Parameters.AddWithValue("@ProductID", productId);
-                            updateStockCommand.ExecuteNonQuery();
-                        }
-
-                        string deleteCartItemsSql = "DELETE FROM CartItems WHERE CartID = @CartID";
-                        SqlCommand deleteCartItemsCommand = new SqlCommand(deleteCartItemsSql, connection, transaction);
-                        deleteCartItemsCommand.Parameters.AddWithValue("@CartID", cartId);
-                        deleteCartItemsCommand.ExecuteNonQuery();
-
-                        transaction.Commit();
-                        return RedirectToAction("OrderTracking", new { orderId = orderId });
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        Console.WriteLine($"Transaction Error: {ex.Message} - StackTrace: {ex.StackTrace}");
-                        ViewBag.ErrorMessage = "Có lỗi xảy ra khi xử lý thanh toán: " + ex.Message;
-                        return RedirectToAction("ShowCart");
-                    }
-                }
+                return RedirectToAction("OrderTracking", new { orderId = result.OrderId });
             }
             catch (Exception ex)
             {
@@ -303,7 +129,7 @@ namespace WebHasaki.Controllers
             }
         }
 
-        public ActionResult OrderList()
+    public ActionResult OrderList()
         {
             if (Session["UserID"] == null)
             {

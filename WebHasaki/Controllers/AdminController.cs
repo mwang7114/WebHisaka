@@ -8,15 +8,16 @@ using WebHasaki.Models;
 using PagedList;
 using System.Dynamic;
 using System.Data.SqlClient;
+using WebHasaki.DesignPattern;
 
 namespace WebHasaki.Controllers
 {
     public class AdminController : Controller
     {
+        DataModel db = new DataModel();
+
         public ActionResult Dashboard()
         {
-            DataModel db = new DataModel();
-
             string sqlDailyViews = @"
     SELECT SUM(ViewCount) 
     FROM DailyViews
@@ -81,7 +82,6 @@ namespace WebHasaki.Controllers
         }
         public ActionResult Products(int? page)
         {
-            DataModel db = new DataModel();
             string sql = @" SELECT p.ProductID, p.ProductName, c.CategoryName, b.BrandName ,p.Price, p.PriceSale, p.Description, p.Stock, p.CreatedAt, p.UpdatedAt, p.Image
                             FROM Products p
                             JOIN Categories c ON p.CategoryID = c.CategoryID
@@ -90,7 +90,9 @@ namespace WebHasaki.Controllers
             ArrayList productsData = db.get(sql);
             List<dynamic> productList = new List<dynamic>();
 
-            foreach (var item in productsData)
+            IIterator iterator = new ArrayListIterator(productsData);
+            var item = iterator.First();
+            while (!iterator.IsDone)
             {
                 if (item is ArrayList row)
                 {
@@ -109,6 +111,7 @@ namespace WebHasaki.Controllers
 
                     productList.Add(product);
                 }
+                item = iterator.Next();
             }
 
             int pageSize = 6;
@@ -117,14 +120,15 @@ namespace WebHasaki.Controllers
 
             return View(pagedProducts);
         }
+
         public ActionResult Brands(int? page)
         {
-            DataModel db = new DataModel();
             string sql = "SELECT BrandID, BrandName, Description, Image, Status, CreatedAt FROM Brands";
             ArrayList brandsData = db.get(sql);
             List<dynamic> brandList = new List<dynamic>();
 
-            foreach (var item in brandsData)
+            IIterator iterator = new ArrayListIterator(brandsData);
+            iterator.ForEachItem(item =>
             {
                 if (item is ArrayList row)
                 {
@@ -138,7 +142,7 @@ namespace WebHasaki.Controllers
 
                     brandList.Add(brand);
                 }
-            }
+            });
 
             int pageSize = 6;
             int pageNumber = (page ?? 1);
@@ -146,19 +150,20 @@ namespace WebHasaki.Controllers
 
             return View(pagedBrands);
         }
+
         public ActionResult Orders(int? page)
         {
-            DataModel db = new DataModel();
             string sql = @"
-SELECT o.OrderID, u.FullName, o.TotalAmount, o.Status, u.Addresses, o.OrderDate
-FROM Orders o
-JOIN Users u ON o.UserID = u.UserID";
-
+                SELECT o.OrderID, u.FullName, o.TotalAmount, o.Status, u.Addresses, o.OrderDate
+                FROM Orders o
+                JOIN Users u ON o.UserID = u.UserID";
 
             ArrayList ordersData = db.get(sql);
             List<dynamic> ordersList = new List<dynamic>();
 
-            foreach (var item in ordersData)
+            IIterator iterator = new ArrayListIterator(ordersData);
+            var item = iterator.First();
+            while (!iterator.IsDone)
             {
                 if (item is ArrayList row)
                 {
@@ -172,6 +177,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
                     ordersList.Add(order);
                 }
+                item = iterator.Next();
             }
 
             int pageSize = 6;
@@ -180,18 +186,17 @@ JOIN Users u ON o.UserID = u.UserID";
 
             return View(pagedOrders);
         }
-        
+
         public ActionResult Promotions(int? page)
         {
-            DataModel db = new DataModel();
             string sql = @"
-    SELECT PromotionID, PromotionName, DiscountPercentage, StartDate, EndDate, Description
-    FROM Promotions";
+                SELECT PromotionID, PromotionName, DiscountPercentage, StartDate, EndDate, Description
+                FROM Promotions";
             ArrayList promotionsData = db.get(sql);
-
             List<dynamic> promotionsList = new List<dynamic>();
 
-            foreach (var item in promotionsData)
+            IIterator iterator = new ArrayListIterator(promotionsData);
+            iterator.ForEachItem(item =>
             {
                 if (item is ArrayList row)
                 {
@@ -205,7 +210,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
                     promotionsList.Add(promotion);
                 }
-            }
+            });
 
             int pageSize = 6;
             int pageNumber = (page ?? 1);
@@ -213,18 +218,21 @@ JOIN Users u ON o.UserID = u.UserID";
 
             return View(pagedPromotions);
         }
+
         public ActionResult ProductPromotions(int? page)
         {
-            DataModel db = new DataModel();
             string sql = @"
-    SELECT pp.ProductPromotionID, p.ProductName, pr.PromotionName, pr.StartDate, pr.EndDate
-    FROM ProductPromotions pp
-    JOIN Products p ON pp.ProductID = p.ProductID
-    JOIN Promotions pr ON pp.PromotionID = pr.PromotionID";
+                SELECT pp.ProductPromotionID, p.ProductName, pr.PromotionName, pr.StartDate, pr.EndDate
+                FROM ProductPromotions pp
+                JOIN Products p ON pp.ProductID = p.ProductID
+                JOIN Promotions pr ON pp.PromotionID = pr.PromotionID";
 
             ArrayList productPromotionsData = db.get(sql);
             List<dynamic> productPromotionsList = new List<dynamic>();
-            foreach (var item in productPromotionsData)
+
+            IIterator iterator = new ArrayListIterator(productPromotionsData);
+            var item = iterator.First();
+            while (!iterator.IsDone)
             {
                 if (item is ArrayList row)
                 {
@@ -237,6 +245,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
                     productPromotionsList.Add(productPromotion);
                 }
+                item = iterator.Next();
             }
 
             int pageSize = 6;
@@ -245,19 +254,20 @@ JOIN Users u ON o.UserID = u.UserID";
 
             return View(pagedProductPromotions);
         }
+
         public ActionResult Reviews(int? page)
         {
-            DataModel db = new DataModel();
             string sql = @"
-    SELECT r.ReviewID, p.ProductName, u.FullName, r.Rating, r.Comment, r.ReviewDate
-    FROM Reviews r
-    JOIN Products p ON r.ProductID = p.ProductID
-    JOIN Users u ON r.UserID = u.UserID";
+                SELECT r.ReviewID, p.ProductName, u.FullName, r.Rating, r.Comment, r.ReviewDate
+                FROM Reviews r
+                JOIN Products p ON r.ProductID = p.ProductID
+                JOIN Users u ON r.UserID = u.UserID";
 
             ArrayList reviewsData = db.get(sql);
             List<dynamic> reviewsList = new List<dynamic>();
 
-            foreach (var item in reviewsData)
+            IIterator iterator = new ArrayListIterator(reviewsData);
+            iterator.ForEachItem(item =>
             {
                 if (item is ArrayList row)
                 {
@@ -271,7 +281,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
                     reviewsList.Add(review);
                 }
-            }
+            });
 
             int pageSize = 6;
             int pageNumber = (page ?? 1);
@@ -282,16 +292,16 @@ JOIN Users u ON o.UserID = u.UserID";
 
         public ActionResult Users(int? page)
         {
-            DataModel db = new DataModel();
-
             string sql = @"
-        SELECT UserID, FullName, Email, PhoneNumber, Gender, DOB,Addresses, Role, CreatedAt 
-        FROM Users";
+                SELECT UserID, FullName, Email, PhoneNumber, Gender, DOB, Addresses, Role, CreatedAt 
+                FROM Users";
 
             ArrayList usersData = db.get(sql);
             List<dynamic> usersList = new List<dynamic>();
 
-            foreach (var item in usersData)
+            IIterator iterator = new ArrayListIterator(usersData);
+            var item = iterator.First();
+            while (!iterator.IsDone)
             {
                 if (item is ArrayList row)
                 {
@@ -308,6 +318,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
                     usersList.Add(user);
                 }
+                item = iterator.Next();
             }
 
             int pageSize = 6;
@@ -316,6 +327,7 @@ JOIN Users u ON o.UserID = u.UserID";
 
             return View(pagedUsers);
         }
+
         public ActionResult SignOut()
         {
             Session.Clear();

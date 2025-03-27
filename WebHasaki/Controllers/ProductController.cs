@@ -8,16 +8,19 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebHasaki.DesignPattern;
 using WebHasaki.Models;
 
 namespace WebHasaki.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : ControllerTemplateMethod
     {
+        DataModel db = new DataModel();
+
         public ActionResult CreateProduct()
         {
-            DataModel db = new DataModel();
-
+            PrintInformation();
+            LogAction(nameof(CreateProduct));
             string categorySql = @"SELECT CategoryID, CategoryName FROM Categories";
             ArrayList categoryData = db.get(categorySql);
             string brandSql = @"SELECT BrandID, BrandName FROM Brands";
@@ -68,9 +71,9 @@ namespace WebHasaki.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProduct(FormCollection form, HttpPostedFileBase image)
         {
+            LogAction(nameof(CreateProduct));
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
 
                 string productName = form["productName"];
                 int categoryId = Convert.ToInt32(form["categoryId"]);
@@ -114,7 +117,6 @@ namespace WebHasaki.Controllers
 
         public ActionResult EditProduct(int productId)
         {
-            DataModel db = new DataModel();
             string sql = @"SELECT ProductID, ProductName, CategoryID, BrandID, Price, PriceSale, Description, Stock, Image FROM Products WHERE ProductID = @ProductID";
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -173,7 +175,6 @@ namespace WebHasaki.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataModel db = new DataModel();
                 string sql = @"UPDATE Products 
                            SET ProductName = @ProductName, CategoryID = @CategoryID, BrandID = @BrandID, 
                                Price = @Price, PriceSale = @PriceSale, Description = @Description, Stock = @Stock, 
@@ -202,7 +203,6 @@ namespace WebHasaki.Controllers
 
         public ActionResult DeleteProduct(int productId)
         {
-            DataModel db = new DataModel();
             try
             {
                 var orderController = new OrderController();
@@ -230,5 +230,25 @@ namespace WebHasaki.Controllers
             }
 
         }
+
+        protected override void PrintRoutes()
+        {
+            System.Diagnostics.Debug.WriteLine($@"[ROUTES] {GetType().Name} supports:
+            GET: /Product/CreateProduct
+            POST: /Product/CreateProduct
+            GET: /Product/EditProduct/{{id}}
+            POST: /Product/EditProduct/{{id}}
+            GET: /Product/DeleteProduct/{{id}}");
+        }
+
+        protected override void PrintDIs()
+        {
+            System.Diagnostics.Debug.WriteLine(@"[DEPENDENCIES] 
+            DataModel (Database access)
+            OrderController
+            ReviewController
+            PromotionController");
+        }
+
     }
 }
