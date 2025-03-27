@@ -28,7 +28,7 @@
 
 .input-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Tăng để có chỗ cho lỗi */
 }
 
     .input-group input {
@@ -69,14 +69,12 @@
     font-size: 12px;
     margin-top: 5px;
     display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: static; /* Thay vì absolute để tránh lỗi định vị */
     width: 100%;
     box-sizing: border-box;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s ease, visibility 0s 0.3s; 
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
 
 .input-group.error .error-message {
@@ -85,7 +83,11 @@
     transition: opacity 0.3s ease, visibility 0s 0s;
 }
 
-
+.select-group .error-message {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0s 0s;
+}
 
 .gender-group,
 .select-group,

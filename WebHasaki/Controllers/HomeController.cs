@@ -7,13 +7,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using WebHasaki.DesignPattern;
 using WebHasaki.Models;
+using static System.Web.Razor.Parser.SyntaxConstants;
 
 
 namespace WebHasaki.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IRegistrationService _registrationService;
+
+        // Constructor không tham số
+        public HomeController()
+        {
+            _registrationService = new RegistrationProxy(); // Khởi tạo thủ công
+        }
+
+        // Constructor có tham số (giữ lại để dùng với DI sau này)
+        public HomeController(IRegistrationService registrationService)
+        {
+            _registrationService = registrationService;
+        }
         public ActionResult TrangChu()
         {
 
@@ -108,42 +123,72 @@ namespace WebHasaki.Controllers
             return View("DangNhap");
         }
 
-
-
-
         public ActionResult DangKy()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult XuLyDangKy(string password, string hoten, string email, string gender, string sdt, string dobDay, string dobMonth, string dobYear,string diachi)
-        {
-            string dob = $"{dobYear}-{dobMonth}-{dobDay}";
 
-            DataModel db = new DataModel();
-            string sql = $"EXEC XULYDANGKY N'{email}', N'{password}', N'{hoten}', N'{sdt}', N'{gender}',N'{diachi}', '{dob}'";
+
+
+
+
+        [HttpPost]
+        public ActionResult XuLyDangKy(string password, string hoten, string email, string gender, string sdt, string dobDay, string dobMonth, string dobYear, string diachi)
+        {
+            // Kiểm tra các giá trị đầu vào trước khi tạo dob
+            if (string.IsNullOrEmpty(dobYear) || string.IsNullOrEmpty(dobMonth) || string.IsNullOrEmpty(dobDay))
+            {
+                ViewBag.Error = "Vui lòng nhập đầy đủ ngày sinh.";
+                return View("DangKy");
+            }
+
+            // Đảm bảo định dạng đúng (thêm số 0 nếu cần)
+            if (!int.TryParse(dobDay, out int day) || !int.TryParse(dobMonth, out int month) || !int.TryParse(dobYear, out int year))
+            {
+                ViewBag.Error = "Ngày sinh không hợp lệ.";
+                return View("DangKy");
+            }
+
+            string dob = $"{dobYear}-{dobMonth.PadLeft(2, '0')}-{dobDay.PadLeft(2, '0')}";
+            System.Diagnostics.Debug.WriteLine($"DOB sent to Proxy: {dob}");
 
             try
             {
-                ArrayList response = db.get(sql);
+                var response = _registrationService.RegisterUser(email, password, hoten, sdt, gender, diachi, dob);
                 bool hasError = false;
-                foreach (ArrayList row in response)
-                {
-                    string field = row[0]?.ToString();
-                    string message = row[1]?.ToString();
 
+                // Duyệt qua tất cả lỗi trước
+                foreach (var (field, message) in response)
+                {
                     if (!string.IsNullOrEmpty(field) && !string.IsNullOrEmpty(message))
                     {
+                        System.Diagnostics.Debug.WriteLine($"Setting ViewData[{field}Error] = {message}");
                         ViewData[$"{field}Error"] = message;
                         hasError = true;
                     }
                 }
 
+                // Chỉ chuyển hướng nếu không có lỗi
+                if (!hasError)
+                {
+                    foreach (var (field, message) in response)
+                    {
+                        if (message == "Đăng ký thành công.")
+                        {
+                            return RedirectToAction("DangNhap", "Home");
+                        }
+                    }
+                }
+
+                // Nếu có lỗi, trả về view DangKy
                 if (hasError)
                 {
+                    System.Diagnostics.Debug.WriteLine("Returning DangKy view with errors");
                     return View("DangKy");
                 }
-                return RedirectToAction("DangNhap", "Home");
+
+                ViewBag.Error = "Không nhận được phản hồi rõ ràng từ hệ thống.";
+                return View("DangKy");
             }
             catch (Exception ex)
             {

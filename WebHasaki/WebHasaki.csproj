@@ -164,6 +164,7 @@
     <Compile Include="DesignPattern\ControllerTemplateMethod.cs" />
     <Compile Include="DesignPattern\ArrayListIterator.cs" />
     <Compile Include="DesignPattern\IProductPrototype.cs" />
+    <Compile Include="DesignPattern\ProtectionProxy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

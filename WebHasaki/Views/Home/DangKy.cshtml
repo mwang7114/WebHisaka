@@ -6,15 +6,19 @@
 <head>
     <title>Đăng ký tài khoản</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="~/Content/CSS/User/cssdangky.css" rel="stylesheet" />
+    <link href="~/Content/CSS/User/cssdangky.css?v=1" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
         <h2>Đăng ký tài khoản</h2>
         <form action="@Url.Action("XuLyDangKy", "Home")" method="post">
-            <div class="input-group @(ViewData["EmailError"] != null ? "error" : "")">
+            <div class="input-group @(ViewData["GeneralError"] != null || ViewData["EmailError"] != null ? "error" : "")">
                 <input type="email" name="email" placeholder="Nhập email" value="@Request["email"]" required />
                 <i class="fas fa-envelope"></i>
+                @if (ViewData["GeneralError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["GeneralError"]</span>
+                }
                 @if (ViewData["EmailError"] != null)
                 {
                     <span class="text-danger error-message">@ViewData["EmailError"]</span>
@@ -39,24 +43,29 @@
                 }
             </div>
 
-            <div class="input-group @(ViewData["HotenError"] != null ? "error" : "")">
+            <div class="input-group @(ViewData["FullNameError"] != null ? "error" : "")">
                 <input type="text" name="hoten" placeholder="Họ tên" value="@Request["hoten"]" required />
                 <i class="fas fa-user"></i>
-                @if (ViewData["HotenError"] != null)
+                @if (ViewData["FullNameError"] != null)
                 {
-                    <span class="text-danger error-message">@ViewData["HotenError"]</span>
+                    <span class="text-danger error-message">@ViewData["FullNameError"]</span>
                 }
             </div>
-            <div class="input-group @(ViewData["DiaChiError"] != null ? "error" : "")">
+
+            <div class="input-group @(ViewData["DiaChiError"] != null || ViewData["AddressesError"] != null ? "error" : "")">
                 <input type="text" name="diachi" placeholder="Địa chỉ" value="@Request["diachi"]" required />
                 <i class="fas fa-map-marker-alt"></i>
                 @if (ViewData["DiaChiError"] != null)
                 {
                     <span class="text-danger error-message">@ViewData["DiaChiError"]</span>
                 }
+                @if (ViewData["AddressesError"] != null)
+                {
+                    <span class="text-danger error-message">@ViewData["AddressesError"]</span>
+                }
             </div>
 
-            <div class="gender-group">
+            <div class="gender-group @(ViewData["GenderError"] != null ? "error" : "")">
                 <label><input type="radio" name="gender" value="Khác" @(Request["gender"] == "Khác" ? "checked" : "") required> Khác</label>
                 <label><input type="radio" name="gender" value="Nam" @(Request["gender"] == "Nam" ? "checked" : "") required> Nam</label>
                 <label><input type="radio" name="gender" value="Nữ" @(Request["gender"] == "Nữ" ? "checked" : "") required> Nữ</label>
@@ -66,7 +75,7 @@
                 }
             </div>
 
-            <div class="select-group">
+            <div class="select-group @(ViewData["DOBError"] != null ? "error" : "")">
                 <select name="dobDay" required>
                     <option value="">Ngày</option>
                     @for (int day = 1; day <= 31; day++)
@@ -113,6 +122,5 @@
             </div>
         </form>
     </div>
-
 </body>
 </html>
