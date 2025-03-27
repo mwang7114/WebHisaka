@@ -289,7 +289,14 @@ table {
         background-color: #a71d2a;
     }
 
+    .action-icons .duplicate {
+        background-color: #007bff;
+        color: #fff;
+    }
 
+        .action-icons .duplicate:hover {
+            background-color: #0056b3;
+        }
 .pagination {
     display: flex;
     justify-content: center;

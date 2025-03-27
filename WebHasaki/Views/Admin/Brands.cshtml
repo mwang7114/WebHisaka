@@ -7,21 +7,21 @@
 <div class="breadcrumb">
     <a href="#">Pages</a> / <a href="#">Brands</a>
 </div>
-<div class="title">Brands</div>
+<div class="title">Quản lý thương hiệu</div>
 
 <div class="header-btn">
-    <button onclick="window.location='@Url.Action("CreateBrand", "Brand")'" class="add-button">ADD BRAND</button>
+    <button onclick="window.location='@Url.Action("CreateBrand", "Brand")'" class="add-button">THÊM THƯƠNG HIỆU</button>
 </div>
 <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>BRAND NAME</th>
-                <th>IMAGE</th>
-                <th>DESCRIPTION</th>
-                <th>STATUS</th>
-                <th>CREATED</th>
-                <th>ACTION</th>
+                <th>TÊN THƯƠNG HIỆU</th>
+                <th>HÌNH ẢNH</th>
+                <th>MÔ TẢ</th>
+                <th>TRẠNG THÁI</th>
+                <th>NGÀY TẠO</th>
+                <th>HÀNH ĐỘNG</th>
             </tr>
         </thead>
         <tbody>
@@ -51,10 +51,10 @@
 
                     <td class="action-icons">
                         <a href="@Url.Action("EditBrand", "Brand", new { brandId = brand.BrandID })" class="edit">
-                            <i class="fas fa-edit"></i> Edit
+                            <i class="fas fa-edit"></i> Chỉnh sửa
                         </a>
                         <a href="javascript:void(0);" class="delete" data-brandId="@brand.BrandID" onclick="confirmDelete(@brand.BrandID)">
-                            <i class="fas fa-trash"></i> Delete
+                            <i class="fas fa-trash"></i> Xóa
                         </a>
                     </td>
                 </tr>

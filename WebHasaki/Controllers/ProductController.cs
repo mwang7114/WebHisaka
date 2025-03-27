@@ -74,7 +74,6 @@ namespace WebHasaki.Controllers
             LogAction(nameof(CreateProduct));
             if (ModelState.IsValid)
             {
-
                 string productName = form["productName"];
                 int categoryId = Convert.ToInt32(form["categoryId"]);
                 int brandId = Convert.ToInt32(form["brandId"]);
@@ -82,15 +81,15 @@ namespace WebHasaki.Controllers
                 decimal? priceSale = string.IsNullOrEmpty(form["priceSale"]) ? (decimal?)null : Convert.ToDecimal(form["priceSale"]);
                 string description = form["description"];
                 int stock = Convert.ToInt32(form["stock"]);
+                string existingImage = form["existingImage"]; // Lấy đường dẫn hình ảnh cũ từ form
 
-                string imagePath = string.Empty;
+                string imagePath = existingImage ?? string.Empty; // Sử dụng hình ảnh cũ nếu không có hình ảnh mới
                 if (image != null && image.ContentLength > 0)
                 {
                     var fileName = Path.GetFileName(image.FileName);
                     var path = Path.Combine(Server.MapPath("~/Content/Images/"), fileName);
                     image.SaveAs(path);
-
-                    imagePath = "/Content/Images/" + fileName;
+                    imagePath = "/Content/Images/" + fileName; // Nếu có hình ảnh mới, ghi đè imagePath
                 }
 
                 SqlParameter[] parameters = new SqlParameter[]
@@ -248,6 +247,90 @@ namespace WebHasaki.Controllers
             OrderController
             ReviewController
             PromotionController");
+        }
+
+        public ActionResult CloneProduct(int productId)
+        {
+            string sql = @"SELECT ProductID, ProductName, CategoryID, BrandID, Price, PriceSale, Description, Stock, Image 
+                   FROM Products WHERE ProductID = @ProductID";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+        new SqlParameter("@ProductID", productId)
+            };
+
+            ArrayList productData = db.get(sql, parameters);
+            if (productData == null || productData.Count == 0)
+            {
+                return HttpNotFound();
+            }
+
+            var row = productData[0] as ArrayList;
+            if (row == null)
+            {
+                throw new InvalidOperationException("productData[0] is not an ArrayList");
+            }
+
+            // Kiểm tra và ép kiểu an toàn
+            var prototype = new ProductPrototype
+            {
+                ProductName = row[1]?.ToString() ?? string.Empty,
+                CategoryID = row[2] != null && int.TryParse(row[2].ToString(), out int categoryId) ? categoryId : 0,
+                BrandID = row[3] != null && int.TryParse(row[3].ToString(), out int brandId) ? brandId : 0,
+                Price = row[4] != null && decimal.TryParse(row[4].ToString(), out decimal price) ? price : 0,
+                PriceSale = row[5] == DBNull.Value ? (decimal?)null : (row[5] != null && decimal.TryParse(row[5].ToString(), out decimal priceSale) ? (decimal?)priceSale : null),
+                Description = row[6]?.ToString() ?? string.Empty,
+                Stock = row[7] != null && int.TryParse(row[7].ToString(), out int stock) ? stock : 0,
+                Image = row[8]?.ToString() ?? string.Empty
+            };
+
+            var clonedProduct = (ProductPrototype)prototype.Clone();
+
+            string categorySql = @"SELECT CategoryID, CategoryName FROM Categories";
+            ArrayList categoryData = db.get(categorySql);
+            string brandSql = @"SELECT BrandID, BrandName FROM Brands";
+            ArrayList brandData = db.get(brandSql);
+
+            var categories = new List<SelectListItem>();
+            var brands = new List<SelectListItem>();
+
+            if (categoryData != null && categoryData.Count > 0)
+            {
+                foreach (var item in categoryData)
+                {
+                    var category = item as ArrayList;
+                    if (category != null && category.Count >= 2)
+                    {
+                        categories.Add(new SelectListItem
+                        {
+                            Value = category[0]?.ToString(),
+                            Text = category[1]?.ToString(),
+                            Selected = category[0]?.ToString() == prototype.CategoryID.ToString()
+                        });
+                    }
+                }
+            }
+
+            if (brandData != null && brandData.Count > 0)
+            {
+                foreach (var item in brandData)
+                {
+                    var brand = item as ArrayList;
+                    if (brand != null && brand.Count >= 2)
+                    {
+                        brands.Add(new SelectListItem
+                        {
+                            Value = brand[0]?.ToString(),
+                            Text = brand[1]?.ToString(),
+                            Selected = brand[0]?.ToString() == prototype.BrandID.ToString()
+                        });
+                    }
+                }
+            }
+
+            ViewBag.Categories = categories;
+            ViewBag.Brands = brands;
+
+            return View("CloneProduct", clonedProduct);
         }
 
     }

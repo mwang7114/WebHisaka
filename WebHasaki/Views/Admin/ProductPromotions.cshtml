@@ -9,21 +9,21 @@
 <div class="breadcrumb">
     <a href="#">Pages</a> / <a href="#">Product Promotions</a>
 </div>
-<div class="title">Product Promotions</div>
+<div class="title">Quản lý sản phẩm khuyến mãi</div>
 <div class="header-btn">
-    <button onclick="window.location='@Url.Action("CreateProductPromotion", "ProductPromotions")'" class="add-button">ADD PRODUCT PROMOTIONS</button>
+    <button onclick="window.location='@Url.Action("CreateProductPromotion", "ProductPromotions")'" class="add-button">THÊM SẢN PHẨM KHUYẾN MÃI</button>
 </div>
 <div class="table-container">
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>PRODUCT NAME</th>
-                <th>PROMOTION NAME</th>
-                <th>START DATE</th>
-                <th>END DATE</th>
-                <th>STATUS</th>
-                <th>ACTION</th>
+                <th>TÊN SẢN PHẨM</th>
+                <th>TÊN CHƯƠNG TRÌNH</th>
+                <th>NGÀY BẮT ĐẦU</th>
+                <th>NGÀY KẾT THÚC</th>
+                <th>TRẠNG THÁI</th>
+                <th>HÀNH ĐỘNG</th>
             </tr>
         </thead>
         <tbody>
@@ -40,23 +40,23 @@
                         <td>
                             @if (DateTime.Now < DateTime.Parse(pp.StartDate.ToString()))
                             {
-                                <span class="status-promotion upcoming">Upcoming</span>
+                                <span class="status-promotion upcoming">Sắp diễn ra</span>
                             }
                             else if (DateTime.Now > DateTime.Parse(pp.EndDate.ToString()))
                             {
-                                <span class="status-promotion expired">Expired</span>
+                        <span class="status-promotion expired">Đã kết thúc</span>
                             }
                             else
                             {
-                                <span class="status-promotion active">Active</span>
+                        <span class="status-promotion active">Đang hoạt động</span>
                             }
                         </td>
                         <td class="action-icons">
                             <a href="@Url.Action("EditProductPromotion", "ProductPromotions", new { productPromotionId = pp.ProductPromotionID })" class="edit">
-                                <i class="fas fa-edit"></i> Edit
+                                <i class="fas fa-edit"></i> Chỉnh sửa
                             </a>
                             <a href="javascript:void(0);" class="delete" data-productPromotionId="@pp.ProductPromotionID" onclick="confirmDelete(@pp.ProductPromotionID)">
-                                <i class="fas fa-trash"></i> Delete
+                                <i class="fas fa-trash"></i> Xóa
                             </a>
                         </td>
                     </tr>

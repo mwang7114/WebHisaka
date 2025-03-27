@@ -7,18 +7,18 @@
 <div class="breadcrumb">
     <a href="#">Pages</a> / <a href="#">Reviews</a>
 </div>
-<div class="title">Reviews</div>
+<div class="title">Quản lý đánh giá</div>
 <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>REVIEW ID</th>
-                <th>PRODUCT</th>
-                <th>USER</th>
-                <th>RATING</th>
-                <th>COMMENT</th>
-                <th>REVIEW DATE</th>
-                <th>ACTION</th>
+                <th>ID</th>
+                <th>TÊN SẢN PHẨM</th>
+                <th>TÊN KHÁCH HÀNG</th>
+                <th>SỐ SAO ĐÁNH GIÁ</th>
+                <th>BÌNH LUẬN</th>
+                <th>NGÀY ĐÁNH GIÁ</th>
+                <th>HÀNH ĐỘNG</th>
             </tr>
         </thead>
         <tbody>
@@ -44,11 +44,11 @@
                         </td>
                         <td class="action-icons">
                             <a href="@Url.Action("ReviewDetail", "Review", new { reviewId = review.ReviewID })" class="view">
-                                <i class="fas fa-eye"></i> View
+                                <i class="fas fa-eye"></i> Xem
                             </a>
 
                             <a href="javascript:void(0);" class="delete" data-reviewId="@review.ReviewID" onclick="confirmDelete(@review.ReviewID)">
-                                <i class="fas fa-trash"></i> Delete
+                                <i class="fas fa-trash"></i> Xóa
                             </a>
                         </td>
                     </tr>

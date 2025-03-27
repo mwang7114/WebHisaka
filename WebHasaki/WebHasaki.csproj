@@ -163,6 +163,7 @@
     <Compile Include="DesignPattern\CategorySingleton.cs" />
     <Compile Include="DesignPattern\ControllerTemplateMethod.cs" />
     <Compile Include="DesignPattern\ArrayListIterator.cs" />
+    <Compile Include="DesignPattern\IProductPrototype.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -486,6 +487,7 @@
     <Content Include="Views\Cart\CheckOut.cshtml" />
     <Content Include="Views\Cart\OrderTracking.cshtml" />
     <Content Include="Views\Cart\OrderList.cshtml" />
+    <Content Include="Views\Product\CloneProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,19 +9,19 @@
 <div class="breadcrumb">
     <a href="#">Pages</a> / <a href="#">Categories</a>
 </div>
-<div class="title">Categories</div>
+<div class="title">Quản lý danh mục</div>
 <div class="header-btn">
-    <button onclick="window.location='@Url.Action("CreateCategory", "Categories")'" class="add-button">ADD CATEGORIES</button>
+    <button onclick="window.location='@Url.Action("CreateCategory", "Categories")'" class="add-button">THÊM DANH MỤC</button>
 </div>
 
 <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>CATEGORIES NAME</th>
-                <th>STATUS</th>
-                <th>CREATED</th>
-                <th>ACTION</th>
+                <th>TÊN DANH MỤC</th>
+                <th>TRẠNG THÁI</th>
+                <th>NGÀY TẠO</th>
+                <th>HÀNH ĐỘNG</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +46,10 @@
                     </td>
                     <td class="action-icons">
                         <a href="@Url.Action("EditCategory", "Categories", new { categoryId = category.CategoryID })" class="edit">
-                            <i class="fas fa-edit"></i> Edit
+                            <i class="fas fa-edit"></i> Chỉnh sửa
                         </a>
                         <a href="javascript:void(0);" class="delete" data-categoryId="@category.CategoryID" onclick="confirmDelete(@category.CategoryID)">
-                            <i class="fas fa-trash"></i> Delete
+                            <i class="fas fa-trash"></i> Xóa
                         </a>
                     </td>
                 </tr>

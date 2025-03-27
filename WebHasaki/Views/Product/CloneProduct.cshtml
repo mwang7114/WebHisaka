@@ -1,0 +1,172 @@
+﻿@model WebHasaki.DesignPattern.ProductPrototype
+
+@{
+    ViewBag.Title = "Nhân bản sản phẩm";
+}
+
+<style>
+    /* CSS tùy chỉnh cho CloneProduct */
+    .clone-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .clone-container h2 {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    .alert-info {
+        background-color: #e7f3fe;
+        border-color: #b3d7ff;
+        color: #31708f;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+
+    .btn-primary {
+        background-color: #28a745;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .image-preview {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+        .image-preview img {
+            max-width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #fff;
+        }
+
+    .button-group {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .button-group .btn {
+            margin: 0 10px;
+        }
+</style>
+
+<div class="clone-container">
+    <h2>Nhân bản sản phẩm</h2>
+
+    <div class="alert alert-info">
+        Bạn đang nhân bản một sản phẩm. Vui lòng chỉnh sửa thông tin nếu cần và lưu để tạo sản phẩm mới.
+    </div>
+
+    @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <!-- Trường ẩn để lưu đường dẫn hình ảnh cũ -->
+        <input type="hidden" name="existingImage" value="@Model.Image" />
+
+        <div class="form-group">
+            @Html.Label("Tên sản phẩm")
+            @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", Name = "productName" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Danh mục")
+            @Html.DropDownList("categoryId", ViewBag.Categories as List<SelectListItem>, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Thương hiệu")
+            @Html.DropDownList("brandId", ViewBag.Brands as List<SelectListItem>, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Giá")
+            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", Name = "price" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Giá khuyến mãi (Tùy chọn)")
+            @Html.TextBoxFor(model => model.PriceSale, new { @class = "form-control", Name = "priceSale" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Mô tả")
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", Name = "description", rows = "5" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Số lượng tồn kho")
+            @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", Name = "stock" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Hình ảnh")
+            <input type="file" name="image" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model?.Image))
+            {
+                <div class="image-preview">
+                    <img src="@Model.Image" alt="Hình ảnh hiện tại" />
+                </div>
+            }
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Lưu sản phẩm mới</button>
+            <a href="@Url.Action("Products", "Admin")" class="btn btn-secondary">Hủy</a>
+        </div>
+    }
+</div>

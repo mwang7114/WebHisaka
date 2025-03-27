@@ -9,23 +9,23 @@
 <div class="breadcrumb">
     <a href="#">Pages</a> / <a href="#">Products</a>
 </div>
-<div class="title">Products</div>
+<div class="title">Quản lý sản phẩm</div>
 <div class="header-btn">
-    <button onclick="window.location='@Url.Action("CreateProduct", "Product")'" class="add-button">ADD PRODUCT</button>
+    <button onclick="window.location='@Url.Action("CreateProduct", "Product")'" class="add-button">THÊM SẢN PHẨM</button>
 </div>
 <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>PRODUCT NAME</th>
-                <th>IMAGE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th>PRICE</th>
-                <th>PRICESALES</th>
-                <th>STOCK</th>
-                <th>CREATED</th>
-                <th>ACTION</th>
+                <th>TÊN SẢN PHẨM</th>
+                <th>HÌNH ẢNH</th>
+                <th>DANH MỤC</th>
+                <th>THƯƠNG HIỆU</th>
+                <th>GIÁ SALES</th>
+                <th>GIÁ GỐC</th>
+                <th>SỐ LƯỢNG</th>
+                <th>NGÀY TẠO</th>
+                <th>HÀNH ĐỘNG</th>
             </tr>
         </thead>
         <tbody>
@@ -66,11 +66,12 @@
 
                     <td class="action-icons">
                         <a href="@Url.Action("EditProduct", "Product", new { productId = product.ProductID })" class="edit">
-                            <i class="fas fa-edit"></i> Edit
+                            <i class="fas fa-edit"></i> Chỉnh sửa
                         </a>
                         <a href="javascript:void(0);" class="delete" data-productId="@product.ProductID" onclick="confirmDelete(@product.ProductID)">
-                            <i class="fas fa-trash"></i> Delete
+                            <i class="fas fa-trash"></i> Xóa
                         </a>
+                        <a href="@Url.Action("CloneProduct", "Product", new { productId = product.ProductID })" class="duplicate"><i class="fa fa-clone"></i>Nhân bản</a>
                     </td>
 
                 </tr>
