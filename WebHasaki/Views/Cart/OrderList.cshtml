@@ -73,6 +73,20 @@
                             rowCount++;
                         }
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Tạm tính:</strong></td>
+                            <td colspan="3">@((orderGroup.First().TotalAmount - orderGroup.First().ShippingFee).ToString("N0"))đ</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Phí vận chuyển:</strong></td>
+                            <td colspan="3">@(orderGroup.First().ShippingFee > 0 ? orderGroup.First().ShippingFee.ToString("N0") + "đ" : "Miễn phí")</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Tổng tiền:</strong></td>
+                            <td colspan="3">@orderGroup.First().TotalAmount.ToString("N0")đ</td>
+                        </tr>
+                    </tfoot>
                 </table>
             }
         }
@@ -98,6 +112,10 @@
 
         .order-table th {
             background-color: #f2f2f2;
+        }
+
+        .order-table tfoot td {
+            font-weight: bold;
         }
 
     .status {

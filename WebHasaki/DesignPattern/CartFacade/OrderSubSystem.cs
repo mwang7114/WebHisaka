@@ -13,7 +13,7 @@ public class OrderSubsystem
         _db = db;
     }
 
-    public CheckoutResult Checkout(int userId, int cartId, string userAddress)
+    public CheckoutResult Checkout(int userId, int cartId, string userAddress, decimal totalAmountWithShipping)
     {
         string cartSql = "SELECT ProductID, Quantity, Price FROM CartItems WHERE CartID = @CartID";
         SqlParameter[] cartParams = { new SqlParameter("@CartID", cartId) };
@@ -24,8 +24,6 @@ public class OrderSubsystem
             return new CheckoutResult { Success = false, Message = "Giỏ hàng trống!", OrderId = -1 };
         }
 
-        decimal totalAmount = cartItems.Cast<ArrayList>().Sum(item => Convert.ToInt32(item[1]) * Convert.ToDecimal(item[2]));
-
         using (SqlConnection connection = new SqlConnection(DataModel.connectionString))
         {
             connection.Open();
@@ -33,10 +31,11 @@ public class OrderSubsystem
 
             try
             {
+                // Sử dụng totalAmountWithShipping thay vì tính lại từ cartItems
                 string orderSql = "INSERT INTO Orders (UserID, TotalAmount, Status, OrderDate) OUTPUT INSERTED.OrderID VALUES (@UserID, @TotalAmount, @Status, GETDATE())";
                 SqlCommand orderCommand = new SqlCommand(orderSql, connection, transaction);
                 orderCommand.Parameters.AddWithValue("@UserID", userId);
-                orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmount);
+                orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmountWithShipping); // Lưu tổng tiền bao gồm phí vận chuyển
                 orderCommand.Parameters.AddWithValue("@Status", "Processing");
                 int orderId = (int)orderCommand.ExecuteScalar();
 
@@ -84,7 +83,7 @@ public class OrderSubsystem
                 deleteCartItemsCommand.ExecuteNonQuery();
 
                 transaction.Commit();
-                return new CheckoutResult { Success = true, Message = "Thanh toán thành công!", OrderId = orderId, TotalAmount = totalAmount };
+                return new CheckoutResult { Success = true, Message = "Thanh toán thành công!", OrderId = orderId, TotalAmount = totalAmountWithShipping };
             }
             catch (Exception ex)
             {

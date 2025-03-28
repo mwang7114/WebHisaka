@@ -95,6 +95,7 @@ public class DataModel
         public decimal TotalAmount { get; set; }
         public string AddressDetail { get; set; }
         public int UserID { get; set; }
+        public decimal ShippingFee { get; set; }
     }
     public class OrderListViewModel
     {
@@ -106,6 +107,8 @@ public class DataModel
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal ShippingFee { get; set; }
     }
 
     public class OrderListGroupViewModel

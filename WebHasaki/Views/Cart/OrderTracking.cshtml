@@ -23,15 +23,15 @@
                 <tr>
                     <td><strong>Trạng thái:</strong></td>
                     <td>
-                        @if (@Model.Order.Status == "Processing")
+                        @if (Model.Order.Status == "Processing")
                         {
                             <span>Đang xử lý</span>
                         }
-                        else if (@Model.Order.Status == "Shipped")
+                        else if (Model.Order.Status == "Shipped")
                         {
                             <span>Đang vận chuyển</span>
                         }
-                        else if (@Model.Order.Status == "Delivered")
+                        else if (Model.Order.Status == "Delivered")
                         {
                             <span>Thành công</span>
                         }
@@ -44,6 +44,14 @@
                 <tr>
                     <td><strong>Địa chỉ giao hàng:</strong></td>
                     <td>@Model.Order.AddressDetail</td>
+                </tr>
+                <tr>
+                    <td><strong>Tạm tính:</strong></td>
+                    <td>@((Model.Order.TotalAmount - Model.Order.ShippingFee).ToString("N0"))đ</td>
+                </tr>
+                <tr>
+                    <td><strong>Phí vận chuyển:</strong></td>
+                    <td>@(Model.Order.ShippingFee > 0 ? Model.Order.ShippingFee.ToString("N0") + "đ" : "Miễn phí")</td>
                 </tr>
                 <tr>
                     <td><strong>Tổng tiền:</strong></td>
@@ -123,6 +131,7 @@
         .order-table th {
             background-color: #f2f2f2;
         }
+
     .btn-secondary {
         background-color: #6c757d;
         color: white;
@@ -131,5 +140,4 @@
         border-radius: 5px;
         text-decoration: none;
     }
-
 </style>

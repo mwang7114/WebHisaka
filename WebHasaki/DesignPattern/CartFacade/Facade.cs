@@ -42,9 +42,9 @@ public class CartFacade
         _cartSubsystem.RemoveFromCart(cartItemId);
     }
 
-    public CheckoutResult Checkout(int userId, string userAddress)
+    public CheckoutResult Checkout(int userId, string userAddress, decimal totalAmountWithShipping)
     {
         int cartId = _cartSubsystem.GetOrCreateCart(userId);
-        return _orderSubsystem.Checkout(userId, cartId, userAddress);
+        return _orderSubsystem.Checkout(userId, cartId, userAddress, totalAmountWithShipping);
     }
 }

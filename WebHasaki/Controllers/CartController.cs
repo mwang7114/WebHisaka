@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using WebHasaki.DesignPattern;
 using WebHasaki.Models;
 
 namespace WebHasaki.Controllers
@@ -13,8 +14,8 @@ namespace WebHasaki.Controllers
     public class CartController : Controller
     {
         CartFacade _cartFacade;
-
         DataModel db = new DataModel();
+
         public CartController()
         {
             _cartFacade = new CartFacade(db);
@@ -26,8 +27,17 @@ namespace WebHasaki.Controllers
             {
                 return RedirectToAction("DangNhap", "Home");
             }
+
             int userId = Convert.ToInt32(Session["UserID"]);
             var cartItems = _cartFacade.ShowCart(userId);
+
+            // Áp dụng Decorator
+            Cart cart = new BasicCart(cartItems);
+            cart = ApplyCartDecorators(cart);
+
+            ViewBag.CartDetails = cart.GetDetails();
+            ViewBag.TotalAmount = cart.GetTotal();
+
             return View(cartItems);
         }
 
@@ -79,7 +89,12 @@ namespace WebHasaki.Controllers
             }
 
             int userId = Convert.ToInt32(Session["UserID"]);
-            var db = new DataModel(); // Tạm thời dùng để lấy địa chỉ, có thể thêm vào Facade sau
+            var cartItems = _cartFacade.ShowCart(userId);
+
+            // Áp dụng Decorator
+            Cart cart = new BasicCart(cartItems);
+            cart = ApplyCartDecorators(cart);
+
             string addressSql = "SELECT Addresses FROM Users WHERE UserID = @UserID";
             SqlParameter[] addressParams = { new SqlParameter("@UserID", userId) };
             ArrayList addressList = db.get(addressSql, addressParams);
@@ -91,12 +106,11 @@ namespace WebHasaki.Controllers
             }
 
             string userAddress = ((ArrayList)addressList[0])[0]?.ToString();
-            var cartItems = _cartFacade.ShowCart(userId);
-            decimal totalAmount = cartItems.Sum(item => item.Total);
 
             ViewBag.UserAddress = userAddress;
             ViewBag.CartItems = cartItems;
-            ViewBag.TotalAmount = totalAmount;
+            ViewBag.CartDetails = cart.GetDetails();
+            ViewBag.TotalAmount = cart.GetTotal();
 
             return View();
         }
@@ -112,7 +126,13 @@ namespace WebHasaki.Controllers
             try
             {
                 int userId = Convert.ToInt32(Session["UserID"]);
-                var result = _cartFacade.Checkout(userId, userAddress);
+                var cartItems = _cartFacade.ShowCart(userId);
+                Cart cart = new BasicCart(cartItems);
+                cart = ApplyCartDecorators(cart);
+
+                // Truyền tổng tiền bao gồm phí vận chuyển vào Checkout
+                decimal totalAmountWithShipping = cart.GetTotal();
+                var result = _cartFacade.Checkout(userId, userAddress, totalAmountWithShipping);
 
                 if (!result.Success)
                 {
@@ -129,7 +149,28 @@ namespace WebHasaki.Controllers
             }
         }
 
-    public ActionResult OrderList()
+        private Cart ApplyCartDecorators(Cart cart)
+        {
+            decimal subtotal = cart.GetTotal();
+
+            // Phí vận chuyển:
+            // - Dưới 300k: 30k
+            // - Từ 301k đến 800k: 47k
+            // - Trên 800k: Miễn phí
+            if (subtotal < 300000)
+            {
+                cart = new ShippingDecorator(cart, 47000);
+            }
+            else if (subtotal >= 301000 && subtotal <= 800000)
+            {
+                cart = new ShippingDecorator(cart, 30000);
+            }
+            // Trên 800k thì không thêm phí (miễn phí vận chuyển)
+
+            return cart;
+        }
+
+        public ActionResult OrderList()
         {
             if (Session["UserID"] == null)
             {
@@ -139,19 +180,20 @@ namespace WebHasaki.Controllers
             int userId = Convert.ToInt32(Session["UserID"]);
 
             string orderListSql = @"
-        SELECT
-            Orders.OrderID,
-            Orders.OrderDate,
-            Orders.Status,
-            Products.ProductName,
-            Products.Image,
-            OrderDetails.Quantity,
-            OrderDetails.Price
-        FROM Orders
-        INNER JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
-        INNER JOIN Products ON OrderDetails.ProductID = Products.ProductID
-        WHERE Orders.UserID = @UserID
-        ORDER BY Orders.OrderDate DESC";
+                SELECT
+                    Orders.OrderID,
+                    Orders.OrderDate,
+                    Orders.Status,
+                    Orders.TotalAmount,
+                    Products.ProductName,
+                    Products.Image,
+                    OrderDetails.Quantity,
+                    OrderDetails.Price
+                FROM Orders
+                INNER JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+                INNER JOIN Products ON OrderDetails.ProductID = Products.ProductID
+                WHERE Orders.UserID = @UserID
+                ORDER BY Orders.OrderDate DESC";
 
             SqlParameter[] orderListParams = { new SqlParameter("@UserID", userId) };
             ArrayList orderListData = db.get(orderListSql, orderListParams);
@@ -161,22 +203,52 @@ namespace WebHasaki.Controllers
                 OrderID = Convert.ToInt32(o[0]),
                 OrderDate = Convert.ToDateTime(o[1]),
                 Status = o[2]?.ToString() ?? "",
-                ProductName = o[3]?.ToString() ?? "",
-                ImageUrl = o[4]?.ToString() ?? "",
-                Quantity = Convert.ToInt32(o[5]),
-                Price = Convert.ToDecimal(o[6]),
-                Total = Convert.ToInt32(o[5]) * Convert.ToDecimal(o[6])
+                TotalAmount = Convert.ToDecimal(o[3]),
+                ProductName = o[4]?.ToString() ?? "",
+                ImageUrl = o[5]?.ToString() ?? "",
+                Quantity = Convert.ToInt32(o[6]),
+                Price = Convert.ToDecimal(o[7]),
+                Total = Convert.ToInt32(o[6]) * Convert.ToDecimal(o[7])
             }).ToList();
 
-            var groupedByDate = orders.GroupBy(o => o.OrderDate).ToList();
+            // Nhóm theo OrderID và tính ShippingFee
+            var groupedByOrder = orders.GroupBy(o => o.OrderID).Select(g => new
+            {
+                OrderID = g.Key,
+                OrderDate = g.First().OrderDate,
+                Status = g.First().Status,
+                TotalAmount = g.First().TotalAmount,
+                Subtotal = g.Sum(o => o.Total),
+                Items = g.ToList()
+            }).ToList();
 
-            var finalGroups = groupedByDate.Select(dateGroup => new OrderListGroupViewModel
+            foreach (var order in groupedByOrder)
+            {
+                decimal subtotal = order.Subtotal;
+                decimal shippingFee = 0;
+                if (subtotal < 300000)
+                {
+                    shippingFee = 47000;
+                }
+                else if (subtotal >= 301000 && subtotal <= 800000)
+                {
+                    shippingFee = 30000;
+                }
+                foreach (var item in order.Items)
+                {
+                    item.ShippingFee = shippingFee;
+                    item.TotalAmount = order.TotalAmount;
+                }
+            }
+
+            // Sửa lại cách nhóm để khớp với OrderListGroupViewModel.OrderGroups
+            var groupedByDate = groupedByOrder.GroupBy(o => o.OrderDate).Select(dateGroup => new OrderListGroupViewModel
             {
                 Date = dateGroup.Key,
-                OrderGroups = dateGroup.GroupBy(o => o.OrderID).ToList()
+                OrderGroups = dateGroup.Select(order => order.Items.GroupBy(i => i.OrderID).First()).ToList() // Chỉ lấy nhóm đầu tiên cho mỗi OrderID
             }).ToList();
 
-            return View(finalGroups);
+            return View(groupedByDate);
         }
         public ActionResult ReceivedOrder(int orderId)
         {
@@ -206,9 +278,9 @@ namespace WebHasaki.Controllers
             int userId = Convert.ToInt32(Session["UserID"]);
 
             string orderSql = "SELECT Orders.OrderID, Orders.TotalAmount, Orders.Status, Orders.OrderDate, Users.Addresses, Orders.UserID " +
-                                "FROM Orders " +
-                                "INNER JOIN Users ON Orders.UserID = Users.UserID " +
-                                "WHERE Orders.OrderID = @OrderID";
+                              "FROM Orders " +
+                              "INNER JOIN Users ON Orders.UserID = Users.UserID " +
+                              "WHERE Orders.OrderID = @OrderID";
             SqlParameter[] orderParams = { new SqlParameter("@OrderID", orderId.Value) };
 
             ArrayList orderData = db.get(orderSql, orderParams);
@@ -229,7 +301,6 @@ namespace WebHasaki.Controllers
                 UserID = Convert.ToInt32(o[5])
             }).FirstOrDefault();
 
-            // Kiểm tra quyền truy cập
             if (order.UserID != userId)
             {
                 ViewBag.ErrorMessage = "Bạn không có quyền xem đơn hàng này.";
@@ -237,27 +308,37 @@ namespace WebHasaki.Controllers
             }
 
             string orderDetailsSql = @"
-        SELECT 
-            p.ProductName, 
-            od.Quantity, 
-            od.Price, 
-            p.Image 
-        FROM OrderDetails od
-        INNER JOIN Products p ON od.ProductID = p.ProductID
-        WHERE od.OrderID = @OrderID";
-
-            SqlParameter[] orderdetailsParams = { new SqlParameter("@OrderID", orderId.Value) };
-            ArrayList orderDetailsData = db.get(orderDetailsSql, orderdetailsParams);
-            Console.WriteLine($"OrderDetails count: {orderDetailsData.Count}");
+                SELECT 
+                    p.ProductName, 
+                    od.Quantity, 
+                    od.Price, 
+                    p.Image 
+                FROM OrderDetails od
+                INNER JOIN Products p ON od.ProductID = p.ProductID
+                WHERE od.OrderID = @OrderID";
+            SqlParameter[] orderDetailsParams = { new SqlParameter("@OrderID", orderId.Value) };
+            ArrayList orderDetailsData = db.get(orderDetailsSql, orderDetailsParams);
 
             var orderDetails = orderDetailsData.Cast<ArrayList>().Select(d => new CartItemViewModel
             {
                 ProductName = d[0]?.ToString() ?? "",
                 Quantity = d[1] != null ? Convert.ToInt32(d[1]) : 0,
                 Price = d[2] != null ? Convert.ToDecimal(d[2]) : 0m,
-                ImageUrl = d[3]?.ToString() ?? "",
+                ImageUrl = d[3]?.ToString() ?? ""
             }).ToList();
 
+            decimal subtotal = orderDetails.Sum(d => d.Total);
+
+            decimal shippingFee = 0;
+            if (subtotal < 300000)
+            {
+                shippingFee = 47000;
+            }
+            else if (subtotal >= 301000 && subtotal <= 800000)
+            {
+                shippingFee = 30000;
+            }
+            order.ShippingFee = shippingFee;
 
             var viewModel = new OrderTrackingViewModel
             {

@@ -157,6 +157,7 @@
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DesignPattern\CartDecorator.cs" />
     <Compile Include="DesignPattern\CartFacade\CartSubSystem.cs" />
     <Compile Include="DesignPattern\CartFacade\Facade.cs" />
     <Compile Include="DesignPattern\CartFacade\OrderSubSystem.cs" />

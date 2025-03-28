@@ -4,15 +4,14 @@
 @{
     ViewBag.Title = "Giỏ Hàng";
     Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
-    <link href="~/Content/CSS/User/cssgiohang.css" rel="stylesheet" />
 }
+
+<link href="~/Content/CSS/User/cssgiohang.css" rel="stylesheet" />
 
 <div class="container-giohang">
     <div class="cart-header">
         Giỏ hàng
-        <span>
-            (@Model.Count sản phẩm)
-        </span>
+        <span>(@Model.Count sản phẩm)</span>
     </div>
     <div style="display: flex">
         <div class="giohang-left">
@@ -87,23 +86,40 @@
         <div class="invoice-container">
             @if (Model != null && Model.Any())
             {
+                decimal subtotal = Model.Sum(item => item.Total);
                 <div class="invoice-header">Hóa đơn của bạn</div>
                 <div class="invoice-item">
                     <span>Tạm tính:</span>
-                    <span class="value">@Model.Sum(item => item.Total).ToString("N0")đ</span>
+                    <span class="value">@subtotal.ToString("N0")đ</span>
                 </div>
                 <div class="invoice-item">
                     <span>Giảm giá:</span>
                     <span class="value">- 0đ</span>
                 </div>
-                <div class="promotion">
-                    Khuyến mãi đã nhận được:<br />
-                    TẶNG: Gel Rửa Mặt Bioderma Tạo Bọt Cho Da Nhạy Cảm 8ml (SL có hạn)<br />
-                    Số lượng quà tặng có hạn, kiểm tra giỏ hàng trước khi thanh toán
-                </div>
+                if (subtotal < 300000)
+                {
+                    <div class="invoice-item">
+                        <span>Phí vận chuyển:</span>
+                        <span class="value">47,000đ</span>
+                    </div>
+                }
+                else if (subtotal >= 301000 && subtotal <= 800000)
+                {
+                    <div class="invoice-item">
+                        <span>Phí vận chuyển:</span>
+                        <span class="value">30,000đ</span>
+                    </div>
+                }
+                else if (subtotal > 800000)
+                {
+                    <div class="invoice-item">
+                        <span>Phí vận chuyển:</span>
+                        <span class="value" style="color: green;">Miễn phí</span>
+                    </div>
+                }
                 <div class="total">
                     <a>Tổng cộng:</a>
-                    <span>@Model.Sum(item => item.Total).ToString("N0")đ</span>
+                    <span>@ViewBag.TotalAmount.ToString("N0")đ</span>
                 </div>
                 <div class="vat">(Đã bao gồm VAT)</div>
                 <div style="display: flex; justify-content: center;">
@@ -117,3 +133,4 @@
         </div>
     </div>
 </div>
+

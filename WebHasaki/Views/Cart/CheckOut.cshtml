@@ -4,6 +4,19 @@
     var cartItems = ViewBag.CartItems as List<WebHasaki.Models.CartItemViewModel>;
     decimal totalAmount = ViewBag.TotalAmount != null ? (decimal)ViewBag.TotalAmount : 0;
     string userAddress = ViewBag.UserAddress as string; // Lấy địa chỉ từ ViewBag
+    decimal subtotal = cartItems != null ? cartItems.Sum(item => item.Total) : 0; // Tạm tính từ giỏ hàng
+    decimal shippingFee = 0;
+
+    // Tính phí vận chuyển dựa trên subtotal
+    if (subtotal < 300000)
+    {
+        shippingFee = 47000;
+    }
+    else if (subtotal >= 301000 && subtotal <= 800000)
+    {
+        shippingFee = 30000;
+    }
+    // Trên 800k thì shippingFee giữ nguyên 0 (miễn phí)
 }
 
 <link href="~/Content/CSS/User/cssthanhtoan.css" rel="stylesheet" />
@@ -15,7 +28,6 @@
         border: none;
         border-radius: 5px;
         text-decoration: none;
-        
     }
 </style>
 <div style="display: flex">
@@ -100,36 +112,43 @@
             <a href="@Url.Action("ShowCart", "Cart")" class="btn btn-secondary">Trở về</a>
         </div>
     </div>
-    </div>
 
-<div class="order-summary-thanhtoan">
-    <div class="invoice-info-thanhtoan">
-        <span>Thông tin xuất hóa đơn</span>
-        <a href="#">Nhập</a>
-    </div>
-    <div class="order-details-thanhtoan">
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <h3>Đơn hàng</h3>
-            <a href="#">Thay đổi</a>
+    <div class="order-summary-thanhtoan">
+        <div class="invoice-info-thanhtoan">
+            <span>Thông tin xuất hóa đơn</span>
+            <a href="#">Nhập</a>
         </div>
-        <div class="item">
-            <span>Tạm tính</span>
-            <span>@totalAmount.ToString("N0")đ</span>
-        </div>
-        <div class="item">
-            <span>Giảm giá</span>
-            <span>- 0đ</span>
-        </div>
-        <div class="item">
-            <span>Phí vận chuyển</span>
-            <span>0đ</span>
-        </div>
-        <div class="item total" style="margin:10px 0">
-            <span>Thành tiền (Đã VAT)</span>
-            <span class="price">@totalAmount.ToString("N0")đ</span>
-        </div>
-        <div class="note-thanhtoan">
-            Đã bao gồm VAT, phí đóng gói, phí vận chuyển và các chi phí khác vui lòng xem <a href="#">Chính sách vận chuyển</a>
+        <div class="order-details-thanhtoan">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <h3>Đơn hàng</h3>
+                <a href="#">Thay đổi</a>
+            </div>
+            <div class="item">
+                <span>Tạm tính</span>
+                <span>@subtotal.ToString("N0")đ</span>
+            </div>
+            <div class="item">
+                <span>Giảm giá</span>
+                <span>- 0đ</span>
+            </div>
+            <div class="item">
+                <span>Phí vận chuyển</span>
+                @if (shippingFee > 0)
+                {
+                    <span>@shippingFee.ToString("N0")đ</span>
+                }
+                else
+                {
+                    <span style="color: green;">Miễn phí</span>
+                }
+            </div>
+            <div class="item total" style="margin:10px 0">
+                <span>Thành tiền (Đã VAT)</span>
+                <span class="price">@totalAmount.ToString("N0")đ</span>
+            </div>
+            <div class="note-thanhtoan">
+                Đã bao gồm VAT, phí đóng gói, phí vận chuyển và các chi phí khác vui lòng xem <a href="#">Chính sách vận chuyển</a>
+            </div>
         </div>
     </div>
 </div>
