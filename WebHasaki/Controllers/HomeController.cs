@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using WebHasaki.DesignPattern;
 using WebHasaki.Models;
-using static System.Web.Razor.Parser.SyntaxConstants;
+using Microsoft.Owin.Security;
+
+
 
 
 namespace WebHasaki.Controllers
@@ -17,11 +19,12 @@ namespace WebHasaki.Controllers
     public class HomeController : Controller
     {
         private readonly IRegistrationService _registrationService;
-
+        private readonly LoginContext _loginContext;
         // Constructor không tham số
         public HomeController()
         {
             _registrationService = new RegistrationProxy(); // Khởi tạo thủ công
+            _loginContext = new LoginContext();
         }
 
         // Constructor có tham số (giữ lại để dùng với DI sau này)
@@ -74,53 +77,123 @@ namespace WebHasaki.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult XuLyDangNhap(string email, string password)
+        public async Task<ActionResult> XuLyDangNhap(string email, string password)
         {
-            DataModel db = new DataModel();
-            var result = db.get($"EXEC KIEMTRADANGNHAP '{email}', '{password}'");
+            var loginContext = new LoginContext();
+            loginContext.SetLoginStrategy(new UsernamePasswordLogin(new DataModel(), System.Web.HttpContext.Current));
 
-            if (result != null && result.Count > 0)
+            var (success, userData, errorMessage) = await loginContext.Authenticate(email, password);
+
+            if (success)
             {
-                ArrayList row = (ArrayList)result[0];
-
-                if (row[0] == null && !string.IsNullOrEmpty(row[1]?.ToString()))
-                {
-                    if (row[1]?.ToString() == "Email không tồn tại!")
-                    {
-                        ViewData["EmailError"] = row[1]?.ToString();
-                    }
-                    else if (row[1]?.ToString() == "Sai mật khẩu!")
-                    {
-                        ViewData["PasswordError"] = row[1]?.ToString();
-                    }
-
-                    return View("DangNhap");
-                }
-                int userId = Convert.ToInt32(row[0]);
-                string userEmail = row[1]?.ToString();
-                string hoten = row[3]?.ToString();
-                string role = row[8]?.ToString();
-                string phone = row[4]?.ToString();
-
-                Session["UserID"] = userId;
-                Session["Email"] = userEmail;
-                Session["TaiKhoan"] = row;
-                Session["Name"] = hoten;
-                Session["Role"] = role;
-                Session["Phone"] = phone;
-
-                if (role == "admin" || role == "manager")
-                {
-                    return RedirectToAction("Dashboard", "Admin");
-                }
-                else if (role == "user")
-                {
-                    return RedirectToAction("TrangChu", "Home");
-                }
+                return RedirectToAction(userData["Role"].ToString() == "admin" ? "Dashboard" : "TrangChu", userData["Role"].ToString() == "admin" ? "Admin" : "Home");
             }
 
-            ViewBag.ErrorMessage = "Đăng nhập không thành công. Vui lòng thử lại!";
+            ViewBag.ErrorMessage = errorMessage;
             return View("DangNhap");
+        }
+
+        // Chuyển hướng tới Google để đăng nhập
+        public void GoogleLogin()
+        {
+            var redirectUri = Url.Action("GoogleCallback", "Home", null, Request.Url.Scheme);
+            System.Diagnostics.Debug.WriteLine("Redirect URI: " + redirectUri);
+
+            var properties = new AuthenticationProperties { RedirectUri = redirectUri };
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
+        }
+
+        // Callback sau khi đăng nhập thành công
+        public async Task<ActionResult> GoogleCallback()
+        {
+            try
+            {
+                var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
+
+                if (loginInfo == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("⚠️ Không nhận được thông tin từ Google!");
+                    return Content("Lỗi: Không nhận được thông tin từ Google.");
+                }
+
+                System.Diagnostics.Debug.WriteLine("✅ Login thành công: " + loginInfo.DefaultUserName);
+                return RedirectToAction("TrangChu");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ Lỗi Google Login: " + ex.Message);
+                return Content("Lỗi: " + ex.Message);
+            }
+        }
+
+        // Action để yêu cầu đăng nhập Facebook
+        public void FacebookLogin()
+        {
+            if (HttpContext.GetOwinContext().Authentication.User.Identity.IsAuthenticated)
+            {
+                // Nếu đã đăng nhập, chuyển thẳng đến trang chủ
+                Response.Redirect(Url.Action("TrangChu", "Home"));
+                return;
+            }
+
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("FacebookCallback", "Home", null, Request.Url.Scheme)
+            };
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Facebook");
+        }
+
+        // Callback sau khi đăng nhập thành công
+        public ActionResult FacebookCallback()
+        {
+            var loginInfo = HttpContext.GetOwinContext().Authentication.GetExternalLoginInfo();
+            if (loginInfo == null)
+            {
+                TempData["ErrorMessage"] = "Đăng nhập Facebook thất bại. Vui lòng thử lại!";
+                return RedirectToAction("DangNhap");
+            }
+
+            var userEmail = loginInfo.Email;
+            var userName = loginInfo.DefaultUserName;
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                TempData["ErrorMessage"] = "Không lấy được email từ Facebook.";
+                return RedirectToAction("DangNhap");
+            }
+
+            // Kiểm tra xem user đã có trong DB chưa
+            var db = new DataModel();
+            var userData = db.get($"SELECT * FROM Users WHERE Email = '{userEmail}'");
+
+            int userId;
+            if (userData == null || userData.Count == 0)
+            {
+                // Nếu chưa có, thêm user mới vào DB
+                db.execute($"INSERT INTO Users (Email, FullName) VALUES ('{userEmail}', '{userName}')");
+                var newUser = db.get($"SELECT UserID FROM Users WHERE Email = '{userEmail}'");
+                userId = Convert.ToInt32(((ArrayList)newUser[0])[0]);
+            }
+            else
+            {
+                // Nếu đã có, lấy UserID từ DB
+                userId = Convert.ToInt32(((ArrayList)userData[0])[0]);
+            }
+
+            // Lưu thông tin đăng nhập vào Session
+            var userSessionData = new Dictionary<string, object>
+    {
+        { "UserID", userId },
+        { "Email", userEmail },
+        { "FullName", userName }
+    };
+
+            HttpContext.Session["TaiKhoan"] = userSessionData;
+            HttpContext.Session["UserID"] = userId;
+            HttpContext.Session["Email"] = userEmail;
+            HttpContext.Session["Name"] = userName;
+
+            return RedirectToAction("TrangChu");
         }
 
         public ActionResult DangKy()
