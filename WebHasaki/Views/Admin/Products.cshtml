@@ -10,6 +10,12 @@
     <a href="#">Pages</a> / <a href="#">Products</a>
 </div>
 <div class="title">Quản lý sản phẩm</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+       <h5 style="color:springgreen;font-size:20px"> @TempData["SuccessMessage"]</h5>
+    </div>
+}
 <div class="header-btn">
     <button onclick="window.location='@Url.Action("CreateProduct", "Product")'" class="add-button">THÊM SẢN PHẨM</button>
 </div>

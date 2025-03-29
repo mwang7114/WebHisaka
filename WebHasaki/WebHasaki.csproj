@@ -204,6 +204,7 @@
     <Compile Include="DesignPattern\CategorySingleton.cs" />
     <Compile Include="DesignPattern\ControllerTemplateMethod.cs" />
     <Compile Include="DesignPattern\ArrayListIterator.cs" />
+    <Compile Include="DesignPattern\CreateFactoryMethod.cs" />
     <Compile Include="DesignPattern\IProductPrototype.cs" />
     <Compile Include="DesignPattern\LoginStrategy.cs" />
     <Compile Include="DesignPattern\ProtectionProxy.cs" />

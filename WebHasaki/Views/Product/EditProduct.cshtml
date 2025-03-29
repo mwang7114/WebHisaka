@@ -7,7 +7,12 @@
 }
 
 <h2>Edit Product</h2>
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false, "Vui lòng sửa các lỗi sau:")
+    </div>
+}
 @using (Html.BeginForm("EditProduct", "Product", FormMethod.Post))
 {
     @Html.AntiForgeryToken()

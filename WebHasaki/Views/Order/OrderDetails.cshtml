@@ -31,8 +31,8 @@
                         <td>@index</td>
                         <td>@detail.ProductName</td>
                         <td>@detail.Quantity</td>
-                        <td>@string.Format("{0:0,0}", detail.Price) ₫</td>
-                        <td>@string.Format("{0:0,0}", detail.Total) ₫</td>
+                        <td>@string.Format("{0:0,0}", detail.Price) đ</td>
+                        <td>@string.Format("{0:0,0}", detail.Total) đ</td>
                     </tr>
                     index++;
                 }
@@ -45,10 +45,17 @@
             }
         </tbody>
     </table>
-    <div class="total-price">
-        <h4>Tổng Tiền: @string.Format("{0:0,0}", ViewBag.TotalPrice) ₫</h4>
-        <p>(Đã bao gồm phí vận chuyển)</p>
+    <div class="total-price" style="margin-right:20px">
+        <h4>Thành Tiền: @string.Format("{0:0,0}", ViewBag.TotalPrice) đ</h4>
+        <h4>
+            Phí Vận Chuyển:
+            @(ViewBag.ShippingFee > 0
+            ? string.Format("{0:0,0} đ", ViewBag.ShippingFee)
+            : "Miễn phí")
+        </h4>
+        <h4><strong>Tổng Cộng: @string.Format("{0:0,0}", ViewBag.TotalPrice + ViewBag.ShippingFee) đ</strong></h4>
     </div>
+
 </div>
 
 <div class="customer-info">
@@ -56,7 +63,7 @@
     <p><strong>Họ & Tên:</strong> @ViewBag.CustomerInfo.FullName</p>
     <p><strong>Số Điện Thoại:</strong> @ViewBag.CustomerInfo.Phone</p>
     <p><strong>Email:</strong> @ViewBag.CustomerInfo.Email</p>
-    <p><strong>Địa Chỉ:</strong> @ViewBag.CustomerInfo.Address</p>
+    <p><strong>Địa Chỉ:</strong> @ViewBag.CustomerInfo.Addresses</p>
 </div>
 
 <div class="back-button">

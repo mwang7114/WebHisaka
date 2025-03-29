@@ -44,13 +44,14 @@
     </div>
     <div class="stat-card">
         <div class="stat-content">
-            <div class="stat-number">@string.Format("{0:N0}", ViewBag.Earnings)</div>
+            <div class="stat-number">@string.Format("{0:0,0}", ViewBag.Earnings)</div>
             <div class="stat-label">Earnings</div>
         </div>
         <div class="stat-icon">
             <i class="fas fa-money-bill-wave"></i>
         </div>
     </div>
+
 </div>
 
 <div class="charts">
@@ -108,42 +109,42 @@ new Chart(radarChartCtx, {
 });
 
 // Bar Chart
-const barChartCtx = document.getElementById('barChart').getContext('2d');
-new Chart(barChartCtx, {
-    type: 'bar',
-    data: {
-        labels: ['Earnings'],
-        datasets: [{
-            label: 'Monthly Earnings',
-            data: [chartData.Earnings],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: function (value) {
-                        return Math.round(value);
+    const barChartCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Earnings'],  // Cập nhật nhãn
+            datasets: [{
+                label: 'Monthly Earnings',
+                data: [chartData.Earnings],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function (value) {
+                            return value.toLocaleString() + ' đ';  // Định dạng số tiền
+                        }
                     }
                 }
-            }
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        return Math.round(context.raw);
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.raw.toLocaleString() + ' đ';  // Định dạng số tiền
+                        }
                     }
                 }
             }
         }
-    }
-});
+    });
 
 // Hàm tính bước nhảy (stepSize)
 function calculateStepSize(data) {

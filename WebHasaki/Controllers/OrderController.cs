@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebHasaki.DesignPattern;
 using WebHasaki.Models;
 
 namespace WebHasaki.Controllers
@@ -16,25 +17,24 @@ namespace WebHasaki.Controllers
 
         public ActionResult OrderDetails(int orderId)
         {
-
             string sqlOrderInfo = @"
-SELECT 
-    od.OrderDetailID, p.ProductName, od.Quantity, od.Price, 
-    u.FullName, u.PhoneNumber, u.Email, u.Addresses
-FROM OrderDetails od
-JOIN Products p ON od.ProductID = p.ProductID
-JOIN Orders o ON od.OrderID = o.OrderID
-JOIN Users u ON o.UserID = u.UserID
-WHERE od.OrderID = @OrderID";
+    SELECT 
+        od.OrderDetailID, p.ProductName, od.Quantity, od.Price, 
+        u.FullName, u.PhoneNumber, u.Email, u.Addresses
+    FROM OrderDetails od
+    JOIN Products p ON od.ProductID = p.ProductID
+    JOIN Orders o ON od.OrderID = o.OrderID
+    JOIN Users u ON o.UserID = u.UserID
+    WHERE od.OrderID = @OrderID";
 
             SqlParameter[] parameters = { new SqlParameter("@OrderID", orderId) };
             ArrayList orderInfoData = db.get(sqlOrderInfo, parameters);
 
-            // Kiểm tra nếu không có dữ liệu trả về
             if (orderInfoData == null || orderInfoData.Count == 0)
             {
                 ViewBag.TotalPrice = 0;
                 ViewBag.CustomerInfo = new { FullName = "N/A", Phone = "N/A", Email = "N/A", Addresses = "N/A" };
+                ViewBag.ShippingFee = 0;
                 return View(new List<OrderDetailViewModel>());
             }
 
@@ -73,11 +73,37 @@ WHERE od.OrderID = @OrderID";
                 }
             }
 
-            ViewBag.TotalPrice = totalPrice;
+            // ✅ Tính phí vận chuyển giống bên người dùng
+            decimal shippingFee = 0;
+            if (totalPrice < 300000)
+            {
+                shippingFee = 47000;
+            }
+            else if (totalPrice >= 301000 && totalPrice <= 800000)
+            {
+                shippingFee = 30000;
+            }
+
+            List<CartItemViewModel> cartItems = orderDetailList.Select(od => new CartItemViewModel
+            {
+                ProductName = od.ProductName,
+                Quantity = od.Quantity,
+                Price = od.Price,
+            }).ToList();
+
+            Cart basicCart = new BasicCart(cartItems);
+            Cart cartWithShipping = new ShippingDecorator(basicCart, shippingFee);
+            decimal finalTotal = cartWithShipping.GetTotal();
+
+
+            ViewBag.TotalPrice = finalTotal;
             ViewBag.CustomerInfo = customerInfo;
+            ViewBag.ShippingFee = shippingFee;
+            ViewBag.TotalPrice = totalPrice;
 
             return View(orderDetailList);
         }
+
 
         public ActionResult EditOrder(int orderId)
         {

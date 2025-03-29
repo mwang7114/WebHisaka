@@ -18,37 +18,75 @@ namespace WebHasaki.Controllers
 
         public ActionResult Dashboard()
         {
+            // Lấy tổng lượt xem trong tháng
             string sqlDailyViews = @"
     SELECT SUM(ViewCount) 
     FROM DailyViews
-    WHERE MONTH(ViewDate) = MONTH(GETDATE()) AND YEAR(ViewDate) = YEAR(GETDATE())";
+    WHERE MONTH(ViewDate) = MONTH(GETDATE()) 
+    AND YEAR(ViewDate) = YEAR(GETDATE())";
+
             var dailyViews = db.get(sqlDailyViews).Cast<ArrayList>().FirstOrDefault();
             int totalViews = dailyViews != null && dailyViews.Count > 0 ? Convert.ToInt32(dailyViews[0]) : 0;
 
+            // Lấy tổng số đơn hàng đã giao
             string sqlSales = @"
     SELECT COUNT(*) 
     FROM Orders 
-    WHERE Status = 'Delivered' AND MONTH(OrderDate) = MONTH(GETDATE()) AND YEAR(OrderDate) = YEAR(GETDATE())";
+    WHERE Status = 'Delivered' 
+    AND MONTH(OrderDate) = MONTH(GETDATE()) 
+    AND YEAR(OrderDate) = YEAR(GETDATE())";
+
             var sales = db.get(sqlSales).Cast<ArrayList>().FirstOrDefault();
             int totalSales = sales != null && sales.Count > 0 ? Convert.ToInt32(sales[0]) : 0;
 
+            // Lấy tổng số đánh giá trong tháng
             string sqlReviews = @"
     SELECT COUNT(*) 
     FROM Reviews 
-    WHERE MONTH(ReviewDate) = MONTH(GETDATE()) AND YEAR(ReviewDate) = YEAR(GETDATE())";
+    WHERE MONTH(ReviewDate) = MONTH(GETDATE()) 
+    AND YEAR(ReviewDate) = YEAR(GETDATE())";
+
             var reviews = db.get(sqlReviews).Cast<ArrayList>().FirstOrDefault();
             int totalReviews = reviews != null && reviews.Count > 0 ? Convert.ToInt32(reviews[0]) : 0;
 
+            // Lấy tổng doanh thu chỉ từ sản phẩm (không có phí vận chuyển)
             string sqlEarnings = @"
-    SELECT SUM(od.Quantity * od.Price) 
+    SELECT o.OrderID, SUM(od.Quantity * od.Price) 
     FROM OrderDetails od
     JOIN Orders o ON od.OrderID = o.OrderID
     WHERE o.Status = 'Delivered' 
-      AND MONTH(o.OrderDate) = MONTH(GETDATE()) 
-      AND YEAR(o.OrderDate) = YEAR(GETDATE())";
-            var earnings = db.get(sqlEarnings).Cast<ArrayList>().FirstOrDefault();
-            decimal totalEarnings = earnings != null && earnings.Count > 0 ? Convert.ToDecimal(earnings[0]) : 0;
+    AND MONTH(o.OrderDate) = MONTH(GETDATE()) 
+    AND YEAR(o.OrderDate) = YEAR(GETDATE())
+    GROUP BY o.OrderID";  // Lấy từng đơn hàng để tính phí ship riêng
 
+            var earningsData = db.get(sqlEarnings).Cast<ArrayList>().ToList();
+
+            decimal totalEarnings = 0;
+
+            // Tính tổng doanh thu & cộng phí vận chuyển cho từng đơn hàng
+            foreach (var item in earningsData)
+            {
+                if (item is ArrayList row)
+                {
+                    decimal orderTotal = Convert.ToDecimal(row[1]);
+
+                    // Tính phí vận chuyển dựa trên tổng tiền đơn hàng
+                    decimal shippingFee = 0;
+                    if (orderTotal < 300000)
+                    {
+                        shippingFee = 47000;
+                    }
+                    else if (orderTotal >= 301000 && orderTotal <= 800000)
+                    {
+                        shippingFee = 30000;
+                    }
+
+                    // Cộng cả phí ship vào tổng doanh thu
+                    totalEarnings += orderTotal + shippingFee;
+                }
+            }
+
+            // Đưa dữ liệu vào ViewBag để hiển thị trên giao diện
             var chartData = new
             {
                 Views = totalViews,
@@ -58,7 +96,6 @@ namespace WebHasaki.Controllers
             };
 
             ViewBag.ChartData = Newtonsoft.Json.JsonConvert.SerializeObject(chartData);
-
             ViewBag.DailyViews = totalViews;
             ViewBag.Sales = totalSales;
             ViewBag.Reviews = totalReviews;
@@ -66,6 +103,8 @@ namespace WebHasaki.Controllers
 
             return View();
         }
+
+
 
 
         public ActionResult Categories(int? page)
